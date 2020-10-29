@@ -11,3 +11,13 @@ s: cat命令将 ~/.ssh/id_rsa.pub 内容输出到终端，再拷贝
 
 5. 查看远程仓库地址信息  
 `git remote -v `
+
+```
+echo "# latex" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M master
+git remote add origin https://github.com/gaoweiwei53/latex.git
+git push -u origin master
+```
