@@ -7,6 +7,8 @@
 - [IntelliJ IDEA](https://www.jetbrains.com/idea/)
 - [anaconda](https://www.anaconda.com/products/individual)
 - [scala](https://scala-lang.org/download/)
+- [Panda](https://www.panhdpe.xyz/download)
+
 - [坚果云](https://www.jianguoyun.com/s/downloads)
 - [Xodo](https://www.xodo.com/#)
 - [百度网盘](https://pan.baidu.com/download/)
