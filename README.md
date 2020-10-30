@@ -9,8 +9,15 @@
 - [Scala](https://scala-lang.org/download/)
 - [Panda](https://www.panhdpe.xyz/download)
 
+
 - [坚果云](https://www.jianguoyun.com/s/downloads)
 - [Xodo](https://www.xodo.com/#)
 - [百度网盘](https://pan.baidu.com/download/)
 - [VLC](https://www.videolan.org/vlc/)
 - [Bandizip](https://www.bandizip.com/)
+
+
+- [Apache Spark](https://spark.apache.org/downloads.html)
+- [Apache Flink](https://flink.apache.org/downloads.html)
+- [Apache Kafka](https://kafka.apache.org/downloads)
+- [MySQL](https://dev.mysql.com/downloads/mysql/)
