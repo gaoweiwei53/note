@@ -5,3 +5,4 @@
 - [JDK11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 - [IntelliJ IDEA](https://www.jetbrains.com/idea/)
 - [anaconda](https://www.anaconda.com/products/individual)
+- [scala](https://scala-lang.org/download/)
