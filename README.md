@@ -8,9 +8,10 @@
 - [Anaconda](https://www.anaconda.com/products/individual)
 - [Scala](https://scala-lang.org/download/)
 - [Panda](https://www.panhdpe.xyz/download)
-- [Apache Spark](https://spark.apache.org/downloads.html)
-- [Apache Flink](https://flink.apache.org/downloads.html)
-- [Apache Kafka](https://kafka.apache.org/downloads)
+- [Apache Spark](https://mirrors.tuna.tsinghua.edu.cn/apache/spark/)
+- [Apache Flink](https://mirrors.tuna.tsinghua.edu.cn/apache/flink/)
+- [Apache Kafka](https://mirrors.tuna.tsinghua.edu.cn/apache/kafka/)
+- [Apache Hadoop](https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/core/)
 - [MySQL](https://dev.mysql.com/downloads/mysql/)
 - [坚果云](https://www.jianguoyun.com/s/downloads)
 ## Windows
