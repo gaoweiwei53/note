@@ -21,3 +21,7 @@ git branch -M master
 git remote add origin https://github.com/gaoweiwei53/latex.git
 git push -u origin master
 ```
+
+# IDEA
+- Ctrl+/: for single line comments (//...)  
+Ctrl+Shift+/: for block comments (/*...*/)
