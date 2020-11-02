@@ -5,6 +5,7 @@
 class Person(var firstName: String, var lastName: String)
 ```
 -  Auxiliary class constructors   
+
 定义名叫 this的方法，遵循规则
 - 每一个auxiliary constructor必须要有不同的签名
 - 每一个constructor 必须调用其中一个前面已经定义的constructors
@@ -34,7 +35,7 @@ class Pizza (var crustSize: Int, var crustType: String) {
 
 }
 ```
-可以使用默认值来代替上面的构造函数
+可以使用默认参数来代替上面的构造函数
 ```scala
 class Socket(var timeout: Int = 2000, var linger: Int = 3000) {
     override def toString = s"timeout: $timeout, linger: $linger"
@@ -47,7 +48,7 @@ new Socket(4000, 6000)
 ```
 # Case Classes
 case class 和一般的类差不多，但是有一些自己的特性，默认会实现几个方法。在模式匹配中很好用。
-使用case classes有很多好处：
+使用case classes有很多好处，如下：
 - Case class constructor parameters are public val fields by default, so accessor methods are generated for each parameter.
 - An apply method is created in the companion object of the class, so you don’t need to use the new keyword to create a new instance of the class.
 - An unapply method is generated, which lets you use case classes in more ways in match expressions。
@@ -56,7 +57,7 @@ case class 和一般的类差不多，但是有一些自己的特性，默认会
 - A default toString method is generated, which is helpful for debugging.
 “the biggest advantage of case classes is that they support pattern matching.”
 # Pattern match
-**Pattern guards**:用在`case`中的布尔表达式`if <boolean expression>`
+**Pattern guards**:用在`case`中的布尔表达式：`if <boolean expression>`
 ## Sealed classes
 Traits and classes可以被标识`sealed`, 表示其子类型必须在同一个文件中申明。主要为了模式匹配知道所有的情况。
 ## Singleton Objects
