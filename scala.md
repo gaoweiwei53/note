@@ -5,10 +5,9 @@
 class Person(var firstName: String, var lastName: String)
 ```
 -  Auxiliary class constructors   
-
 定义名叫 this的方法，遵循规则
-- 每一个auxiliary constructor必须要有不同的签名
-- 每一个constructor 必须调用其中一个前面已经定义的constructors
+    - 每一个auxiliary constructor必须要有不同的签名
+    - 每一个constructor 必须调用其中一个前面已经定义的constructors
 ```scala
 val DefaultCrustSize = 12
 val DefaultCrustType = "THIN"
