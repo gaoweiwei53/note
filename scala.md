@@ -45,7 +45,7 @@ new Socket()
 new Socket(1000)
 new Socket(4000, 6000)
 ```
-# Case Classes
+## Case Classes
 case class 和一般的类差不多，但是有一些自己的特性，默认会实现几个方法。在模式匹配中很好用。
 使用case classes有很多好处，如下：
 - Case class constructor parameters are public val fields by default, so accessor methods are generated for each parameter.
@@ -55,7 +55,7 @@ case class 和一般的类差不多，但是有一些自己的特性，默认会
 - equals and hashCode methods are generated, which let you compare objects and easily use them as keys in maps.
 - A default toString method is generated, which is helpful for debugging.
 “the biggest advantage of case classes is that they support pattern matching.”
-# Pattern match
+## Pattern match
 **Pattern guards**:用在`case`中的布尔表达式：`if <boolean expression>`
 ## Sealed classes
 Traits and classes可以被标识`sealed`, 表示其子类型必须在同一个文件中申明。主要为了模式匹配知道所有的情况。
@@ -64,7 +64,9 @@ An object is a value. The definition of an object looks like a class, but uses t
 ```scala
 object Box
 ```
-### Companion objects
+
+
+## Companion objects
 和类名一样的object的叫Companion object，对应的这个类叫这个对象的companion class.他们可以互相访问彼此的私有成员
 ## Case objects
 A case object is like an object, a case object has more features than a regular object. 包括：
