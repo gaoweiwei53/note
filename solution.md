@@ -22,6 +22,6 @@ ource ~/.bashrc
   <url>https://maven.aliyun.com/repository/public</url>
 </mirror>
 ```
-5. Plugin 'org.apache.maven.plugins:maven-compiler-plugin:3.8.1' not found
+5. Plugin 'org.apache.maven.plugins:maven-compiler-plugin:3.8.1' not found  
 S: add <pluginManagement>...</pluginManagement>
 # Spark
