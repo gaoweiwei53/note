@@ -23,5 +23,10 @@ ource ~/.bashrc
 </mirror>
 ```
 5. Plugin 'org.apache.maven.plugins:maven-compiler-plugin:3.8.1' not found  
-S: add <pluginManagement>...</pluginManagement>
+S: add 
+```xml
+ <pluginManagement>
+ ...
+ </pluginManagement>
+```
 # Spark
