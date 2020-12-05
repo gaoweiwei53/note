@@ -30,3 +30,8 @@ case $1 in
 };;
 esac
 ```
+```bash
+chmod 777 start_stop.sh
+start_stop.sh start
+start_stop.sh stop
+```
