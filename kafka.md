@@ -51,3 +51,12 @@ Leader维护了一个动态的in-sync replica set (I S R)，意为和leader保�
 ### 3）ack应答机制
 对于某些不太重要的数据，对数据的可靠性要求不是很高，能够容忍数据的少量丢失，所以没必要等ISR中的follower全部接收成功。
 所以Kafka为用户提供了三种可靠性级别，用户根据对可靠性和延迟的要求进行权衡，选择以下的配置。
+ack：
+0: producer不等待broker的ack，会丢失数据
+1：producer只等待leader落盘后返回ack，会丢失数据
+-1：producer等待leader和**ISR中的**所有follower落盘后返回ack，会重复数据
+### 4) 故障处理细节
+**LEO**(log end offset): 每个副本中最后一个offset，每个副本中最大的offset
+**HW**(high watermark): 所有副本中最小的LEO，消费者能见到的最大offset，ISR队列中最小的LEO
+### 5) exactly-once
+**幂等性**：指producer不论向server发送了多少重复数据，server端只会持久化一条，幂等性结合at least once就构成了Kafka的Exactly Once语义
