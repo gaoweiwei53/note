@@ -9,6 +9,7 @@
 # 2. 安装启动
 2.1 配置
 - 分布式搭建时，配置zookeeper.connection，不同节点用逗号隔开  
+
 2.2 群起脚本
 ```bash
 #!/bin/bash
