@@ -57,6 +57,7 @@ ack：
 -1：producer等待leader和**ISR中的**所有follower落盘后返回ack，会重复数据
 ### 4) 故障处理细节
 **LEO**(log end offset): 每个副本中最后一个offset，每个副本中最大的offset
+
 **HW**(high watermark): 所有副本中最小的LEO，消费者能见到的最大offset，ISR队列中最小的LEO
 ### 5) exactly-once
 **幂等性**：指producer不论向server发送了多少重复数据，server端只会持久化一条，幂等性结合at least once就构成了Kafka的Exactly Once语义
@@ -69,10 +70,13 @@ ack：
 ## 4.2 分区分配策略 (不是很懂)
 Kafka有两种分配策略
 - RoundRobin
+
 按照消费者组划分
+
 要保证一个消费者组只消费同一个主题
 - Range
 按照主题划分
+
 默认的是Range
 
 ## 4.3 offset维护
