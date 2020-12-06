@@ -26,5 +26,5 @@ git push -u origin master
 # IDEA
 - Ctrl+/: for single line comments (//...)  
 Ctrl+Shift+/: for block comments (/*...*/)、
-
 - Ctrl + P: 查看方法参数
+- Ctrl+Alt+V   自动生成变量名
