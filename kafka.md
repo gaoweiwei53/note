@@ -60,3 +60,39 @@ ack：
 **HW**(high watermark): 所有副本中最小的LEO，消费者能见到的最大offset，ISR队列中最小的LEO
 ### 5) exactly-once
 **幂等性**：指producer不论向server发送了多少重复数据，server端只会持久化一条，幂等性结合at least once就构成了Kafka的Exactly Once语义
+
+# 4. 消费者
+## 4.1 消费方式
+采用pull方式
+- 优点是可根据消费者的消费能力以适当的速率消费信息
+- 缺点是kafka没有数据时，会陷入循环，返回空数据，解决：设置时长timeout，没有数据时，等一段timeout时间再返回
+## 4.2 分区分配策略 (不是很懂)
+Kafka有两种分配策略
+- RoundRobin
+按照消费者组划分
+要保证一个消费者组只消费同一个主题
+- Range
+按照主题划分
+默认的是Range
+
+## 4.3 offset维护
+consumer需要实时记录自己消费到哪个offset，以便在故障恢复后继续消费，按 group+ Topic + partition 决定唯一的offset
+
+# 5. Kafka高效读写数据
+## 5.1 为啥快
+1) 顺序写磁盘
+写的过程中一直追加到文件的末端，，省去了大量寻址时间
+2) 零拷贝 (是啥？？？)
+## 5.2 Zookeeper的作用
+Kafka集群中有一个broker会被选为Controller，Controller的管理工作依赖于Zookeeper
+
+# 6. Kakfa事务
+##  6.1 Producer事务
+0.11版本后引入事务支持。事务支持可以保证Kafka在Exactly Once语义的基础上，生产和消费可以跨分区和会话，要么全部成功，要么全部失败。
+引入全局唯一的transaction ID
+## 6.2 Consumer事务
+很少关注
+
+
+
+
