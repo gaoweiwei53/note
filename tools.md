@@ -29,3 +29,6 @@ Ctrl+Shift+/: for block comments (/*...*/)、
 - Ctrl + P: 查看方法参数
 - Ctrl+Alt+V   自动生成变量名
 - CTRL + SHIFT + ENTER 在当前行任何地方可以快速在末尾生成分号
+
+- Ctrl + O: Override Methods 
+- Ctrl + I: Implement Methods
