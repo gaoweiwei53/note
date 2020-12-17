@@ -15,7 +15,37 @@
 2. 分别拷贝 命令和配置文件至新建的文件夹 bin conf
 3. 修改配置文件，设置后台启动
 4. 启动Redis
-5.
+5. 查看进程
 ```bash
 ps -ef|grep redis
 ```
+6. 退出连接 shutdown exit
+
+# Redis基础知识
+1. redis默认有16个数据库，默认的是第0个，可以使用`select`命令切换
+ `DBSIZE` 查看数据库空间大小
+ `keys *` 查看所有的key
+ `flushdb` 清空当前数据库
+ `FLUSHALL` 清空所有记录
+2. Redis是单线程的
+redis是基于内存操作，CPU不是redis的瓶颈
+
+# Redis的5大数据类型
+- String
+- List
+- Set
+- Hash
+- Zset  
+`EXISTs keyname`: 查看键是否存在
+`move keyname 1`: 移除该key记录？
+`type key`: 查看类型
+1. String类型
+`APPEND key ***`: 在次key对于的value后追加字符串
+`STRLEN  key`: 查看长度
+
+# Redis事务
+Redis事务本质：一组命令的集合！一个事务中的所有命令都会被序列化，在事务执行过程中，会按照顺序执行！
+一次性、顺序性、排他性
+==redis事务没有隔离级别的概念==
+所有命令在事务中没有被执行，只有发起执行命令时才执行
+Redis单条命令保证原子性的，但是事务不保证原子性
