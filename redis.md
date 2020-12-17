@@ -36,16 +36,24 @@ redis是基于内存操作，CPU不是redis的瓶颈
 - Set
 - Hash
 - Zset  
+
 `EXISTs keyname`: 查看键是否存在
+
 `move keyname 1`: 移除该key记录？
+
 `type key`: 查看类型
 1. String类型
 `APPEND key ***`: 在次key对于的value后追加字符串
+
 `STRLEN  key`: 查看长度
 
 # Redis事务
 Redis事务本质：一组命令的集合！一个事务中的所有命令都会被序列化，在事务执行过程中，会按照顺序执行！
+
 一次性、顺序性、排他性
+
 ==redis事务没有隔离级别的概念==
+
 所有命令在事务中没有被执行，只有发起执行命令时才执行
+
 Redis单条命令保证原子性的，但是事务不保证原子性
