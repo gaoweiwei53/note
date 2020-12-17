@@ -42,6 +42,7 @@ redis是基于内存操作，CPU不是redis的瓶颈
 `move keyname 1`: 移除该key记录？
 
 `type key`: 查看类型  
+
 1. String类型
 `APPEND key ***`: 在次key对于的value后追加字符串
 
