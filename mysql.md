@@ -31,3 +31,7 @@ mysql -h host_name -u user -p
 |指令|功能|
 |----|----|
 |`show databases;`|显示数据库|
+|`use database`|使用数据库|
+|`create database name`|创建数据库|
+|`select database();`|显示所用的数据库|
+|||
