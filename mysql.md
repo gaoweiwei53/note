@@ -28,6 +28,6 @@ sudo mysql_secure_installation
 mysql -h host_name -u user -p
 ```
 # 指令
-|指令 |功能|
+|指令|功能|
 |----|----|
-|||
+|`show databases;`|显示数据库|
