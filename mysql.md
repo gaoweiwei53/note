@@ -13,11 +13,11 @@ sudo apt install mysql-server -y
 ```
 ### 验证是否正确安装成功
 ```bash
-sudo systemctl status mysql.service
+sudo systemctl status mysql.service # 直接使用mysql也行
 ```
 ### 启动mysql服务
 ```bash
-sudo systemctl start mysql.service
+sudo systemctl start mysql.service  # 直接使用mysql也行
 ```
 ### 配置/保护 MySQL(可选)
 ```bash
