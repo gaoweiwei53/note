@@ -40,4 +40,4 @@ mysql -h host_name -u user -p
 |`create table tablename(***);`|建表|
 |`describe tablename;`|查看表内容|
 |`load data local infile '/path/file.txt' into table pet;`|从文件中导入|
-|`insert into pet value ();`|自己创建|
+|`insert into pet values ();`|自己创建|
