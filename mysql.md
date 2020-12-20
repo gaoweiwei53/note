@@ -34,4 +34,4 @@ mysql -h host_name -u user -p
 |`use database`|使用数据库|
 |`create database name`|创建数据库|
 |`select database();`|显示所用的数据库|
-|||
+|操作表|
