@@ -36,4 +36,8 @@ mysql -h host_name -u user -p
 |`create database name`|创建数据库|
 |`select database();`|显示所用的数据库|
 |操作表|
-|`create table tablename(***)`|建表|
+|`show tables;`||
+|`create table tablename(***);`|建表|
+|`describe tablename;`|查看表内容|
+|`load data local infile '/path/file.txt' into table pet;`|从文件中导入|
+|`insert into pet value ();`|自己创建|
