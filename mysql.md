@@ -1,4 +1,4 @@
-# 1 [Ubuntu 安装mysql](https://www.zhihu.com/search?type=content&q=mysql%20ubuntu)
+# 1. [Ubuntu 安装mysql](https://www.zhihu.com/search?type=content&q=mysql%20ubuntu)
 ### 方法1：从ubuntu仓库中安装
 ```bash
 sudo apt update
@@ -27,7 +27,7 @@ sudo mysql_secure_installation
 ```bash
 mysql -h host_name -u user -p
 ```
-# 命令
+# 2. 常用命令
 |命令|功能|
 |----|----|
 |操作数据库|
@@ -45,7 +45,7 @@ mysql -h host_name -u user -p
 |`drop TABLE table_name;`|删除表|
 |`update table_name set field1=new-value1,**`|修改表内数据|
 |`delete from table_name [where **]`|删除数据|
-## 事务
+## 3. 事务
 一系列数据库语句构成了事务。  
 ```bash
 begin; # 开启一个事务
