@@ -35,9 +35,26 @@ mysql -h host_name -u user -p
 |`use database`|使用数据库|
 |`create database name`|创建数据库|
 |`select database();`|显示所用的数据库|
+|`drop database <name>；`|删除数据库|
 |操作表|
 |`show tables;`||
 |`create table tablename(***);`|建表|
-|`describe tablename;`|查看表内容|
+|`describe/desc tablename;`|查看表内容|
 |`load data local infile '/path/file.txt' into table pet;`|从文件中导入|
 |`insert into pet values ();`|自己创建|
+|`drop TABLE table_name;`|删除表|
+|`update table_name set field1=new-value1,**`|修改表内数据|
+|`delete from table_name [where **]`|删除数据|
+## 事务
+一系列数据库语句构成了事务。  
+```bash
+begin; # 开启一个事务
+***
+***
+savapoit savepoint-name; #申明一个保存点
+rollback to savapoint_name # 回滚到保存点
+rollback; # 事务回滚
+***
+***
+commit;
+```
