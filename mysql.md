@@ -27,8 +27,8 @@ sudo mysql_secure_installation
 ```bash
 mysql -h host_name -u user -p
 ```
-# 指令
-|指令|功能|
+# 命令
+|命令|功能|
 |----|----|
 |操作数据库|
 |`show databases;`|显示数据库|
