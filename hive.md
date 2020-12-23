@@ -1,4 +1,4 @@
-# Hive 简介
+# 1. Hive 简介
 ## 1. 什么是hive
 Hive本质：将HSQL转化为Mapreduce程序  
 (1) Hive处理的数据存储在HDFS  
@@ -64,5 +64,10 @@ $HIVE_HOME/bin/beeline -u jdbc:hive2://$HS2_HOST:$HS2_PORT
 ```
 By default, it will be (localhost:10000), so the address will look like jdbc:hive2://localhost:10000.  
 A Web User Interface (UI) for HiveServer2 provides configuration, logging, metrics and active session information. The Web UI is available at port 10002 (127.0.0.1:10002) by default. 
-# 语句
+# 2. 语句
 `show create table test;`查看建表语句
+# 3. 外部表、内部表(管理表)
+## 内部表(Managed Table)与外部表的区别
+在hive中删除管理表的时候，元数据和HDFS中的文件都会被一起删除，而删除外部表的时候，只会删除相应的元数据，hdfs里的文件不会被删除。
+## 使用场景
+一般将收集到的原始数据，如日志，存为**外部表**，在外部表的基础上进行分析，产生的中间表和结果表使用**管理表**进行存储。
