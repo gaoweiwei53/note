@@ -25,8 +25,9 @@ Hive本质：将HSQL转化为Mapreduce程序
 create user 'hive_user'@'localhost' identified by '123';
 grant all on metastore.* to 'hive_user'@'localhost';
 ```
-if remote, replace 'localhost' with '%' or a ip  
-2) create `hive-site.xml` in `conf` folder
+if remote, replace 'localhost' with '%' or a ip
+
+2) create `hive-site.xml` in `conf` folder.
 ```xml
 <?xml version="1.0"?>    
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>    
