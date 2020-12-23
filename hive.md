@@ -25,3 +25,32 @@ Hive本质：将HSQL转化为Mapreduce程序
 create user 'hive_user'@'localhost' identified by '123';
 grant all on metastore.* to 'hive_user'@'localhost';
 ```
+if remote, replace 'localhost' with '%' or a ip
+2) create `hive-site.xml` in `conf` folder
+```xml
+<?xml version="1.0"?>    
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>    
+<configuration>    
+<property>        
+    <name>javax.jdo.option.ConnectionURL</name>        
+    <value>jdbc:mysql://localhost/metastore?createDatabaseIfNotExist=true</value>        
+  </property>           
+  <property>        
+    <name>javax.jdo.option.ConnectionDriverName</name>        
+    <value>com.mysql.cj.jdbc.Driver</value>        
+  </property>           
+  <property>        
+    <name>javax.jdo.option.ConnectionUserName</name>        
+    <value>hive_user</value>        
+  </property>           
+  <property>        
+    <name>javax.jdo.option.ConnectionPassword</name>        
+    <value>123</value>        
+  </property>           
+</configuration>
+```
+3) mv a [mysql-connector.jar](https://mvnrepository.com/artifact/mysql/mysql-connector-java) to `hive/lib` folder
+4) initial mysql metastore 
+```bash
+$HIVE_HOME/bin/schematool -dbType mysql -initSchema
+```
