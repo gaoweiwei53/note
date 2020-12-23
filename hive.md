@@ -55,7 +55,7 @@ if remote, replace 'localhost' with '%' or a ip
 ```bash
 $HIVE_HOME/bin/schematool -dbType mysql -initSchema
 ```
-5)  start metastore service
+5)  start metastore service  
 `hive --service metastore`  
 6) start hiveserver2
 ```bash
