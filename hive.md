@@ -63,6 +63,7 @@ if remote, replace 'localhost' with '%' or a ip
     </property>
 ```
 其中xxx为beeline登录的用户名  
+
 5) initial mysql metastore 
 ```bash
 $HIVE_HOME/bin/schematool -dbType mysql -initSchema
