@@ -51,18 +51,31 @@ if remote, replace 'localhost' with '%' or a ip
 </configuration>
 ```
 3) mv a [mysql-connector.jar](https://mvnrepository.com/artifact/mysql/mysql-connector-java) to `hive/lib` folder
-4) initial mysql metastore 
+4) 修改hadoop的`core-site.xml`文件
+```xml
+   <property>
+        <name>hadoop.proxyuser.xxx.hosts</name>
+        <value>*</value>
+    </property>
+    <property>
+        <name>hadoop.proxyuser.xxx.groups</name>
+        <value>*</value>
+    </property>
+```
+其中xxx为beeline登录的用户名
+5) initial mysql metastore 
 ```bash
 $HIVE_HOME/bin/schematool -dbType mysql -initSchema
 ```
-5)  start metastore service  
+6)  start metastore service  
 ```
-hive --service metastore
+$HIVE_HOME/bin/hive --service metastore
 ```  
-6) start hiveserver2
+7) start hiveserver2
 ```bash
-bin/hiveserver2
+$HIVE_HOME/bin/hiveserver2
 $HIVE_HOME/bin/beeline -u jdbc:hive2://$HS2_HOST:$HS2_PORT
+$HIVE_HOME/bin/beeline -u jdbc:hive2://localhost:10000
 ```
 By default, it will be (localhost:10000), so the address will look like jdbc:hive2://localhost:10000.  
 A Web User Interface (UI) for HiveServer2 provides configuration, logging, metrics and active session information. The Web UI is available at port 10002 (127.0.0.1:10002) by default. 
