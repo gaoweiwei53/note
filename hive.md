@@ -55,3 +55,11 @@ if remote, replace 'localhost' with '%' or a ip
 ```bash
 $HIVE_HOME/bin/schematool -dbType mysql -initSchema
 ```
+5)  start metastore service
+`hive --service metastore`  
+6) start hiveserver2
+```bash
+bin/hiveserver2
+$HIVE_HOME/bin/beeline -u jdbc:hive2://$HS2_HOST:$HS2_PORT
+# By default, it will be (localhost:10000), so the address will look like jdbc:hive2://localhost:10000.
+```
