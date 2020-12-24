@@ -84,12 +84,12 @@ A Web User Interface (UI) for HiveServer2 provides configuration, logging, metri
 `show create table test;`查看建表语句
 
 `where`后不能用分组函数，`having` 在 `group by`语句后生效，只用于`group by`分组统计语句。
-Order By：全局排序，只有一个 Reducer。
+## 排序
+`Order By`：全局排序，只有一个 Reducer。
 
-Sort By：对于大规模的数据集 order by 的效率非常低。在很多情况下，并不需要全局排
-序，此时可以使用 sort by。
+`Sort By`：对于大规模的数据集 `order by` 的效率非常低。在很多情况下，并不需要全局排序，此时可以使用` sort by`。
 
-Sort by 为每个 reducer 产生一个排序文件。每个 Reducer 内部进行排序，对全局结果集来说不是排序。
+`Sort by` 为每个 reducer 产生一个排序文件。每个 Reducer 内部进行排序，对全局结果集来说不是排序。
 
 # 3. 外部表、内部表(管理表)
 ## 内部表(Managed Table)与外部表的区别
