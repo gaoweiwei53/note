@@ -90,6 +90,9 @@ A Web User Interface (UI) for HiveServer2 provides configuration, logging, metri
 `Sort By`：对于大规模的数据集 `order by` 的效率非常低。在很多情况下，并不需要全局排序，此时可以使用` sort by`。
 
 `Sort by` 为每个 reducer 产生一个排序文件。每个 Reducer 内部进行排序，对全局结果集来说不是排序。
+`Distribute By`在有些情况下，我们需要控制某个特定行应该到哪个 reducer，通常是为了进行后续的聚集操作。`distribute by` 子句可以做这件事。`distribute by` 类似 MR 中 partition
+（自定义分区），进行分区，结合 `sort by` 使用。  Hive 要求 `DISTRIBUTE BY` 语句要写在 `SORT BY` 语句之前。
+当 `distribute by` 和 `sorts by` 字段相同时，可以使用 `cluster by` 方式。
 
 # 3. 外部表、内部表(管理表)
 ## 内部表(Managed Table)与外部表的区别
