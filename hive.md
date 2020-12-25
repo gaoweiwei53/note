@@ -106,6 +106,7 @@ A Web User Interface (UI) for HiveServer2 provides configuration, logging, metri
 # 6. 分桶
 分区针对的是数据的存储路径；分桶针对的是数据文件。
 # 7. 窗口函数
+`over()`?
 # 8. 压缩与存储
 ## 8.1 存储
 Hive 支持的存储数据的格式主要有：TEXTFILE 、SEQUENCEFILE、ORC、PARQUET。**其中前两个按行存储，后两个是按列存储的。**  
