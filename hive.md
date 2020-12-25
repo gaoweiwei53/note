@@ -107,4 +107,13 @@ A Web User Interface (UI) for HiveServer2 provides configuration, logging, metri
 分区针对的是数据的存储路径；分桶针对的是数据文件。
 # 7. 窗口函数
 # 8. 压缩与存储
+## 8.1 存储
+Hive 支持的存储数据的格式主要有：TEXTFILE 、SEQUENCEFILE、ORC、PARQUET。**其中前两个按行存储，后两个是按列存储的。**  
+### 行存储与列存储的区别
+- 行存储：在查询一整行的数据的时候，行存储更快
+- 列存储：在查询特定字段的时侯，列存储更快
+### Orc存储
+到每个 Orc 文件由 1 个或多个 stripe 组成，每个 stripe 一般为 HDFS的块大小，每一个 stripe 包含多条记录，这些记录按照列进行独立存储，对应到 Parquet中的 row group 的概念。每个 Stripe 里有三部分组成，分别是 Index Data，Row Data，StripeFooter： 
+# 9. 调优
+
 
