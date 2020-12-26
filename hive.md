@@ -105,6 +105,15 @@ A Web User Interface (UI) for HiveServer2 provides configuration, logging, metri
 关系型数据库中，对分区表 Insert 数据时候，数据库自动会根据分区字段的值，将数据插入到相应的分区中，Hive 中也提供了类似的机制，即动态分区(Dynamic Partition)。
 # 6. 分桶
 分区针对的是数据的存储路径；分桶针对的是数据文件。
+## 创建分桶表
+```
+create table stu_buck(id int, name string)
+clustered by(id)
+into 4 buckets
+row format delimited fields terminated by '\t';
+```
+## 分桶规则
+根据结果可知：Hive 的分桶采用对分桶字段的值进行哈希，然后除以桶的个数求余的方式决定该条记录存放在哪个桶当中
 # 7. 窗口函数
 `over()`?
 # 8. 压缩与存储
