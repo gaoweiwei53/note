@@ -116,5 +116,49 @@ Hive 支持的存储数据的格式主要有：TEXTFILE 、SEQUENCEFILE、ORC、
 ### Orc存储
 到每个 Orc 文件由 1 个或多个 stripe 组成，每个 stripe 一般为 HDFS的块大小，每一个 stripe 包含多条记录，这些记录按照列进行独立存储，对应到 Parquet中的 row group 的概念。每个 Stripe 里有三部分组成，分别是 Index Data，Row Data，StripeFooter： 
 # 9. 调优
+## Join优化
+将 key 相对分散，并且数据量小的表放在 join 的左边，可以使用 map join 让小的维度表先进内存。在 map 端完成 join。
+#### 两个大表Join
+使用分桶，桶的个数不要超过CPU个数
+#### GroupJoin
+默认情况下，Map 阶段同一 Key 数据分发给一个 reduce，当一个 key 数据过大时就倾斜了。
+并不是所有的聚合操作都需要在 Reduce 端完成，很多聚合操作都可以先在 Map 端进行部分聚合，最后在 Reduce 端得出最终结果。
+开启 Map 端聚合参数设置
+- 是否在 Map 端进行聚合，默认为 True `set hive.map.aggr = true`
+- 在 Map 端进行聚合操作的条目数目 `set hive.groupby.mapaggr.checkinterval = 100000`
+- 有数据倾斜的时候进行负载均衡（默认是 false）`set hive.groupby.skewindata = true`
+#### Count(Distinct) 去重统计
+数据量小的时候无所谓，数据量大的情况下，由于 COUNT DISTINCT 操作需要用一个Reduce Task 来完成，这一个 Reduce 需要处理的数据量太大，就会导致整个 Job 很难完成，一般 COUNT DISTINCT 使用先 GROUP BY 再 COUNT 的方式替换,但是需要注意 group by 造成的数据倾斜问题。
+#### 行列过滤
+- 列处理：在 SELECT 中，只拿需要的列，如果有分区，尽量使用分区过滤，少用 SELECT \*。
+- 行处理：在分区剪裁中，当使用外关联时，如果将副表的过滤条件写在 Where 后面，那么就会先全表关联，之后再过滤。
+#### 复杂文件增加 Map 数
+当 input 的文件都很大，任务逻辑复杂，map 执行非常慢的时候，可以考虑增加 Map 数，来使得每个 map 处理的数据量减少，从而提高任务的执行效率。
+####  小文件进行合并
+- 在 map 执行前合并小文件，减少 map 数：CombineHiveInputFormat 具有对小文件进行合并的功能（系统默认的格式）。HiveInputFormat 没有对小文件合并功能。 
+```
+set hive.input.format=
+org.apache.hadoop.hive.ql.io.CombineHiveInputFormat;
+```
+- 在 Map-Reduce 的任务结束时合并小文件的设置
+在 map-only 任务结束时合并小文件，默认 true
+```
+SET hive.merge.mapfiles = true;
+```
+在 map-reduce 任务结束时合并小文件，默认 false
+```
+SET hive.merge.mapredfiles = true;
+```
+合并文件的大小，默认 256M
+```
+SET hive.merge.size.per.task = 268435456;
+```
+当输出文件的平均大小小于该值时，启动一个独立的 map-reduce 任务进行文件 merge
+```
+SET hive.merge.smallfiles.avgsize = 16777216;
+```
+####  合理设置 Reduce 数
+
+
 
 
