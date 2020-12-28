@@ -1,4 +1,4 @@
-|band|formed time|
+|Band|Formed Time|
 |:-:|:-:|
 |The Beatles|1960|
 |The Rolling Stones|1962|
