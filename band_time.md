@@ -3,11 +3,11 @@
 |The Beatles|1960|
 |The Rolling Stones|1962|
 |The Who|1964|
+|The Kinks|1964|
+|Pink Floyd|1965|
 |Led Zeppelin|1968|
 |Black Sabbath|1968|
 |Queen|1970|
-|The Kinks|1964|
-|Pink Floyd|1965|
 |Sex Pistols|1975|
 |Iron Maiden|1975|
 |The Clash|1976|
