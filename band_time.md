@@ -15,6 +15,7 @@
 |U2|1976|
 |Def Leppard|1977|
 |The Police|1977|
+|The Cure|1978|
 |The Stone Roses|1983|
 |Radiohead|1985|
 |Blur|1988|
