@@ -1,6 +1,8 @@
 |Band|Formed Time|
 |:-:|:-:|
 |The Beatles|1960|
+|Bob Dylan|1960s|
+|Neil Young|1960s|
 |The Rolling Stones|1962|
 |The Who|1964|
 |The Kinks|1964|
