@@ -1,4 +1,8 @@
 # 虚拟机类加载机制
+## 运行时数据区域
+
+![运行时数据区](C:\Users\alex\Desktop\note\note\resources\JVM-Architecture.png)
+
 ## 类的生命周
 
 ## 类的加载过程
