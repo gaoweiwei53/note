@@ -1,7 +1,7 @@
 # 虚拟机类加载机制
 ## 运行时数据区域
 
-![运行时数据区](../resources/JVM-Architecture.png)
+![运行时数据区](https://www.javainterviewpoint.com/java-virtual-machine-architecture-in-java/jvm-architecture/JVM-Architecture.png)
 
 ## 类的生命周
 
