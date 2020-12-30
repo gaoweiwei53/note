@@ -3,7 +3,7 @@
 # 虚拟机类加载机制
 ## 运行时数据区域
 
-<center><p>![运行时数据区](../resources/JVM-Architecture.png)</center></p>
+![运行时数据区](../resources/JVM-Architecture.png)
 <div style="align: center">
 <img src="../resources/JVM-Architecture.png">
 </div>
