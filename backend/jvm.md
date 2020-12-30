@@ -1,7 +1,9 @@
+# 名词解释
+字面量(Literal): a literal is a notation for representing a fixed value in source code.字面量是代码中固定值的表示，`x = 1;`中 `x`是变量(Variable), `1`是字面量。
 # 虚拟机类加载机制
 ## 运行时数据区域
 
-![运行时数据区](../resources/JVM-Architecture.png)
+<div align=center>![运行时数据区](../resources/JVM-Architecture.png)
 ### 1) 程序计数器(PC)
 可以看作当前线程所执行的字节码的行号指示器，字节码解释器工作时就是通过改变这个计数器的值来选取下一条需要执行的字节码指令
 ### 2) JVM Stack
