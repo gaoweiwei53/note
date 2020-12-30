@@ -3,6 +3,8 @@
 # 虚拟机类加载机制
 ## 运行时数据区域
 [参考](https://blog.csdn.net/xiaojin21cen/article/details/104267301)  
+[参考2](https://www.oracle.com/webfolder/technetwork/tutorials/mooc/JVM_Troubleshooting/week1/lesson1.pdf)  
+[参考3](https://docs.oracle.com/javase/specs/jvms/se11/html/index.html)  
 ![运行时数据区](https://upload-images.jianshu.io/upload_images/14923529-c0cbbccaa6858ca1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)  
 ![运行时数据区](../resources/JVM-Architecture.png)
 <div style="align: center">
