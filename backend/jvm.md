@@ -1,5 +1,6 @@
 # 名词解释
-字面量(Literal): a literal is a notation for representing a fixed value in source code.字面量是代码中固定值的表示，`x = 1;`中 `x`是变量(Variable), `1`是字面量。
+**字面量(Literal)**: a literal is a notation for representing a fixed value in source code.字面量是代码中固定值的表示，`x = 1;`中 `x`是变量(Variable), `1`是字面量。  
+**句柄(handle)**: a handle is an abstract reference to a resource.Common resource handles include file descriptors, network sockets, database connections, process identifiers (PIDs), and job IDs.
 # 虚拟机类加载机制
 ## 运行时数据区域
 [参考1](https://blog.csdn.net/xiaojin21cen/article/details/104267301)  
