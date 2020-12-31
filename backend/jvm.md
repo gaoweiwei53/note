@@ -8,9 +8,6 @@
 [参考3](https://docs.oracle.com/javase/specs/jvms/se11/html/index.html)  
 ![运行时数据区](https://upload-images.jianshu.io/upload_images/14923529-c0cbbccaa6858ca1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)  
 ![运行时数据区](../resources/JVM-Architecture.png)
-<div style="align: center">
-<img src="../resources/JVM-Architecture.png">
-</div>
 
 ### 1) 程序计数器(PC)
 可以看作当前线程所执行的字节码的行号指示器，字节码解释器工作时就是通过改变这个计数器的值来选取下一条需要执行的字节码指令
@@ -44,8 +41,8 @@
 正式为类中定义的变量（即静态变量，被static修饰的变量）分配内存并设置变量初始值。从概念上讲，这些变量所使用的内存都应当在方法区中进行分配。
 ## 解析
 解析阶段是Java虚拟机将常量池内的符号引用替换为直接引用的过程。
-- 符号引用
-- 直接引用
+- 符号引用(Symbolic References): 符号引用以一组符号来描述所引用的目标，符号可以是任何形式的字面量，只要使用时能无歧义地定位到目标即可。
+- 直接引用(Direc Refernces): 直接引用是可以直接指向目标的指针、相对偏移量或者是一个能间接定位到目标的句柄。
 
 解析动作主要针对类或接口、字段、类方法、接口方法、方法类型、方法句柄和调用点 限定符这7类符合引用进行。
 ## 初始化
@@ -55,8 +52,16 @@
 三层类加载器：启动类加载器 <-- 扩展类加载器 <-- 应用类加载器
 各种类加载器之间的层次关系被称为类加载器的“双亲委派模型”
 双亲委派模型的工作过程是：如果一个类加载器收到了类加载的请求，它首先不会自己去尝试加载这个类，而是把这个请求委派给父加载器去完成，每一个层次的类加载器都是如此，只有当父加载器反馈自己无法完成这个加载请求时，子类加载器才尝试自己去完成。
-## Java模块化系统
-JDK9 引入了Java模块化系统，目标：可配置的封装隔离机制。？？？
+## [Java模块化系统](https://www.oracle.com/corporate/features/understanding-java-9-modules.html)
+JDK9 引入了Java模块化系统，目标：可配置的封装隔离机制。
+模块就是一组jar包的集合，同时在module-info.java里定义以下内容：
+- `requires` 需要依赖哪个模块
+There is also a requires static directive to indicate that a module is required at compile time, but is optional at runtime.   
+requires transitive—implied readability. To specify a dependency on another module and to ensure that other modules reading your module also read that dependency.
+- `exports`/`exports…to`: 声明该模块中的 `public` 类型的**包**可以被哪些其他模块所使用。
+- `provides…with`：声明模块提供的service
+- `uses`：声明模块使用的service，services是类的实例，其实现了接口或扩展了抽象类。
+- `opens`：其他模块可反射访问模块的列表 
 ### 模块下的类加载器
 扩展类加载器被平台类加载器取代。当平台及应用程序类加载器收到类加载请求，在委派给父加载器前，要判断该类是否能够归属到某一系统模块中，如果找到，就要优先委派给负责那个模块的加载器完成加载。
 
