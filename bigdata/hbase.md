@@ -5,6 +5,7 @@
 - Row
 - Column
 - Version: 时间戳
+
 *{row, column, vesion}* 唯一确定一个**cell**
 # 3. 安装配置
 问题：启动之后Hmaster不久就消失了  
