@@ -8,3 +8,9 @@
 # 3. 安装配置
 问题：启动之后Hmaster不久就消失了  
 解决：在hbase-site.xml中添加
+```xml
+  <property>    
+    <name>hbase.unsafe.stream.capability.enforce</name>    
+    <value>false</value>    
+  </property> 
+```
