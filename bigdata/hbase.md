@@ -46,3 +46,11 @@ wal实际上就是一个文件，存在/hbase/WAL/对应RegionServer路径下
 宕机发生时，读取该RegionServer所对应的路径下的wal文件，然后根据不同的region切分成不同的临时文件recover.edits
 
 当region被分配到新的RegionServer中，RegionServer读取region时会进行是否存在recover.edits，如果有则进行恢复
+# StoreFile Compaction
+由于metastore每次刷新都会生成一个HFile, 有时需要减少HFile的个数，以及清理掉过期和删除的数据，这个过程就是StoreFile Compaction.
+
+Compaction分为两种：
+- Minor Compaction: 会将一部分较小的HFile合并，不会清理过期和删除的数据
+- Major Compaction: 会将一个Store下所有Hfile合并成一个大的HFile，会清理过期和删除的数据
+
+
