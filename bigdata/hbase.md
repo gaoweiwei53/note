@@ -27,4 +27,7 @@
 ```
 # 4. 读写流程
 ## 4.1 读流程
+1) Client从ZooKeeper中读取hbase:meta表
+2) Client从hbase:meta中获取想要操作的region的位置信息，并且将hbase:meta缓存在Client端，用于后续的操作
+3) 当一个RegionServer宕机而执行重定位之后，Client需要重新获取新的hase:meta信息进行缓存
 ## 4.2 写流程
