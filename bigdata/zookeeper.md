@@ -7,6 +7,10 @@
 5) 数据更新原子性，一次数据更新要么成功，要么失败。
 6) 实时性，在一定时间范围内，Client能读到最新数据。
 ## 选举机制
+[参考1](https://zhuanlan.zhihu.com/p/100938553)
+[](https://zhuanlan.zhihu.com/p/97492397)
+[](https://www.jianshu.com/p/2bceacd60b8a)
+[](https://zhuanlan.zhihu.com/p/210999265)
 默认的选举算法叫**Fastleader**
 ### [Zab: ZooKeeper Atomic Broadcast](https://cwiki.apache.org/confluence/display/ZOOKEEPER/Zab)
 Zab是ZooKeeper 原子广播协议(Atomic Broadcast protocol)，Zookeeper使用它来传播leader产生的状态变化。
