@@ -26,6 +26,7 @@
   </property> 
 ```
 # 4. 读写流程
+读写过程不涉及Master，因为读写属于DML，而Master负责DDL，RegionServer负责DML.
 ## 4.1 读流程
 ### 首次读流程
 1) Client从ZooKeeper中读取hbase:meta表
