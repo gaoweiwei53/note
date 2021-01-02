@@ -27,7 +27,11 @@
 ```
 # 4. 读写流程
 ## 4.1 读流程
+### 首次读流程
 1) Client从ZooKeeper中读取hbase:meta表
 2) Client从hbase:meta中获取想要操作的region的位置信息，并且将hbase:meta缓存在Client端，用于后续的操作
 3) 当一个RegionServer宕机而执行重定位之后，Client需要重新获取新的hase:meta信息进行缓存
+### 其他时候读
+找到要读取数据的region所在的RegionServer，然后按照以下顺序进行读取：先去BlockCache读取，若BlockCache没有，则到Memstore读取，若MemStore中没有，则到HFile中读取。
 ## 4.2 写流程
+找到要写入数据的region所在的RegionServer，然后将数据先写到WAL中，然后再将数据写到MemStore等待刷新，回复客户端写入完成。
