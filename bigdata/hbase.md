@@ -46,11 +46,31 @@ wal实际上就是一个文件，存在/hbase/WAL/对应RegionServer路径下
 宕机发生时，读取该RegionServer所对应的路径下的wal文件，然后根据不同的region切分成不同的临时文件recover.edits
 
 当region被分配到新的RegionServer中，RegionServer读取region时会进行是否存在recover.edits，如果有则进行恢复
-# StoreFile Compaction
+## Flush过程
+1) 当 MemStore 数据达到阈值（默认是 128M，老版本是 64M），将数据刷到硬盘，将内存中的数据删除，同时删除HLog 中的历史数据； 
+2) 并将数据存储到HDFS 中； 
+3) 在HLog 中做标记点
+## 数据合并过程
+1) 当数据块达到 4 块，Hmaster 触发合并操作，Region 将数据块加载到本地，进行合并； 
+2) 当合并的数据超过 256M，进行拆分，将拆分后的 Region 分配给不同的 HregionServer 管理； 
+3) 当HregionServer宕机后，将HregionServer上的hlog拆分，然后分配给不同的HregionServer 加载，修改.META. 
+4) 注意：HLog 会同步到HDFS。
+## StoreFile Compaction
 由于metastore每次刷新都会生成一个HFile, 有时需要减少HFile的个数，以及清理掉过期和删除的数据，这个过程就是StoreFile Compaction.
 
 Compaction分为两种：
 - Minor Compaction: 会将一部分较小的，邻近的HFile合并，不会清理过期和删除的数据
 - Major Compaction: 会将一个Store下所有Hfile合并成一个大的HFile，会清理过期和删除的数据
-
+# 5. Hbase优化
+## 高可用
+在HBase 中Hmaster 负责监控RegionServer 的生命周期，均衡RegionServer 的负载，如果 Hmaster 挂掉了，那么整个 HBase 集群将陷入不健康的状态，并且此时的工作状态并不 会维持太久。所以HBase 支持对Hmaster 的高可用配置。
+## 预分区
+每一个 region 维护着 startRow 与 endRowKey，如果加入的数据符合某个 region 维护的rowKey 范围，则该数据交给这个 region 维护。那么依照这个原则，我们可以将数据所要投 放的分区提前大致的规划好，以提高HBase 性能。
+## RowKey 设计
+一条数据的唯一标识就是 rowkey，那么这条数据存储于哪个分区，取决于 rowkey 处于哪个一个预分区的区间内，设计rowkey的主要目的 ，就是让数据均匀的分布于所有的region 中，在一定程度上防止数据倾斜。
+1) 生成随机数、hash、散列值
+2) 字符串反转
+3) 字符串拼接
+## flush、compact、split 机制
+当MemStore 达到阈值，将 Memstore 中的数据 Flush 进 Storefile；compact 机制则是把 flush 出来的小文件合并成大的 Storefile 文件。split 则是当 Region 达到阈值，会把过大的 Region 一分为二。
 
