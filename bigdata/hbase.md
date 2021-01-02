@@ -35,3 +35,14 @@
 找到要读取数据的region所在的RegionServer，然后按照以下顺序进行读取：先去BlockCache读取，若BlockCache没有，则到Memstore读取，若MemStore中没有，则到HFile中读取。
 ## 4.2 写流程
 找到要写入数据的region所在的RegionServer，然后将数据先写到WAL中，然后再将数据写到MemStore等待刷新，回复客户端写入完成。
+##  HRegionServer宕机如何处理？
+1）ZooKeeper会监控HRegionServer的上下线情况，当ZK发现某个HRegionServer宕机之后会通知HMaster进行失效备援；
+2）该HRegionServer会停止对外提供服务，就是它所负责的region暂时停止对外提供服务
+3）HMaster会将该HRegionServer所负责的region转移到其他HRegionServer上，并且会对HRegionServer上存在memstore中还未持久化到磁盘中的数据进行恢复
+4）这个恢复的工作是由WAL重播来完成，这个过程如下：
+
+wal实际上就是一个文件，存在/hbase/WAL/对应RegionServer路径下
+
+宕机发生时，读取该RegionServer所对应的路径下的wal文件，然后根据不同的region切分成不同的临时文件recover.edits
+
+当region被分配到新的RegionServer中，RegionServer读取region时会进行是否存在recover.edits，如果有则进行恢复
