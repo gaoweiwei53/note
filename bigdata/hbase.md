@@ -25,6 +25,7 @@
     <value>false</value>    
   </property> 
 ```
+> 在shell中使用`help`查看相关命令
 # 4. 读写流程
 读写过程不涉及Master，因为读写属于DML，而Master负责DDL，RegionServer负责DML.
 ## 4.1 读流程
