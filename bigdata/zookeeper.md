@@ -14,3 +14,21 @@
 默认的选举算法叫**Fastleader**
 ### [Zab: ZooKeeper Atomic Broadcast](https://cwiki.apache.org/confluence/display/ZOOKEEPER/Zab)
 Zab是ZooKeeper 原子广播协议(Atomic Broadcast protocol)，Zookeeper使用它来传播leader产生的状态变化。
+
+## 节点类型
+- Persistent node
+```
+create /***
+```
+- ephemeral node
+```
+create -e /***
+```
+- Persistent-sequential node
+```
+create -s /***
+```
+- ephemeral-sequential node
+```
+create -s -e /***
+```
