@@ -932,3 +932,5 @@ There are two categories of methods provided in  [`Class`](https://docs.oracle.c
 [Link](https://docs.oracle.com/javase/tutorial/reflect/class/classTrouble.html)
 # 面试问题
 ## [集合框架](https://www.processon.com/diagraming/5ec10c435653bb6f2a14430f)
+> Collection接口
+代表一组对象，有序或无序，重复或不重复。。
