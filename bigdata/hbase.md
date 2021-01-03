@@ -30,6 +30,12 @@
 |-|-|
 |`help`|查看相关命令|
 |`help "command"`|查看命令用法|
+|`list`|查看当前namespace下的表|
+|`create 'stu1','info1','info2' `|创建表stu1, 列族info1, info2|
+|`describe 'table-name'`|查看表信息|
+|DML|
+|`put 'stu1','1001','info1:name','zhangsan'`|插入信息|
+|`scan 'stu1'`|查看信息|
 
 
 # 4. 读写流程
