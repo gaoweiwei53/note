@@ -931,4 +931,4 @@ There are two categories of methods provided in  [`Class`](https://docs.oracle.c
 ## Troubleshooting
 [Link](https://docs.oracle.com/javase/tutorial/reflect/class/classTrouble.html)
 # 面试问题
-
+## [集合框架](https://www.processon.com/diagraming/5ec10c435653bb6f2a14430f)
