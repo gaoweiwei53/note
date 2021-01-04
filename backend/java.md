@@ -588,6 +588,7 @@ The object stream classes are  [`ObjectInputStream`](https://docs.oracle.com/jav
 ### Output and Input of Complex Objects
 many objects contain references to other objects. If `readObject` is to reconstitute an object from a stream, it has to be able to reconstitute all of the objects the original object referred to. These additional objects might have their own references, and so on.
 # [Concurrency](https://docs.oracle.com/javase/tutorial/essential/concurrency/index.html)
+[资料](https://gitee.com/kuangstudy/openclass/raw/master/%E3%80%90%E9%81%87%E8%A7%81%E7%8B%82%E7%A5%9E%E8%AF%B4%E3%80%91JUC%E8%A7%86%E9%A2%91%E7%AC%94%E8%AE%B0/%E7%8B%82%E7%A5%9E%E8%AF%B4JUC%E7%AC%94%E8%AE%B0.pdf)
 ## 同步(Synchronization)
 线程的通信主要通过共享访问字段和引用字段的对象。这种形式的通信非常有效，但可能产生两种错误:线程干扰( thread interference)和内存一致性错误(memory consistency errors)。防止这些错误所需的工具是同步。
 但是，同步可能会引入线程争用，当两个或多个线程试图同时访问同一资源时，会导致Java运行时执行一个或多个线程的速度变慢，甚至暂停它们的执行。饥饿(Starvation)和活锁(livelock)就是是线程争用的具体形式。
