@@ -989,4 +989,4 @@ There are two categories of methods provided in  [`Class`](https://docs.oracle.c
 # Java 锁机制
 在Java中，每个对象都有一把锁，这个锁存放在对象头中，锁中记录了当前对象被哪个线程锁占用。Java对象包含三个部分，对象头-实例数据-填充字节。对象头存放了对象的运行时信息，其中包括**Mark Word**和**Class pointer**. Class point指向了当前对象类型所在方法区中的类型数据。Mark Word存储了很多和当前对象运行时的状态有关的数据，比如hashcode,锁状态标志。
 
-![mark word](http://image109.360doc.com/DownloadImg/2020/06/0612/192334753_2_20200606125355755.png)
+![mark word](../resources/lock.png)
