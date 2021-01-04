@@ -986,3 +986,4 @@ There are two categories of methods provided in  [`Class`](https://docs.oracle.c
 - 这种技术在一个模块接受map并复制它，然后返回由复制时决定的顺序这样的场景非常有用；非常适合构建LRU缓存。
 
 > 看实现hash表、红黑树部分的代码
+# Java 锁机制
