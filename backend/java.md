@@ -587,242 +587,67 @@ Just as data streams support I/O of primitive data types, object streams support
 The object stream classes are  [`ObjectInputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/ObjectInputStream.html)  and  [`ObjectOutputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/ObjectOutputStream.html). These classes implement  [`ObjectInput`](https://docs.oracle.com/javase/8/docs/api/java/io/ObjectInput.html)  and  [`ObjectOutput`](https://docs.oracle.com/javase/8/docs/api/java/io/ObjectOutput.html), which are subinterfaces of  `DataInput`  and  `DataOutput`. That means that all the primitive data I/O methods covered in  [Data Streams](https://docs.oracle.com/javase/tutorial/essential/io/datastreams.html)  are also implemented in object streams. So an object stream can contain a mixture of primitive and object values. The  [`ObjectStreams`](https://docs.oracle.com/javase/tutorial/essential/io/examples/ObjectStreams.java)  example illustrates this.  `ObjectStreams`  creates the same application as  `DataStreams`, with a couple of changes. First, prices are now  [`BigDecimal`](https://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html)objects, to better represent fractional values. Second, a  [`Calendar`](https://docs.oracle.com/javase/8/docs/api/java/util/Calendar.html)  object is written to the data file, indicating an invoice date.
 ### Output and Input of Complex Objects
 many objects contain references to other objects. If `readObject` is to reconstitute an object from a stream, it has to be able to reconstitute all of the objects the original object referred to. These additional objects might have their own references, and so on.
-# Concurrency
-## Processes
-A process has a self-contained execution environment. A process generally has a complete, private set of basic run-time resources; in particular, each process has its own memory space.
-## Threads
-Threads are sometimes called  _lightweight processes_. Both processes and threads provide an execution environment, but creating a new thread requires fewer resources than creating a new process.
+# [Concurrency](https://docs.oracle.com/javase/tutorial/essential/concurrency/index.html)
+## 同步(Synchronization)
+线程的通信主要通过共享访问字段和引用字段的对象。这种形式的通信非常有效，但可能产生两种错误:线程干扰( thread interference)和内存一致性错误(memory consistency errors)。防止这些错误所需的工具是同步。
+但是，同步可能会引入线程争用，当两个或多个线程试图同时访问同一资源时，会导致Java运行时执行一个或多个线程的速度变慢，甚至暂停它们的执行。饥饿(Starvation)和活锁(livelock)就是是线程争用的具体形式。
+## Thread interference
+## Memory Consistency Errors
+避免内存一致性错误的关键是理解happen-before的关系, 这种关系保证一个特定语句所写的内存对另一个特定语句可见。
 
-Threads exist within a process — every process has at least one. Threads share the process's resources, including memory and open files. This makes for efficient, but potentially problematic, communication.
-## Thread Objects
-Each thread is associated with an instance of the class  [`Thread`](https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html). There are two basic strategies for using  `Thread`  objects to create a concurrent application.
+有几个操作可以创建happens-before关系，其中之一就是同步。
 
--   To directly control thread creation and management, simply instantiate  `Thread`  each time the application needs to initiate an asynchronous task.
--   To abstract thread management from the rest of your application, pass the application's tasks to an  _executor_.
-
-This section documents the use of  `Thread`  objects. Executors are discussed with other  [high-level concurrency objects](https://docs.oracle.com/javase/tutorial/essential/concurrency/highlevel.html).
-## Defining and Starting a Thread
-An application that creates an instance of `Thread` must provide the code that will run in that thread. There are two ways to do this:
-- _Provide a  `Runnable`  object._ The [`Runnable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html) interface defines a single method, `run`, meant to contain the code executed in the thread. The `Runnable` object is passed to the `Thread` constructor.
-```
- public class HelloRunnable implements Runnable {
-    public void run() {
-        System.out.println("Hello from a thread!");
+Java提供了两种同步语义，**synchronized方法**和**synchronized申明**
+### synchronized方法
+要使一个方法同步，只需在它的声明中添加`synchronized`关键字:
+```java
+public class SynchronizedCounter {
+    private int c = 0;
+    public synchronized void increment() {
+        c++;
     }
-    public static void main(String args[]) {
-        (new Thread(new HelloRunnable())).start();
+    public synchronized void decrement() {
+        c--;
+    }
+    public synchronized int value() {
+        return c;
     }
 }
 ```
-- _Subclass  `Thread`._ The `Thread` class itself implements `Runnable`, though its `run` method does nothing. An application can subclass `Thread`, providing its own implementation of `run`
-```
-public class HelloThread extends Thread {
+synchronized方法很有效，但可能会导致*liveness*问题
 
-    public void run() {
-        System.out.println("Hello from a thread!");
+当线程调用同步方法时，它会自动获取该方法对象的内在锁，并在该方法返回时释放它。即使返回是由未捕获的异常引起的，也会释放锁。
+###  synchronized 关键字
+`synchronized`申明必须指定提供内在锁的对象:
+```java
+public void addName(String name) {
+    synchronized(this) {
+        lastName = name;
+        nameCount++;
     }
-
-    public static void main(String args[]) {
-        (new HelloThread()).start();
-    }
-
+    nameList.add(name);
 }
 ```
-Which of these idioms should you use? The first idiom, which employs a  `Runnable`  object, is more general, because the  `Runnable`  object can subclass a class other than  `Thread`. The second idiom is easier to use in simple applications, but is limited by the fact that your task class must be a descendant of  `Thread`. This lesson focuses on the first approach, which separates the  `Runnable`  task from the  `Thread`  object that executes the task. Not only is this approach more flexible, but it is applicable to the high-level thread management APIs covered later.
+## Reentrant Synchronization
+一个线程不能获得另一个线程拥有的锁。但是线程可以获得它已经拥有的锁。允许一个线程多次获取同一个锁可以实现重入同步。这描述了同步代码(直接或间接地)调用同样包含同步代码的方法，并且两组代码使用相同的锁的情况。如果没有可重入同步，同步代码将不得不采取许多额外的预防措施，以避免线程本身导致阻塞。
+## 原子性
+原子操作不能交错，因此可以在不用担心线程干扰的情况下使用它们。然而，这并不能消除所有同步原子操作的需要，因为内存一致性错误仍然是可能的。使用volatile变量可以降低内存一致性错误的风险，因为对易失性变量的任何写操作都会与随后对该变量的读操作建立happens-before关系。这意味着对volatile变量的更改对其他线程总是可见的。此外，这还意味着，当线程读取volatile变量时，它不仅可以看到对volatile的最新更改，还可以看到导致更改的代码的副作用。
 
-The  `Thread`  class defines a number of methods useful for thread management. These include  `static`  methods, which provide information about, or affect the status of, the thread invoking the method. The other methods are invoked from other threads involved in managing the thread and  `Thread`  object. We'll examine some of these methods in the following sections.
-## Pausing Execution with Sleep
-`Thread.sleep` causes the current thread to suspend execution for a specified period. This is an efficient means of making processor time available to the other threads of an application or other applications that might be running on a computer system.
-## Interrupts
-An  _interrupt_  is an indication to a thread that it should stop what it is doing and do something else. It's up to the programmer to decide exactly how a thread responds to an interrupt, but it is very common for the thread to terminate. This is the usage emphasized in this lesson.
+使用简单的原子变量访问比通过同步代码访问这些变量更有效，但需要程序员更加注意避免内存一致性错误。额外的努力是否值得取决于应用程序的大小和复杂性。
+## 死锁 (Deadlock)
+死锁就是多个线程一直阻塞，等待对方释放锁的情景。
+## Starvation 和 Livelock
+饥饿和活锁相比死锁是不常见的问题，但是仍然是每个并发软件的设计者可能遇到的问题。
+- 饥饿描述了这样一种情况:线程无法获得对共享资源的常规访问，无法取得进展。当“贪婪”线程使共享资源长时间不可用时，就会发生这种情况。例如，假设一个对象提供了一个通常需要很长时间才能返回的同步方法。如果一个线程经常调用这个方法，那么其他需要频繁同步访问同一对象的线程经常会被阻塞。
+- 一个线程经常响应另一个线程的操作。如果另一个线程的操作也是对另一个线程的操作的响应，那么可能会产生livellock。与死锁一样，被活锁的线程无法取得进一步进展。然而，线程并没有被阻塞——它们只是忙于响应彼此而无法继续工作。
 
-A thread sends an interrupt by invoking  [`interrupt`](https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html#interrupt--)  on the  `Thread`  object for the thread to be interrupted. For the interrupt mechanism to work correctly, the interrupted thread must support its own interruption.
-### The Interrupt Status Flag
-The interrupt mechanism is implemented using an internal flag known as the  _interrupt status_. Invoking  `Thread.interrupt`  sets this flag. When a thread checks for an interrupt by invoking the static method  `Thread.interrupted`, interrupt status is cleared. The non-static  `isInterrupted`  method, which is used by one thread to query the interrupt status of another, does not change the interrupt status flag.
+## 高级并发对象
+同步代码依赖于一种简单的可重入锁。这种锁使用方便，但有很多限制。java.util.concurrent支持更复杂的锁定习惯用法。
 
-By convention, any method that exits by throwing an  `InterruptedException`  clears interrupt status when it does so. However, it's always possible that interrupt status will immediately be set again, by another thread invoking  `interrupt`.
-## Joins
-The  `join`  method allows one thread to wait for the completion of another. If  `t`  is a  `Thread`  object whose thread is currently executing,
+锁对象的工作原理与同步代码使用的隐式锁非常相似。与隐式锁一样，一次只能有一个线程拥有一个锁对象。锁对象还通过其关联的条件对象支持等待/通知机制。
 
-    t.join();
-causes the current thread to pause execution until  `t`'s thread terminates. Overloads of  `join`  allow the programmer to specify a waiting period. However, as with  `sleep`,  `join`  is dependent on the OS for timing, so you should not assume that  `join`  will wait exactly as long as you specify.
+锁对象相对于隐式锁的最大优势是它们能够退出获取锁的尝试。如果锁不是立即可用的，或者在超时过期之前(如果指定了)，tryLock方法将退出。如果另一个线程在获得锁之前发送了一个中断，那么lockInterruptibly方法就会退出。
 
-Like  `sleep`,  `join`  responds to an interrupt by exiting with an  `InterruptedException`.
-## Synchronization
-Threads communicate primarily by sharing access to fields and the objects reference fields refer to. This form of communication is extremely efficient, but makes two kinds of errors possible:  _thread interference_  and  _memory consistency errors_. The tool needed to prevent these errors is  _synchronization_.
-
-However, synchronization can introduce  _thread contention_, which occurs when two or more threads try to access the same resource simultaneously  _and_  cause the Java runtime to execute one or more threads more slowly, or even suspend their execution.  [Starvation and livelock](https://docs.oracle.com/javase/tutorial/essential/concurrency/starvelive.html)  are forms of thread contention. See the section  [Liveness](https://docs.oracle.com/javase/tutorial/essential/concurrency/liveness.html)  for more information.
-### Thread Interference
-### Memory Consistency Errors
-_Memory consistency errors_  occur when different threads have inconsistent views of what should be the same data. The causes of memory consistency errors are complex and beyond the scope of this tutorial. Fortunately, the programmer does not need a detailed understanding of these causes. All that is needed is a strategy for avoiding them.
-
-The key to avoiding memory consistency errors is understanding the  _happens-before_  relationship. This relationship is simply a guarantee that memory writes by one specific statement are visible to another specific statement.
-We've already seen two actions that create happens-before relationships.
-
--   When a statement invokes  `Thread.start`, every statement that has a happens-before relationship with that statement also has a happens-before relationship with every statement executed by the new thread. The effects of the code that led up to the creation of the new thread are visible to the new thread.
--   When a thread terminates and causes a  `Thread.join`  in another thread to return, then all the statements executed by the terminated thread have a happens-before relationship with all the statements following the successful join. The effects of the code in the thread are now visible to the thread that performed the join.
-
-For a list of actions that create happens-before relationships, refer to the  [Summary page of the  `java.util.concurrent`  package.](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html#MemoryVisibility).
-# Synchronized Methods
-The Java programming language provides two basic synchronization idioms: **_synchronized methods_** and **_synchronized statements_**.
-If  `count`  is an instance of  `SynchronizedCounter`, then making these methods synchronized has two effects:
-
--   First, it is not possible for two invocations of synchronized methods on the same object to interleave. When one thread is executing a synchronized method for an object, all other threads that invoke synchronized methods for the same object block (suspend execution) until the first thread is done with the object.
--   Second, when a synchronized method exits, it automatically establishes a happens-before relationship with  _any subsequent invocation_  of a synchronized method for the same object. This guarantees that changes to the state of the object are visible to all threads.
-
-Note that constructors cannot be synchronized — using the  `synchronized`  keyword with a constructor is a syntax error. Synchronizing constructors doesn't make sense, because only the thread that creates an object should have access to it while it is being constructed.
-## Intrinsic Locks and Synchronization
-Synchronization is built around an internal entity known as the  _intrinsic lock_  or  _monitor lock_. (The API specification often refers to this entity simply as a "monitor.") Intrinsic locks play a role in both aspects of synchronization: enforcing exclusive access to an object's state and establishing happens-before relationships that are essential to visibility.
-
-Every object has an intrinsic lock associated with it. By convention, a thread that needs exclusive and consistent access to an object's fields has to  _acquire_  the object's intrinsic lock before accessing them, and then  _release_  the intrinsic lock when it's done with them. A thread is said to  _own_  the intrinsic lock between the time it has acquired the lock and released the lock. As long as a thread owns an intrinsic lock, no other thread can acquire the same lock. The other thread will block when it attempts to acquire the lock.
-
-When a thread releases an intrinsic lock, a happens-before relationship is established between that action and any subsequent acquisition of the same lock.
-## Synchronized Statements
-Another way to create synchronized code is with  _synchronized statements_. Unlike synchronized methods, synchronized statements must specify the object that provides the intrinsic lock:
-
-    public void addName(String name) {
-        synchronized(this) {
-            lastName = name;
-            nameCount++;
-        }
-        nameList.add(name);
-    }
-括号里的this有什么用？？？？
-In this example, the `addName` method needs to synchronize changes to `lastName` and `nameCount`, but also needs to avoid synchronizing invocations of other objects' methods. (Invoking other objects' methods from synchronized code can create problems that are described in the section on [Liveness](https://docs.oracle.com/javase/tutorial/essential/concurrency/liveness.html).) Without synchronized statements, there would have to be a separate, unsynchronized method for the sole purpose of invoking `nameList.add`.
-### Reentrant Synchronization
-Recall that a thread cannot acquire a lock owned by another thread. But a thread _can_ acquire a lock that it already owns. Allowing a thread to acquire the same lock more than once enables _reentrant synchronization_. This describes a situation where synchronized code, directly or indirectly, invokes a method that also contains synchronized code, and both sets of code use the same lock. Without reentrant synchronization, synchronized code would have to take many additional precautions to avoid having a thread cause itself to block.
-### Atomic Access
-In programming, an _atomic_ action is one that effectively happens all at once. An atomic action cannot stop in the middle: it either happens completely, or it doesn't happen at all. No side effects of an atomic action are visible until the action is complete.
-there are actions you can specify that are atomic:
-
--   Reads and writes are atomic for reference variables and for most primitive variables (all types except  `long`  and  `double`).
--   Reads and writes are atomic for  _all_  variables declared  `volatile`  (_including_  `long`  and  `double`  variables).
-
-Atomic actions cannot be interleaved, so they can be used without fear of thread interference. However, this does not eliminate all need to synchronize atomic actions, because memory consistency errors are still possible. Using  `volatile`  variables reduces the risk of memory consistency errors, because any write to a  `volatile`  variable establishes a happens-before relationship with subsequent reads of that same variable. This means that changes to a  `volatile`  variable are always visible to other threads. What's more, it also means that when a thread reads a  `volatile`  variable, it sees not just the latest change to the  `volatile`, but also the side effects of the code that led up the change.
-
-Using simple atomic variable access is more efficient than accessing these variables through synchronized code, but requires more care by the programmer to avoid memory consistency errors. Whether the extra effort is worthwhile depends on the size and complexity of the application.
-## Liveness
-A concurrent application's ability to execute in a timely manner is known as its _liveness_. This section describes the most common kind of liveness problem, [deadlock](https://docs.oracle.com/javase/tutorial/essential/concurrency/deadlock.html), and goes on to briefly describe two other liveness problems, [starvation and livelock](https://docs.oracle.com/javase/tutorial/essential/concurrency/starvelive.html).
-## Deadlock
-_Deadlock_ describes a situation where two or more threads are blocked forever, waiting for each other。
-## Starvation
-_Starvation_ describes a situation where a thread is unable to gain regular access to shared resources and is unable to make progress. This happens when shared resources are made unavailable for long periods by "greedy" threads.
-## Livelock
-A thread often acts in response to the action of another thread. If the other thread's action is also a response to the action of another thread, then _livelock_ may result. As with deadlock, livelocked threads are unable to make further progress. However, the threads are not blocked — they are simply too busy responding to each other to resume work.
-## Guarded Blocks
-Threads often have to coordinate their actions. The most common coordination idiom is the _guarded block_. Such a block begins by polling a condition that must be true before the block can proceed.
-[看代码](https://docs.oracle.com/javase/tutorial/essential/concurrency/guardmeth.html)
-## Immutable Objects
-An object is considered  _immutable_  if its state cannot change after it is constructed. Maximum reliance on immutable objects is widely accepted as a sound strategy for creating simple, reliable code.
-
-Immutable objects are particularly useful in concurrent applications. Since they cannot change state, they cannot be corrupted by thread interference or observed in an inconsistent state.
-### A Strategy for Defining Immutable Objects
-The following rules define a simple strategy for creating immutable objects. Not all classes documented as "immutable" follow these rules. This does not necessarily mean the creators of these classes were sloppy — they may have good reason for believing that instances of their classes never change after construction. However, such strategies require sophisticated analysis and are not for beginners.
-
-1.  Don't provide "setter" methods — methods that modify fields or objects referred to by fields.
-2.  Make all fields  `final`  and  `private`.
-3.  Don't allow subclasses to override methods. The simplest way to do this is to declare the class as  `final`. A more sophisticated approach is to make the constructor  `private`  and construct instances in factory methods.
-4.  If the instance fields include references to mutable objects, don't allow those objects to be changed:
-    -   Don't provide methods that modify the mutable objects.
-    -   Don't share references to the mutable objects. Never store references to external, mutable objects passed to the constructor; if necessary, create copies, and store references to the copies. Similarly, create copies of your internal mutable objects when necessary to avoid returning the originals in your methods.
-
-[代码](https://docs.oracle.com/javase/tutorial/essential/concurrency/imstrat.html)
-## High Level Concurrency Objects
-So far, this lesson has focused on the low-level APIs that have been part of the Java platform from the very beginning. These APIs are adequate for very basic tasks, but higher-level building blocks are needed for more advanced tasks. This is especially true for massively concurrent applications that fully exploit today's multiprocessor and multi-core systems.
-### Lock Objects
-Synchronized code relies on a simple kind of reentrant lock. This kind of lock is easy to use, but has many limitations. More sophisticated locking idioms are supported by the  [`java.util.concurrent.locks`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/package-summary.html)  package. We won't examine this package in detail, but instead will focus on its most basic interface,  [`Lock`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/Lock.html).
-
-`Lock`  objects work very much like the implicit locks used by synchronized code. As with implicit locks, only one thread can own a  `Lock`  object at a time.  `Lock`  objects also support a  `wait/notify`  mechanism, through their associated  [`Condition`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/Condition.html)  objects.
-
-The biggest advantage of  `Lock`  objects over implicit locks is their ability to back out of an attempt to acquire a lock. The  `tryLock`  method backs out if the lock is not available immediately or before a timeout expires (if specified). The  `lockInterruptibly`  method backs out if another thread sends an interrupt before the lock is acquired.
-[代码](https://docs.oracle.com/javase/tutorial/essential/concurrency/newlocks.html)
-## Executors
-In all of the previous examples, there's a close connection between the task being done by a new thread, as defined by its `Runnable` object, and the thread itself, as defined by a `Thread` object. This works well for small applications, but in large-scale applications, it makes sense to separate thread management and creation from the rest of the application. Objects that encapsulate these functions are known as _executors_.The following subsections describe executors in detail.
--   [Executor Interfaces](https://docs.oracle.com/javase/tutorial/essential/concurrency/exinter.html)  define the three executor object types.
--   [Thread Pools](https://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html)  are the most common kind of executor implementation.
--   [Fork/Join](https://docs.oracle.com/javase/tutorial/essential/concurrency/forkjoin.html)  is a framework (new in JDK 7) for taking advantage of multiple processors.
-## Executor Interfaces
-The  `java.util.concurrent`  package defines three executor interfaces:
-
--   `Executor`, a simple interface that supports launching new tasks.
--   `ExecutorService`, a subinterface of  `Executor`, which adds features that help manage the lifecycle, both of the individual tasks and of the executor itself.
--   `ScheduledExecutorService`, a subinterface of  `ExecutorService`, supports future and/or periodic execution of tasks.
-
-Typically, variables that refer to executor objects are declared as one of these three interface types, not with an executor class type.
-## The  `Executor`  Interface
-The  [`Executor`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executor.html)  interface provides a single method,  `execute`, designed to be a drop-in replacement for a common thread-creation idiom. If  `r`  is a  `Runnable`  object, and  `e`  is an  `Executor`  object you can replace
-
-(new Thread(r)).start();
-
-with
-
-e.execute(r);
-
-However, the definition of  `execute`  is less specific. The low-level idiom creates a new thread and launches it immediately. Depending on the  `Executor`  implementation,  `execute`  may do the same thing, but is more likely to use an existing worker thread to run  `r`, or to place  `r`  in a queue to wait for a worker thread to become available. (We'll describe worker threads in the section on  [Thread Pools](https://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html).)
-
-The executor implementations in  `java.util.concurrent`  are designed to make full use of the more advanced  `ExecutorService`  and  `ScheduledExecutorService`  interfaces, although they also work with the base  `Executor`  interface.
-
-## The  `ExecutorService`  Interface
-
-The  [`ExecutorService`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html)  interface supplements  `execute`  with a similar, but more versatile  `submit`  method. Like  `execute`,  `submit`  accepts  `Runnable`  objects, but also accepts  [`Callable`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Callable.html)  objects, which allow the task to return a value. The  `submit`  method returns a  [`Future`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Future.html)  object, which is used to retrieve the  `Callable`  return value and to manage the status of both  `Callable`  and  `Runnable`  tasks.
-
-`ExecutorService`  also provides methods for submitting large collections of  `Callable`  objects. Finally,  `ExecutorService`  provides a number of methods for managing the shutdown of the executor. To support immediate shutdown, tasks should handle  [interrupts](https://docs.oracle.com/javase/tutorial/essential/concurrency/interrupt.html)  correctly.
-
-## The  `ScheduledExecutorService`  Interface
-
-The  [`ScheduledExecutorService`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ScheduledExecutorService.html)  interface supplements the methods of its parent  `ExecutorService`  with  `schedule`, which executes a  `Runnable`  or  `Callable`  task after a specified delay. In addition, the interface defines  `scheduleAtFixedRate`  and  `scheduleWithFixedDelay`, which executes specified tasks repeatedly, at defined intervals.
-# Thread Pools
-
-Most of the executor implementations in  `java.util.concurrent`  use  _thread pools_, which consist of  _worker threads_. This kind of thread exists separately from the  `Runnable`  and  `Callable`  tasks it executes and is often used to execute multiple tasks.
-
-Using worker threads minimizes the overhead due to thread creation. Thread objects use a significant amount of memory, and in a large-scale application, allocating and deallocating many thread objects creates a significant memory management overhead.
-
-One common type of thread pool is the  _fixed thread pool_. This type of pool always has a specified number of threads running; if a thread is somehow terminated while it is still in use, it is automatically replaced with a new thread. Tasks are submitted to the pool via an internal queue, which holds extra tasks whenever there are more active tasks than threads.
-
-An important advantage of the fixed thread pool is that applications using it  _degrade gracefully_. 
-
-A simple way to create an executor that uses a fixed thread pool is to invoke the  [`newFixedThreadPool`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newFixedThreadPool-int-)  factory method in  [`java.util.concurrent.Executors`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html)  This class also provides the following factory methods:
-
--   The  [`newCachedThreadPool`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool-int-)  method creates an executor with an expandable thread pool. This executor is suitable for applications that launch many short-lived tasks.
--   The  [`newSingleThreadExecutor`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newSingleThreadExecutor-int-)  method creates an executor that executes a single task at a time.
--   Several factory methods are  `ScheduledExecutorService`  versions of the above executors.
-
-If none of the executors provided by the above factory methods meet your needs, constructing instances of  [`java.util.concurrent.ThreadPoolExecutor`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadPoolExecutor.html)  or  [`java.util.concurrent.ScheduledThreadPoolExecutor`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ScheduledThreadPoolExecutor.html)  will give you additional options.
-### Fork/Join
-
-The fork/join framework is an implementation of the  `ExecutorService`  interface that helps you take advantage of multiple processors. It is designed for work that can be broken into smaller pieces recursively. The goal is to use all the available processing power to enhance the performance of your application.
-
-As with any  `ExecutorService`  implementation, the fork/join framework distributes tasks to worker threads in a thread pool. The fork/join framework is distinct because it uses a  _work-stealing_  algorithm. Worker threads that run out of things to do can steal tasks from other threads that are still busy.
-
-The center of the fork/join framework is the  [`ForkJoinPool`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html)  class, an extension of the  `AbstractExecutorService`  class.  `ForkJoinPool`  implements the core work-stealing algorithm and can execute  [`ForkJoinTask`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinTask.html)  processes.
-# Concurrent Collections
-
-The  `java.util.concurrent`  package includes a number of additions to the Java Collections Framework. These are most easily categorized by the collection interfaces provided:
-
--   [`BlockingQueue`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/BlockingQueue.html)  defines a first-in-first-out data structure that blocks or times out when you attempt to add to a full queue, or retrieve from an empty queue.
--   [`ConcurrentMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentMap.html)  is a subinterface of  [`java.util.Map`](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html)  that defines useful atomic operations. These operations remove or replace a key-value pair only if the key is present, or add a key-value pair only if the key is absent. Making these operations atomic helps avoid synchronization. The standard general-purpose implementation of  `ConcurrentMap`  is  [`ConcurrentHashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentHashMap.html), which is a concurrent analog of  [`HashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html).
--   [`ConcurrentNavigableMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentNavigableMap.html)  is a subinterface of  `ConcurrentMap`  that supports approximate matches. The standard general-purpose implementation of  `ConcurrentNavigableMap`  is  [`ConcurrentSkipListMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentSkipListMap.html), which is a concurrent analog of  [`TreeMap`](https://docs.oracle.com/javase/8/docs/api/java/util/TreeMap.html).
-
-All of these collections help avoid  [Memory Consistency Errors](https://docs.oracle.com/javase/tutorial/essential/concurrency/memconsist.html)  by defining a happens-before relationship between an operation that adds an object to the collection with subsequent operations that access or remove that object.
-### Atomic Variables
-
-The  [`java.util.concurrent.atomic`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/atomic/package-summary.html)  package defines classes that support atomic operations on single variables. All classes have  `get`  and  `set`  methods that work like reads and writes on  `volatile`  variables. That is, a  `set`  has a happens-before relationship with any subsequent  `get`  on the same variable. The atomic  `compareAndSet`  method also has these memory consistency features, as do the simple atomic arithmetic methods that apply to integer atomic variables.
-### Concurrent Random Numbers
-
-In JDK 7,  [`java.util.concurrent`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html)  includes a convenience class,  [`ThreadLocalRandom`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadLocalRandom.html), for applications that expect to use random numbers from multiple threads or  `ForkJoinTask`s.
-
-For concurrent access, using  `ThreadLocalRandom`  instead of  `Math.random()`  results in less contention and, ultimately, better performance.
-
-All you need to do is call  `ThreadLocalRandom.current()`, then call one of its methods to retrieve a random number. Here is one example:
-
-    int r = ThreadLocalRandom.current() .nextInt(4, 77);
-### For Further Reading
-
--   _Concurrent Programming in Java: Design Principles and Pattern (2nd Edition)_  by Doug Lea. A comprehensive work by a leading expert, who's also the architect of the Java platform's concurrency framework.
--   _Java Concurrency in Practice_  by Brian Goetz, Tim Peierls, Joshua Bloch, Joseph Bowbeer, David Holmes, and Doug Lea. A practical guide designed to be accessible to the novice.
--   _Effective Java Programming Language Guide (2nd Edition)_  by Joshua Bloch. Though this is a general programming guide, its chapter on threads contains essential "best practices" for concurrent programming.
--   _Concurrency: State Models & Java Programs (2nd Edition)_, by Jeff Magee and Jeff Kramer. An introduction to concurrent programming through a combination of modeling and practical examples.
--   _[Java Concurrent Animated](http://sourceforge.net/projects/javaconcurrenta/):_  Animations that show usage of concurrency features.
 ## 创建一个线程
 
 Java 提供了三种创建线程的方法：
