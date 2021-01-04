@@ -932,5 +932,17 @@ There are two categories of methods provided in  [`Class`](https://docs.oracle.c
 [Link](https://docs.oracle.com/javase/tutorial/reflect/class/classTrouble.html)
 # 面试问题
 ## [集合框架](https://www.processon.com/diagraming/5ec10c435653bb6f2a14430f)
-> Collection接口
-代表一组对象，有序或无序，重复或不重复。。
+## Collection接口
+代表一组对象，有序或无序，重复或不重复。
+
+有三个子接口: `List`, `Set`, `Queue`
+### List接口
+- List接口可以精确地控制每个元素在List中地插入位置，可以通过索引来获取里面地元素。
+- 与Set不同的是List可以有重复的元素。并且在允许有Null值的List中(有的List不允许有null值)，允许多个Null值。
+- List提供了特殊的迭代器，除了itertor的普通操作外，还允许插入和替换元素，以及双向访问。
+#### ArrayList
+- 使用可变数组实现List接口，允许任何类型的元素包括null
+- ArrayList大致相当于Vector，不同的是它是不同步的unsynchronized; 如果多个线程同时访问一个Arraylist实例，并且至少有一个线程在结构上修改了这个List，那么它必须在外部同步。
+#### Vector
+- 如果不需要实现线程安全，建议用ArrayList代替Vector.
+- 在结构上和功能上没有什么区别，源码中在这些类的关键操作函数中，Vector都加上了synchronized关键字
