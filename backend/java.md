@@ -1000,7 +1000,6 @@ There are two categories of methods provided in  [`Class`](https://docs.oracle.c
 - 轻量级锁  
 当锁状态升级为轻量级锁时，mark word中前30个bit是*指向线程栈中锁记录的指针*。当一个线程向获得某个对象的锁时，看到锁标志位为00时就知道它是轻量级锁。这是线程会在自己的虚拟机栈中开辟一块称为**Lock Record**的空间。Lock Record中存放的是对象头的*Mark Record的副本*以及*Owner指针*。线程通过CAS去尝试获取锁，一但获取锁就会复制该对象头中的Mark Record到Lock Record中，并且将Lock Record中的owner指针指向该对象。另一方面，对象中Mark Record的前30bit将会生成一个指针，指向线程虚拟机栈中的Lock Record，这样就实现了线程与对象的绑定，互相知道了对方的存在。对象被绑定后，获取这个对象锁的线程就可以执行任务，其他想要获取这个对象的线程会自旋等待，自旋就是不断循环看锁有没有被释放。如果自旋等待的线程超过一个，轻量级锁将会升级为重量级锁。
 - 重量级锁
-
 如果升级为重量级锁，需要通过monitor来对线程进行控制，此时将会完全锁定资源
 
 只能升级不能降级
