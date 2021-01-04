@@ -943,6 +943,46 @@ There are two categories of methods provided in  [`Class`](https://docs.oracle.c
 #### ArrayList
 - 使用可变数组实现List接口，允许任何类型的元素包括null
 - ArrayList大致相当于Vector，不同的是它是不同步的unsynchronized; 如果多个线程同时访问一个Arraylist实例，并且至少有一个线程在结构上修改了这个List，那么它必须在外部同步。
+- 要实现List的线程安全,可以使用 `List list = Collections.synchronizedList(new ArrayList(...))`
 #### Vector
 - 如果不需要实现线程安全，建议用ArrayList代替Vector.
 - 在结构上和功能上没有什么区别，源码中在这些类的关键操作函数中，Vector都加上了synchronized关键字
+- Vector扩容为原来的2倍长度，ArrayList扩容为原来1.5倍
+### AbstractSequentialList
+- 继承AbstractList，只支持按顺序访问。
+- AbstractSequentiaList和RandomAccess主要的区别是AbstractSequentiaList的主要方法都是通过迭代器实现的，而不是直接实现的
+#### ListedList
+- 继承AbstractSequentiaList类，实现了List, Deque接口，基于双链表实现，允许所有元素包括null值
+- 不是同步的， 如果多个线程同时访问一个Arraylist实例，并且至少有一个线程在结构上修改了这个List，那么它必须在外部同步。
+- 要实现List的线程安全,可以使用 `List list = Collections.synchronizedList(new LinkedList(...))`
+### Set 接口
+- 不允许有重复元素，最多包含一个null值，有些实现不允许有null值
+#### Treeset
+- 是一个基于TreeMap的NavigableSet的实现
+- 不是线程同步的，使用`SortedSet s = Collections.synchronizedSortedSet(new TreeSet(...))`实现同步
+#### HashSet
+- 实现了Set接口，由HashMap支持，它不保证集合的迭代顺序不变和元素随时间变化而不变，允许由null值
+- 不是线程同步的，使用`Set s = Collections.synchronizedSet(new HashSet(....))`实现同步
+##### LinkedHashSet
+- 一种Hash表和链表对Set接口的实现
+- 与HashSet不同的是，它通过在entry上维护一个双列表，这个链表定义了迭代顺序，通常是key插入到Set中的顺序。
+## Map接口
+- 是一个将keys映射到value的对象，不允许由重复的keys，每个key至多有一个value
+- map的顺序定义为map集合视图上的迭代器返回元素的顺序，TreeMap对顺序做了保证，HashMap则没有
+- 不允许将自己作为key，虽然允许将自己作为value，但不建议这样。
+- 有些实现对key和value做出了限制，如禁止空key和value，有些对key的类型做出了限制
+### TreeMap
+- 是一个基于红黑树的NavigableMap的实现。
+- 是不同步的，使用`SortedMap m = Collections.synchronizedSortedMap(new TreeMap(...))`实现同步
+
+### HashMap
+- 基于Hash表的Map接口实现，允许null值和null键
+- HashMap相当于`hashtable`类，不同的是它是不同步的并且允许null值，使用`Mapp m = Collections.synchronizedMap(new HashMap(...));`实现同步
+- 不保证有序
+#### LinkedHashMap
+- 一种Hash表和链表对Map接口的实现
+- 与Hashtable不同的是，它通过在entry上维护一个双列表，这个链表定义了迭代顺序，通常是key插入到map中的顺序。
+- 不同步,使用`Mapp m = Collections.synchronizedMap(new LinkedHashMap(...));`实现同步
+- 这种技术在一个模块接受map并复制它，然后返回由复制时决定的顺序这样的场景非常有用；非常适合构建LRU缓存。
+
+> 看实现hash表、红黑树部分的代码
