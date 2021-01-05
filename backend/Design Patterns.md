@@ -20,28 +20,26 @@ Likov的替换原则指出，如果程序模块使用基类，则可以用派生
 # Design Patterns
 ## 1.单例模式
 所谓类的单例设计模式，就是采取一定的方法保证在整个的软件系统中，对某个类只能存在一个对象实例， 并且该类只提供一个取得其对象实例的方法(静态方法)。
+
 **实现：** 我们将创建一个 SingleObject 类。SingleObject 类有它的私有构造函数和本身的一个静态实例。
+
+注意事项：getInstance() 方法中需要使用同步锁 synchronized (Singleton.class) 防止多线程同时进入造成 instance 被多次实例化。
 ```java
-class Singleton {
-
-	private static Singleton instance;
-	private Singleton() {
-		...
-	}
-
-	public static synchronized Singleton getInstance(){
-
-		if (instance == null)
-			instance = new Singleton();
-
-		return instance;
-	}
-	
-	...
-	
-	public void doSomething()
-	{
-		...
-	}
+public class SingleObject {
+ 
+   //创建 SingleObject 的一个对象
+   private static SingleObject instance = new SingleObject();
+ 
+   //让构造函数为 private，这样该类就不会被实例化
+   private SingleObject(){}
+ 
+   //获取唯一可用的对象
+   public static SingleObject getInstance(){
+      return instance;
+   }
+ 
+   public void showMessage(){
+      System.out.println("Hello World!");
+   }
 }
 ```
