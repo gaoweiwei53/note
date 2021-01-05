@@ -1,14 +1,14 @@
 # Design Principles
-## Open Close Principle(OCP)
+## 开闭原则 Open Close Principle(OCP)
 对扩展开放，对修改关闭。在程序需要进行拓展的时候，要尽可能少地修改原有的代码，
-## Dependency Inversion Principle
+## 依赖反转原则二 Dependency Inversion Principle
 - 高级模块不应该依赖低级模块，它们都应该依赖抽象
 - 抽象不应该依赖具体，具体应该依赖抽象
-## Interface Segregation Principle
+## 接口隔离原则 Interface Segregation Principle
 原则：使用多个隔离的接口，比使用单个接口要好。不应该使用包含我们用不到的方法的“胖接口”
-## Single Responsibility Principle
+## 单一职责原则 Single Responsibility Principle
 一个类只负责一个功能
-## Liskov's Substitution Principle(LSP)
+## 里式替换原则 Liskov's Substitution Principle(LSP)
 在设计程序模块的过程中，我们一直在创建一些类层次结构。然后我们扩展一些类，创建一些派生类。
 
 我们必须确保新的派生类只是扩展，而不替换旧类的功能。否则，在现有程序模块中使用新类时，可能会产生不希望看到的效果。
@@ -16,3 +16,7 @@
 Likov的替换原则指出，如果程序模块使用基类，则可以用派生类替换基类的引用，而不会影响程序模块的功能。
 
 派生类型必须完全可替换其基类类型。这个原则只是开闭原则的扩展，它意味着我们必须确保新的派生类在不改变其行为的情况下扩展基类。
+
+# Design Patterns
+## 1.单例模式
+所谓类的单例设计模式，就是采取一定的方法保证在整个的软件系统中，对某个类只能存在一个对象实例， 并且该类只提供一个取得其对象实例的方法(静态方法)。
