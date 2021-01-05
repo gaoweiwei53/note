@@ -1,4 +1,5 @@
-[菜鸟教程](https://www.runoob.com/design-pattern/design-pattern-tutorial.html)
+[资料1](https://www.runoob.com/design-pattern/design-pattern-tutorial.html)
+[资料2](https://refactoringguru.cn/)
 # Design Principles
 ## 1. 开闭原则 Open Close Principle(OCP)
 对扩展开放，对修改关闭。在程序需要进行拓展的时候，要尽可能少地修改原有的代码，
@@ -44,9 +45,11 @@ public class SingleObject {
    }
 }
 ```
-## 2. 工厂模式
+## 2. 工厂方法(Factory Method)
 定义一个用于创建对象的接口，让子类决定实例化哪一个类，使一个类的实例化延迟到其子类
-## 3. 抽象工厂模式
+
+工厂方法是一种创建设计模式，它提供了在超类中创建对象的接口，但允许子类更改将要创建的对象的类型。
+## 3. 抽象工厂模式 (Abstract Factory)
 提供一个创建一系列相关或相互依赖对象的接口，而无需指定他们具体的类
 
 > 当产品只有一个的时候，抽象工厂模式变成工厂模式。当工厂模式的产品变为多个时，工厂模式变为抽象工厂模式
