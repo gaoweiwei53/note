@@ -84,20 +84,36 @@ consumer需要实时记录自己消费到哪个offset，以便在故障恢复后
 
 # 5. Kafka高效读写数据
 ## 5.1 为啥快
-[参考](https://www.cnblogs.com/yanggb/p/11063942.html)
+[参考1](https://www.cnblogs.com/yanggb/p/11063942.html)
+
+[参考2](https://kafka.apache.org/documentation/#maximizingefficiency)
 ### 1. 顺序写磁盘
 写的过程中一直追加到文件的末端，，省去了大量寻址时间。Kafka是不会删除数据的，它只会把所有的数据都保留下来，每个消费者（Consumer）对每个Topic都有一个offset用来表示读取到了第几条数据。
 
 如果数据完全不删除，那么肯定会导致硬盘爆满，所以Kafka提供了两种策略来删除数据，一是基于时间，二是基于Partition文件大小。具体配置可以参看它的配置文档。
+
+系统会产生两种效率不高的问题：**I/O操作太多**和**字节拷贝(byte copy)**
+
+### 2. 批处理
+解决**I/O操作太多**问题的方法是将消息进行分组，相比每次只发送单个消息，将消息分组可以减少网络的开销。并且服务器也会将消息成块地追加到日志记录中，此外，消费者也是按批消费消息。
+
+解决**字节拷贝(byte copy)**问题地方是在producer, broker, consumer之间使用相同的标准二进制文件格式，这样消息块在它们之间传送就不用更改了。
+
+由broker维护的消息日志本身就是一个文件目录，每个文件都由一系列消息集填充，这些消息集以producer和consumer使用的相同格式写入磁盘。维护这种通用格式可以优化最重要的操作:持久日志块的网络传输。现代的unix操作系统提供了一个高度优化的代码路径，用于将数据从页缓存(pagecache)传输到socket;在Linux中，这是通过**sendfile system call**完成的。
+
 ### 2. MMFiles（Memory Mapped Files）
 即便是顺序写入磁盘，磁盘的访问速度还是不可能追上内存的。所以Kafka的数据并不是实时的写入硬盘，它充分利用了现代操作系统的分页存储来利用内存，以此来提高I/O效率。Memory Mapped Files（后面简称MMAP）也被翻译成内存映射文件，在64位操作系统中一般可以表示20G的数据文件。它的工作原理是直接利用操作系统的Page来实现文件到物理内存的直接映射。完成映射之后，你对物理内存的操作会被同步到硬盘上（操作系统在适当的时候）
 
 缺陷：不可靠，因为写到MMAP中的数据并没有被真正地写入到硬盘中，操作系统会在程序主动调用flush命令的时候才会把数据真正地写入到硬盘中。Kafka提供了一个参数prducer.type来控制是不是主动flush，如果Kafka写入到MMAP之后就立即flush然后再返回Producer，就叫做同步（sync）；如果Kafka写入到MMAP之后立即返回Producer不调用flush，就叫做异步（async）
 ### 3. 零拷贝
 传统模式下，从硬盘读取一个文件是这样的：
-- 调用read函数，文件数据被copy到内核的缓冲区（read是系统调用，放到了DMA，所以用内核空间）。
-- read函数返回，文件数据从内核缓冲区copy到用户缓冲区。
-- write函数调用，将文件数据从用户缓冲区copy到内核与Socket相关的缓冲区。
+- 1 数据通过DMA(direct memory access)方式被复制到内核(Kernel Context)的地址空间缓冲区/Reader Buffer. User Mode --> Context Mode
+- 2 数据从Reader Buffer复制到到User Buffer. Context Mode --> User Mode
+- 3 数据被第三次复制，从用户缓冲区复制到内核地址空间缓冲区，这一次数据放入到了Socket Buffer. User Mode --> Context Mode
+- 4 第四次复制，通过DMA 方式将数据从kernel buffer 复制到协议引擎。Context Mode --> User Mode
+
+![图](https://developer.ibm.com/developer/default/articles/j-zerocopy/images/figure1.gif)
+> 复制操作需要在用户模式和内核模式之间进行四次上下文切换，数据在操作完成之前复制四次
 
 以上细节是传统的read/write方式进行网络传输的方式，我们可以看到，在这个过程当中，文件数据实际上是经过了四次copy操作：硬盘—>内核buf—>用户buf—>socket相关缓冲区—>协议引擎。而sendfile系统调用则是提供了一种减少以上多次copy，提升文件传输性能的方法。Kafka在内核版本2.1中，引用了sendfile系统调用，以此简化网络上和两个本地文件之间的数据传输。sendfile的引入不仅减少了数据复制，还减少了上下文的切换：sendfile(socket, file, len)。
 
@@ -106,6 +122,8 @@ consumer需要实时记录自己消费到哪个offset，以便在故障恢复后
 - 再从内核缓冲区copy至内核中socket相关的缓冲区。
 - 最后再socket相关的缓冲区copy到协议引擎。
 - 数据从Socket缓冲区copy到相关协议引擎（网卡）。
+
+
 
 Kafka把所有的消息都存放在一个一个的文件中，当消费者需要数据的时候Kafka直接把文件发送给消费者，配合MMAP作为文件读写方式，直接把它传给sendfile。
 ### 4. NIO网络通信
