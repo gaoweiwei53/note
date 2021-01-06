@@ -101,13 +101,9 @@ consumer需要实时记录自己消费到哪个offset，以便在故障恢复后
 
 由broker维护的消息日志本身就是一个文件目录，每个文件都由一系列消息集填充，这些消息集以producer和consumer使用的相同格式写入磁盘。维护这种通用格式可以优化最重要的操作:持久日志块的网络传输。现代的unix操作系统提供了一个高度优化的代码路径，用于将数据从页缓存(pagecache)传输到socket;在Linux中，这是通过**sendfile system call**完成的。
 
-### 2. MMFiles（Memory Mapped Files）
-即便是顺序写入磁盘，磁盘的访问速度还是不可能追上内存的。所以Kafka的数据并不是实时的写入硬盘，它充分利用了现代操作系统的分页存储来利用内存，以此来提高I/O效率。Memory Mapped Files（后面简称MMAP）也被翻译成内存映射文件，在64位操作系统中一般可以表示20G的数据文件。它的工作原理是直接利用操作系统的Page来实现文件到物理内存的直接映射。完成映射之后，你对物理内存的操作会被同步到硬盘上（操作系统在适当的时候）
-
-缺陷：不可靠，因为写到MMAP中的数据并没有被真正地写入到硬盘中，操作系统会在程序主动调用flush命令的时候才会把数据真正地写入到硬盘中。Kafka提供了一个参数prducer.type来控制是不是主动flush，如果Kafka写入到MMAP之后就立即flush然后再返回Producer，就叫做同步（sync）；如果Kafka写入到MMAP之后立即返回Producer不调用flush，就叫做异步（async）
 ### 3. [零拷贝](https://developer.ibm.com/articles/j-zerocopy)
 传统模式下从硬盘读取文件：
-- 1. 数据通过DMA(direct memory access)方式被复制到内核(Kernel Context)的地址空间缓冲区/Reader Buffer. User Mode --> Context Mode
+- 1. 数据通过DMA(direct memory access)方式被复制到内核(Kernel Context)的地址空间缓冲区/**pagecache**/Reader Buffer. User Mode --> Context Mode
 - 2. 数据从Reader Buffer复制到到User Buffer. Context Mode --> User Mode
 - 3. 数据被第三次复制，从用户缓冲区复制到内核地址空间缓冲区，这一次数据放入到了Socket Buffer. User Mode --> Context Mode
 - 4. 第四次复制，通过DMA 方式将数据从kernel buffer 复制到协议引擎。Context Mode --> User Mode
@@ -123,13 +119,17 @@ Zero-Copy:
 - 2. 数据不直接复制到Socket Buffer，而是将`descriptor`追加到Socket Buffer, `decriptor`记录了数据的位置和长度。DMA引擎直接将数据从kernel buffer复制到协议引擎
 > 数据被复制了两次，模式切换两次
 
-Kafka把所有的消息都存放在一个一个的文件中，当消费者需要数据的时候Kafka直接把文件发送给消费者，配合MMAP作为文件读写方式，直接把它传给sendfile。
+### 2. MMFiles（Memory Mapped Files）
+即便是顺序写入磁盘，磁盘的访问速度还是不可能追上内存的。所以Kafka的数据并不是实时的写入硬盘，它充分利用了现代操作系统的分页存储来利用内存，以此来提高I/O效率。Memory Mapped Files（后面简称MMAP）也被翻译成内存映射文件，在64位操作系统中一般可以表示20G的数据文件。它的工作原理是直接利用操作系统的Page来实现文件到物理内存的直接映射。完成映射之后，你对物理内存的操作会被同步到硬盘上（操作系统在适当的时候）
+
+缺陷：不可靠，因为写到MMAP中的数据并没有被真正地写入到硬盘中，操作系统会在程序主动调用flush命令的时候才会把数据真正地写入到硬盘中。Kafka提供了一个参数prducer.type来控制是不是主动flush，如果Kafka写入到MMAP之后就立即flush然后再返回Producer，就叫做同步（sync）；如果Kafka写入到MMAP之后立即返回Producer不调用flush，就叫做异步（async）
+
 ### 4. NIO网络通信
 ### 5. PageCache
 ### 6. 消息批量压缩
 在很多情况下，系统的瓶颈不是CPU或磁盘，而是网络IO，对于需要在广域网上的数据中心之间发送消息的数据流水线尤其如此。进行数据压缩会消耗少量的CPU资源,不过对于kafka而言,网络IO更应该需要考虑。
 - 如果每个消息都压缩，但是压缩率相对很低，所以Kafka使用了批量压缩，即将多个消息一起压缩而不是单个消息压缩。
-- Kafka允许使用递归的消息集合，批量的消息可以通过压缩的形式传输并且在日志中也可以保持压缩格式，直到被消费者解压缩。
+- Kafka将消息批量地压缩，然后同样以压缩的形式传输，并且在日志中也保持压缩格式，直到被消费者解压缩。
 - Kafka支持多种压缩协议，包括Gzip和Snappy压缩协议。
 ## 5.2 Zookeeper的作用
 Kafka集群中有一个broker会被选为Controller，Controller的管理工作依赖于Zookeeper
