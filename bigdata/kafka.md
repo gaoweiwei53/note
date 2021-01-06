@@ -114,6 +114,7 @@ consumer需要实时记录自己消费到哪个offset，以便在故障恢复后
 
 ![图1](https://developer.ibm.com/developer/default/articles/j-zerocopy/images/figure1.gif)
 > 复制操作需要在用户模式和内核模式之间进行四次上下文切换，数据在操作完成之前复制四次
+
 Zero-Copy:
 
 ![图2](https://developer.ibm.com/developer/default/articles/j-zerocopy/images/figure5.gif)
