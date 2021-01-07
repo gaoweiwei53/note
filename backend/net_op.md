@@ -6,8 +6,9 @@
 - [Operating Systems: Internals and Design Principles-William Stallings](https://repository.dinus.ac.id/docs/ajar/Operating_System.pdf)
 ## 1. Processes
 ### 1.1 线程(Process)
-线程是运行中的程序。一个线程被以下一些元素唯一标识：
-|||||
+线程是运行中的程序，由其*程序代码*和运行相关的*数据*所组成。一个线程被**process control block**唯一标识.
+
+
 ### 1.2 进程(Thread)
 ## 2. Concurrency
 ## 3. Memory Manegement
