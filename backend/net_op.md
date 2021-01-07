@@ -26,6 +26,15 @@
 - Frame: 一种固定长度的主存块。
 - Page: 在辅助内存(如磁盘)中的固定长度的数据块。一页数据可以暂时复制到主存的一个Frame中。
 - Segment: 在辅助存储器中的一种变长数据块。整个段可以临时复制到主内存的一个可用区域(段)中，或者段可以划分为页，这些页可以单独复制到主内存和分页组合)。
+### 内存管理技术
+|Technique|Description|Strengths|Weaknesses|
+|:--:|:--:|:--:|:--:|
+|Fixed Partitioning||||
+|Dynamic Partitioning||||
+|Simple Paging||||
+|Simple Segmentation||||
+|Virtual Memory Paging||||
+|Virtual Memory Segmentation||||
 ## 4. Scheduling
 ## 5. Security
 ## 6. Distributed Systems
