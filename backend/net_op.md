@@ -30,11 +30,11 @@
 |Technique|Description|Strengths|Weaknesses|
 |:--:|:--:|:--:|:--:|
 |Fixed Partitioning|在系统生成时，主存被划分为许多静态分区。一个进程可以装载到大小相等或更大的分区中。|||
-|Dynamic Partitioning||||
-|Simple Paging||||
-|Simple Segmentation||||
-|Virtual Memory Paging||||
-|Virtual Memory Segmentation||||
+|Dynamic Partitioning|分区是动态创建的，因此每个进程都被加载到与该进程大小完全相同的分区中|||
+|Simple Paging|主存被分成若干大小相等的Frame。进程被分成若干大小相同、长度与Frame相同的Page。通过将进程的所有Page装入可用(不一定是连续的)Frame来加载进程|||
+|Simple Segmentation|每个进程被分为若干个Segement, 通过将进程的所有Segement装入动态分区(不一定是连续的)来加载进程|||
+|Virtual Memory Paging|与简单分页类似，只是不需要加载进程的所有page，需要的Nonresident page会在后来自动引入。|||
+|Virtual Memory Segmentation|与简单分段类似，只是不需要加载进程的所有Segement，需要的Nonresident Segement会在后来自动引入。|||
 ## 4. Scheduling
 ## 5. Security
 ## 6. Distributed Systems
