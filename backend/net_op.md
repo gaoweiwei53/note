@@ -29,7 +29,7 @@
 ### 内存管理技术
 |Technique|Description|Strengths|Weaknesses|
 |:--:|:--:|:--:|:--:|
-|Fixed Partitioning||||
+|Fixed Partitioning|在系统生成时，主存被划分为许多静态分区。一个进程可以装载到大小相等或更大的分区中。|||
 |Dynamic Partitioning||||
 |Simple Paging||||
 |Simple Segmentation||||
