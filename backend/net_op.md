@@ -7,10 +7,17 @@
 |4|Transport|管理数据传输，负责可靠传输|TCP, UDP, SCTP, DCCP||
 |3|Network|地址管理与路由选择|IP, ICMP, IGMP, OSPF, RIP|路由器|
 |2|Data Link|识别数据帧，数据帧与比特流之间的转换||网桥|
-|1|Pyhsical|比特流与电子信号之间的转换||中继器(Repeater)|
+|1|Pyhsical|比特流与电子信号之间的转换|PPP|中继器(Repeater)|
 > - 交换机 4~7 层，负责传输层到应用层的数据
 > - 网关 4~7层，负责数据转发和转换，如邮件转换服务
 > - 5~7层协议：SSH, HTTP, HTML, SMTP, POP, FTP
+
+ICMP: IP数据包在发送途中发生异常无法到达目的地址时，需要给发送端发送一个异常通知。
+ARP: 从分组数据包的IP地址中解析出MAC地址的一种协议
+TCP: 面向有连接的传输层协议，建立连接3次握手，断开4次握手
+IP: 面向无连接
+UDP: 面向无连接的传输层协议。
+HTTP: 浏览器与服务端之间通信所用的协议，所传输数据的主要格式是HTML(表示层协议)
 # Operating System
 - [参考1](https://blog.csdn.net/qq_29677867/article/details/91038642)
 - [参考2](https://www.cl.cam.ac.uk/teaching/1011/OpSystems/os1a-slides.pdf)
