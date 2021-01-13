@@ -5,10 +5,12 @@
 |6|Presentation|数据格式转换，转换成统一的网络格式|||
 |5|Session|通信管理，负责建立断开通信连接|||
 |4|Transport|管理数据传输，负责可靠传输|TCP, UDP, SCTP, DCCP||
-|3|Network|地址管理与路由选择|IP, ICMP, IGMP, OSPF, RIP|交换机|
+|3|Network|地址管理与路由选择|IP, ICMP, IGMP, OSPF, RIP|路由器|
 |2|Data Link|识别数据帧，数据帧与比特流之间的转换||网桥|
 |1|Pyhsical|比特流与电子信号之间的转换||中继器(Repeater)|
 > - 交换机 4~7 层，负责传输层到应用层的数据
+> - 网关 4~7层，负责数据转发和转换，如邮件转换服务
+> - 5~7层协议：SSH, HTTP, HTML, SMTP, POP, FTP
 # Operating System
 - [参考1](https://blog.csdn.net/qq_29677867/article/details/91038642)
 - [参考2](https://www.cl.cam.ac.uk/teaching/1011/OpSystems/os1a-slides.pdf)
