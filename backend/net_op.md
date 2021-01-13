@@ -1,5 +1,13 @@
 # net
-
+||Layer Name|Function|Protocol|
+||--|--|--|
+|7|Application|||
+|6|Presentation|||
+|5|Session|||
+|4|Transport|||
+|3|Network|||
+|2|Data Link|||
+|1|Pyhsical|||
 # Operating System
 - [参考1](https://blog.csdn.net/qq_29677867/article/details/91038642)
 - [参考2](https://www.cl.cam.ac.uk/teaching/1011/OpSystems/os1a-slides.pdf)
