@@ -18,6 +18,13 @@
 - TCP: 面向有连接的传输层协议，建立连接3次握手，断开4次握手
 - UDP: 面向无连接的传输层协议。
 - HTTP: 浏览器与服务端之间通信所用的协议，所传输数据的主要格式是HTML(表示层协议)
+
+```mermaid
+sequenceDiagram
+    Client->>Server: SYN=1, seq=x
+    Server->>Client: SYN=1, ACK=1, seq=y, ack=x+1
+    Client->>Server: ACK=1, seq=x+1, ack=y+1
+```
 # Operating System
 - [参考1](https://blog.csdn.net/qq_29677867/article/details/91038642)
 - [参考2](https://www.cl.cam.ac.uk/teaching/1011/OpSystems/os1a-slides.pdf)
