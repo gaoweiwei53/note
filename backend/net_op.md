@@ -1,13 +1,13 @@
 # net
 ||Layer Name|Function|Protocol|
 |-|-|-|-|
-|7|Application|||
-|6|Presentation|||
-|5|Session|||
-|4|Transport|||
-|3|Network|||
-|2|Data Link|||
-|1|Pyhsical|||
+|7|Application|针对特定应用的协议||
+|6|Presentation|数据格式转换，转换成统一的网络格式||
+|5|Session|通信管理，负责建立断开通信连接||
+|4|Transport|管理数据传输，负责可靠传输|TCP,UDP,SCTP,DCCP|
+|3|Network|地址管理与路由选择|IP,ICMP,IGMP,OSPF,RIP|
+|2|Data Link|识别数据帧，数据帧与比特流之间的转换||
+|1|Pyhsical|比特流与电子信号之间的转换||
 # Operating System
 - [参考1](https://blog.csdn.net/qq_29677867/article/details/91038642)
 - [参考2](https://www.cl.cam.ac.uk/teaching/1011/OpSystems/os1a-slides.pdf)
