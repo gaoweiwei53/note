@@ -19,6 +19,11 @@
 - UDP: 面向无连接的传输层协议。
 - HTTP: 浏览器与服务端之间通信所用的协议，所传输数据的主要格式是HTML(表示层协议)
 
+TCP报文格式中重要的字段有：
+- 序号（sequence number）：Seq序号，占32位，用来标识从TCP源端向目的端发送的字节流，发起方发送数据时对此进行标记。
+- 确认号（acknowledgement number）：Ack序号，占32位，只有ACK标志位为1时，确认序号字段才有效，Ack=Seq+1。
+- 标志位（Flags）：共6个，即URG、ACK、PSH、RST、SYN、FIN等。具体含义如下：
+
 ```mermaid
 sequenceDiagram
     Client->>Server: SYN=1, seq=x
