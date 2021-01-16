@@ -4,6 +4,12 @@
   - `GET`: 能够携带的参数比较少，大小有限制，会在浏览器的URL地址栏显示数据内容，不安全，但高效
   - `POST`: 携带的参数没有限制，大小没有限制，不会在浏览器的URL地址栏显示数据内容，安全，但不高效
   
+ - 请求行
+  1) 请求的方式
+  2) 请求的资源路径
+  3) 请求的协议的版本号
+ - 请求头
+  
 # 2. Servet技术
 ## 2.1 什么是Sevlet
 - Servlet是JavaEE规范之一。本质是接口。
@@ -58,9 +64,13 @@ Servlet程序和Servlet对象都是由Tomcat负责创建，我们负责使用。
 Servlet程序默认是第一次访问的时候创建，ServletConfig是每个Servlet程序创建时就创建一个对应的ServletConfig对象。
 
 > 重写init方法时，必须要加`super.init(config);`
-## ServletConfig类
+## ServletContext类
 - ServletContext是一个接口，表示Servlet上下文对象
 - 一个web应用对应的是一个ServletContext对象
 - 由于一个 web 应用程序的所有 Servlet 都共享的是同一个 ServletContext 对象，所以 ServletContext 对象也被称为 application 对象（web 应用程序对象)
 ### ServletContext类的四个作用
-1_ 获取虚拟路径所映射的本地路径 虚拟路径：浏览器访问 web 应用中资源时所使用的路径 本地路径：资源在文件系统中的实际保存路径
+1) 获取虚拟路径所映射的本地路径 
+  - 虚拟路径：浏览器访问 web 应用中资源时所使用的路径 
+  - 本地路径：资源在文件系统中的实际保存路径
+2) application 域范围的属性
+3) 获取 web.xml这种配置的上下文参数 context-param
