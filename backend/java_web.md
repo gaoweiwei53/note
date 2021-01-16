@@ -5,12 +5,12 @@
   - `POST`: 携带的参数没有限制，大小没有限制，不会在浏览器的URL地址栏显示数据内容，安全，但不高效
   
 # 2. Servet技术
-## 1.1 什么是Sevlet
+## 2.1 什么是Sevlet
 - Servlet是JavaEE规范之一。本质是接口。
 - Servlet是JavaWeb三大组件之一。三大组件分别是：Servlet程序、Filter过滤器，Listener监听器。
 - Servlet是运行在服务器上的一个java小程序，它可以接收客户端发过来的请求，并响应数据给客户端。
 
-## 1.2 手动实现Servlet程序
+## 2.2 手动实现Servlet程序
 1) 编写一个类实现Servlet接口
 2) 实现service方法，处理请求，并响应数据
 3) 到web.xml中配置servlet程序的访问地址
@@ -31,7 +31,7 @@
         <url-pattern>/hello</url-pattern>
     </servlet-mapping>
 ```
-## 1.3 Servlet的生命周期
+## 2.3 Servlet的生命周期
 1) 执行构造方法
 2) 执行init初始化方法
 第一、二步第一次访问的时候会调用
@@ -39,3 +39,5 @@
 第三步每次访问都会调用
 4) 执行destroy销毁方法
 第四步程序停止时调用
+## 2.4 通过继承HttpServlet实现Servlet
+> 实际开发的时候很少直接继承Servlet接口
