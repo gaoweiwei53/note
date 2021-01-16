@@ -41,3 +41,26 @@
 第四步程序停止时调用
 ## 2.4 通过继承HttpServlet实现Servlet
 > 实际开发的时候很少直接继承Servlet接口
+1) 编写一个类继承HttpServlet类
+2) 重写doGet或doPost方法
+3) 在web.xml中配置Servlet程序访问地址
+
+> 可使用idea 直接创建Servlet程序
+## 2.5 ServletConfig类
+Servlet程序的配置信息
+### ServletConfig类的三大作用
+1) 可以获取Servlet程序的别名 servlet-name的值
+2) 获取初始化参数 init-param
+3) 获取ServletContext对象
+
+Servlet程序和Servlet对象都是由Tomcat负责创建，我们负责使用。
+
+Servlet程序默认是第一次访问的时候创建，ServletConfig是每个Servlet程序创建时就创建一个对应的ServletConfig对象。
+
+> 重写init方法时，必须要加`super.init(config);`
+## ServletConfig类
+- ServletContext是一个接口，表示Servlet上下文对象
+- 一个web应用对应的是一个ServletContext对象
+- 由于一个 web 应用程序的所有 Servlet 都共享的是同一个 ServletContext 对象，所以 ServletContext 对象也被称为 application 对象（web 应用程序对象)
+### ServletContext类的四个作用
+1_ 获取虚拟路径所映射的本地路径 虚拟路径：浏览器访问 web 应用中资源时所使用的路径 本地路径：资源在文件系统中的实际保存路径
