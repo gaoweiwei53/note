@@ -34,6 +34,11 @@
 - 空行
 - 请求体：发送给服务器的数据
 
+## 1.2 常见的响应码说明
+- 200 请求成功
+- 302 重定向 
+- 404 数据不存在
+- 500 服务器内部错误
     
   
 # 2. Servet技术
@@ -90,7 +95,7 @@ Servlet程序和Servlet对象都是由Tomcat负责创建，我们负责使用。
 Servlet程序默认是第一次访问的时候创建，ServletConfig是每个Servlet程序创建时就创建一个对应的ServletConfig对象。
 
 > 重写init方法时，必须要加`super.init(config);`
-## ServletContext类
+## 2.6 ServletContext类
 - ServletContext是一个接口，表示Servlet上下文对象
 - 一个web应用对应的是一个ServletContext对象
 - 由于一个 web 应用程序的所有 Servlet 都共享的是同一个 ServletContext 对象，所以 ServletContext 对象也被称为 application 对象（web 应用程序对象)
@@ -100,3 +105,17 @@ Servlet程序默认是第一次访问的时候创建，ServletConfig是每个Ser
   - 本地路径：资源在文件系统中的实际保存路径
 2) application 域范围的属性
 3) 获取 web.xml这种配置的上下文参数 context-param
+## 2.7 HttpServletRequest 接口
+该接口是 ServletRequest 接口的子接口，封装了 HTTP 请求的相关信息，由 Servlet 容器创建 其实现类对象并传入 service(ServletRequest req, ServletResponse res)方法中。我们请求的详细 信息都可以通过 HttpServletRequest 接口的实现类对象获取。这个实现类对象一般都是容器 创建的，我们不需要管理。
+### HttpServletRequest 主要功能
+- 获取请求参数
+  - `getParameter()` 获取请求的参数，单值
+  - `getParameterValues() ` 获取请求的参数，多值
+- 转发页面
+  - `getRequestDispatcher("servlet2")`
+- 获取请求头相关信息
+## 2.8 HttpServletResponse 接口
+HttpServletResponse 是 ServletResponse 接口的子接口，封装了 HTTP 响应的相关信息，由 Servlet 容器创建其实现类对象并传入 service(ServletRequest req, ServletResponse res)方法中。
+### 功能
+- 使用 PrintWriter 对象向浏览器输出数据
+- 实现请求重定向
