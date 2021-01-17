@@ -1,5 +1,6 @@
 # 1. Tomcat
 ## 1.1 Http
+### GET请求
 - 请求行
   - 请求的方式
     - `GET`: 能够携带的参数比较少，大小有限制，会在浏览器的URL地址栏显示数据内容，不安全，但高效
@@ -15,6 +16,24 @@
   - Connection: 告诉服务器请求如何处理
     - Keep-Alive 保持一小时间段的连接
     - Closed 马上关闭
+### Post请求
+- 请求行
+- 请求头
+  - Accept: 客户端可以接收的数据类型
+  - Accept-Language: 客户端可以接收的语言
+  - User-Agent: 浏览器的信息
+  - Content-type：表示发送的数据类型
+    - application/x-www-form-urlencodered 
+    表示提交的数据格式是：name=value&name=value, 然后对其进行url编码
+    url编码是把非英文的内容转化为：%xx%xx
+    - mutilpart/form-data
+    表示以多段的形式提交给服务器
+  - content-Length: 发送的数据长度
+  - Cache-Control：表示如何控制缓存，no-cache不缓存
+  
+- 空行
+- 请求体：发送给服务器的数据
+
     
   
 # 2. Servet技术
