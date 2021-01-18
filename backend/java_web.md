@@ -102,6 +102,8 @@ Servlet程序默认是第一次访问的时候创建，ServletConfig是每个Ser
 - ServletContext是一个接口，表示Servlet上下文对象
 - 一个web应用对应的是一个ServletContext对象
 - 由于一个 web 应用程序的所有 Servlet 都共享的是同一个 ServletContext 对象，所以 ServletContext 对象也被称为 application 对象（web 应用程序对象)
+- 共享数据
+在一个Servlet中放一个数据，可以在另一个Servlet中获取
 ### ServletContext类的四个作用
 1) 获取虚拟路径所映射的本地路径 
   - 虚拟路径：浏览器访问 web 应用中资源时所使用的路径 
@@ -120,11 +122,14 @@ Servlet程序默认是第一次访问的时候创建，ServletConfig是每个Ser
 ## 2.8 HttpServletResponse 接口
 HttpServletResponse 是 ServletResponse 接口的子接口，封装了 HTTP 响应的相关信息，由 Servlet 容器创建其实现类对象并传入 service(ServletRequest req, ServletResponse res)方法中。设置返回客户端的消息可以通过HttpServletResponse设置。
 ### 功能
-#### 两个输出流
+#### 1 向浏览器发送数据
 - 字节流 `getOutPutStream()` 常用于下载
 - 字符流 `getWrite()` 常用于传递字符串  
 两者只能使用其中一个
 - 使用 PrintWriter 对象向浏览器输出数据
+#### 2 向浏览器发送响应头的方法
+
+#### 3 响应状态码
 - 实现请求重定向
   - `response.sendRedirect("http://localhost:8080")`
 # 2. JSP(Java Server Page)
