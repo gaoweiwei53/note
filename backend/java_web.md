@@ -131,4 +131,14 @@ HttpServletResponse 是 ServletResponse 接口的子接口，封装了 HTTP 响�
 Jsp主要作用是代替Servlet程序回传html页面的数据，因为Servlet程序回传html页面的数据是一件非常繁琐的事情，开发成本和维护成本都很高。
 
 > 其本质是Servlet程序，第一次使用的时候会被编译成class文件，该类继承了HttpServlet类
+## 2.1 Jsp指令
+SP指令用来设置整个JSP页面相关的属性，如网页的编码方式和脚本语言。
 
+语法格式如下：
+```jsp
+<%@ directive attribute="value" %>
+```
+JSP中三种指令标签：
+- `<%@ page ... %>` 定义网页依赖属性，比如脚本语言、error页面、缓存需求等等
+- `<%@ include ... %>` 包含其他文件
+- `<%@ taglib ... %>`  引入标签库的定义
