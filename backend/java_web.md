@@ -2,13 +2,13 @@
 ## 1.1 Http
 ### http响应
 - 响应体
-```xml
-Accept-Ranges:
+```java
+Accept-Ranges: tytes
 Cache-Control: 
 Content-Length:
 Content-Type: text/javascript; charset=utf-8
-Connection:
-Content-Encoding:
+Connection: Keep-Alive
+Content-Encoding: gzip
 Date:
 Etag: 
 Server:
