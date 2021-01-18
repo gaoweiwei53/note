@@ -131,7 +131,7 @@ Servlet程序默认是第一次访问的时候创建，ServletConfig是每个Ser
   - `getParameter()` 获取请求的参数，单值
   - `getParameterValues() ` 获取请求的参数，多值
 - 转发页面
-  - `getRequestDispatcher("servlet2")`
+  - `getRequestDispatcher("servlet2").forward(request, response)`
 - 获取请求头相关信息
 ## 2.8 HttpServletResponse 接口
 HttpServletResponse 是 ServletResponse 接口的子接口，封装了 HTTP 响应的相关信息，由 Servlet 容器创建其实现类对象并传入 service(ServletRequest req, ServletResponse res)方法中。设置返回客户端的消息可以通过HttpServletResponse设置。
@@ -157,10 +157,50 @@ HttpServletResponse 是 ServletResponse 接口的子接口，封装了 HTTP 响�
   - 创建OutPutStream对象
   - 将FileOutputStream流写入Buffer缓冲区
   - 使用OutPutStream将缓冲区里的数据写入到客户端
+ 3) 验证码功能
+ 验证怎么来的？
+ - 前端实现
+ - 后端实现 需要用到java的图片类，生成一个图片
+ 4) 实现重定向 (重要)
+ 使用`response.sendRedirect("/")`方法
+#### 面试题： 重定向和转发的区别？
+- 相同点：页面都会跳转
+- 不同点：
+  - 请求转发时URL不会改变
+  - 重定向时URL会发生变化
+
 # 2. JSP(Java Server Page)
 Jsp主要作用是代替Servlet程序回传html页面的数据，因为Servlet程序回传html页面的数据是一件非常繁琐的事情，开发成本和维护成本都很高。
 
 > 其本质是Servlet程序，第一次使用的时候会被编译成class文件，该类继承了HttpServlet类
+## Session, Cookie
+Cookie: 存在客户端
+Session：保存在服务器
+### Cookie
+1) 从请求中拿到cookie信息
+2) 服务器响应给客户端cookie
+```java
+Cookie[] cookies = request.getCookies(); //获得cookie
+cookie.getName(); // 获得cookie的key
+cookie.getValue(); // 获得cookie的value
+response.addCookie(cookie); 响应给客户端一个cookie
+cookie.setMaxAge(); //设置cookie的有效期
+```
+- 一个cookie这只能保存一个一个信息
+- 一个web站点可以给浏览器发送多个cookie， 最多为20个
+- Cookie大小有限制4kb
+- 300个浏览器cookie上线
+### Seesion(重点)
+- 服务器会为每个用户创建一个session对象
+- 一个session独占一个浏览器，只要这个浏览器不关闭，它就存在
+- 用户登录后，整个网站都可以访问它 》 保存用户登录的信息 保存购物车的信息
+
+#### Session与Cookie的区别
+- Session
+服务器保存Seesion，服务器将SessionID 通过Cookie传给客户端
+- Cookie
+保存在浏览器中
+
 ## 2.1 Jsp指令
 JSP指令用来设置整个JSP页面相关的属性，如网页的编码方式和脚本语言。
 
@@ -191,3 +231,13 @@ JSP中三种指令标签：
 - 表达式语句被翻译成`out.print()`方法
 - `_jspService()`方法中的变量，在表达式中使用
 - 语句不能以分号结尾
+
+# JavaBean
+是一个实体类
+
+JavaBean有特定的写法
+- 必须有一个无参构造
+- 属性必须私有化
+- 必须有set/get方法
+
+一般用来和数据库的字段做映射
