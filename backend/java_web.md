@@ -6,7 +6,7 @@
 Accept-Ranges:
 Cache-Control: 
 Content-Length:
-Content-Type: 
+Content-Type: text/javascript; charset=utf-8
 Connection:
 Content-Encoding:
 Date:
