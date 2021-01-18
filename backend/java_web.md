@@ -1,5 +1,19 @@
 # 1. Tomcat
 ## 1.1 Http
+### http响应
+- 响应体
+```json
+Accept-Ranges:
+Cache-Control: 
+Content-Length:
+Content-Type: 
+Connection:
+Content-Encoding:
+Date:
+Etag: 
+Server:
+```
+- 响应状态码
 ### GET请求
 - 请求行
   - 请求的方式
@@ -122,22 +136,33 @@ Servlet程序默认是第一次访问的时候创建，ServletConfig是每个Ser
 ## 2.8 HttpServletResponse 接口
 HttpServletResponse 是 ServletResponse 接口的子接口，封装了 HTTP 响应的相关信息，由 Servlet 容器创建其实现类对象并传入 service(ServletRequest req, ServletResponse res)方法中。设置返回客户端的消息可以通过HttpServletResponse设置。
 ### 功能
-#### 1 向浏览器发送数据
+#### 1. 向浏览器发送数据
 - 字节流 `getOutPutStream()` 常用于下载
 - 字符流 `getWrite()` 常用于传递字符串  
 两者只能使用其中一个
 - 使用 PrintWriter 对象向浏览器输出数据
-#### 2 向浏览器发送响应头的方法
+#### 2. 向浏览器发送响应头的方法
 
-#### 3 响应状态码
+#### 3. 响应状态码
 - 实现请求重定向
   - `response.sendRedirect("http://localhost:8080")`
+#### 常见功能
+1) 向浏览器输出消息
+2) 下载文件
+  - 获取下载文件的路径
+  - 获取下载的文件名
+  - 设置让浏览器支持下载的东西
+  - 获取下载文件的输入流
+  - 创建缓冲区
+  - 创建OutPutStream对象
+  - 将FileOutputStream流写入Buffer缓冲区
+  - 使用OutPutStream将缓冲区里的数据写入到客户端
 # 2. JSP(Java Server Page)
 Jsp主要作用是代替Servlet程序回传html页面的数据，因为Servlet程序回传html页面的数据是一件非常繁琐的事情，开发成本和维护成本都很高。
 
 > 其本质是Servlet程序，第一次使用的时候会被编译成class文件，该类继承了HttpServlet类
 ## 2.1 Jsp指令
-SP指令用来设置整个JSP页面相关的属性，如网页的编码方式和脚本语言。
+JSP指令用来设置整个JSP页面相关的属性，如网页的编码方式和脚本语言。
 
 语法格式如下：
 ```jsp
