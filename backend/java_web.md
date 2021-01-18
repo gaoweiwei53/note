@@ -2,7 +2,7 @@
 ## 1.1 Http
 ### http响应
 - 响应体
-```java
+```
 Accept-Ranges: tytes
 Cache-Control: 
 Content-Length:
