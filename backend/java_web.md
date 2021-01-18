@@ -39,6 +39,9 @@
 - 302 重定向 
 - 404 数据不存在
 - 500 服务器内部错误
+
+## 1.3 base标签
+base标签可以设置页面相对路径的 参照路径
     
   
 # 2. Servet技术
@@ -115,7 +118,13 @@ Servlet程序默认是第一次访问的时候创建，ServletConfig是每个Ser
   - `getRequestDispatcher("servlet2")`
 - 获取请求头相关信息
 ## 2.8 HttpServletResponse 接口
-HttpServletResponse 是 ServletResponse 接口的子接口，封装了 HTTP 响应的相关信息，由 Servlet 容器创建其实现类对象并传入 service(ServletRequest req, ServletResponse res)方法中。
+HttpServletResponse 是 ServletResponse 接口的子接口，封装了 HTTP 响应的相关信息，由 Servlet 容器创建其实现类对象并传入 service(ServletRequest req, ServletResponse res)方法中。设置返回客户端的消息可以通过HttpServletResponse设置。
 ### 功能
+#### 两个输出流
+- 字节流 `getOutPutStream()` 常用于下载
+- 字符流 `getWrite()` 常用于传递字符串  
+两者只能使用其中一个
+-
 - 使用 PrintWriter 对象向浏览器输出数据
 - 实现请求重定向
+  - `response.sendRedirect("http://localhost:8080")`
