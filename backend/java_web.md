@@ -124,7 +124,11 @@ HttpServletResponse 是 ServletResponse 接口的子接口，封装了 HTTP 响�
 - 字节流 `getOutPutStream()` 常用于下载
 - 字符流 `getWrite()` 常用于传递字符串  
 两者只能使用其中一个
--
 - 使用 PrintWriter 对象向浏览器输出数据
 - 实现请求重定向
   - `response.sendRedirect("http://localhost:8080")`
+# 2. JSP(Java Server Page)
+Jsp主要作用是代替Servlet程序回传html页面的数据，因为Servlet程序回传html页面的数据是一件非常繁琐的事情，开发成本和维护成本都很高。
+
+> 其本质是Servlet程序，第一次使用的时候会被编译成class文件，该类继承了HttpServlet类
+
