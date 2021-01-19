@@ -232,7 +232,7 @@ JSP中三种指令标签：
 - `_jspService()`方法中的变量，在表达式中使用
 - 语句不能以分号结尾
 
-# JavaBean
+# 3. JavaBean
 是一个实体类
 
 JavaBean有特定的写法
@@ -241,3 +241,29 @@ JavaBean有特定的写法
 - 必须有set/get方法
 
 一般用来和数据库的字段做映射
+
+ORM：对象关系映射
+- 表 =》 类
+- 字段 =》 属性
+- 行记录 =》 对象
+# 4. MVC(Model View Controller) 三层架构
+- Model
+  - 业务处理：业务逻辑(Service)
+  - 数据持久层：Dao
+- View
+  - 展示数据
+  - 提供连接发起Servlet请求
+- Controller
+  - 接收用户的请求
+  - 交给业务层处理对应的代码
+  - 控制视图的跳转
+# Filer
+过滤网站的数据
+- 处理中文乱码
+- 登录验证
+# Listener
+监听事件，在Java代码中写逻辑，在jsp文件中设置相应的监听器
+
+Session销毁的两种方式
+- 手动销毁：`getSession().inValidate()`
+- 自动销毁： 在jsp文件中设置Session过期时间
