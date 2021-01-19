@@ -1,3 +1,6 @@
+windows mysql root密码：alex123
+
+alex: alex123
 # 1. [Ubuntu 安装mysql](https://www.zhihu.com/search?type=content&q=mysql%20ubuntu)
 ### 方法1：从ubuntu仓库中安装
 ```bash
