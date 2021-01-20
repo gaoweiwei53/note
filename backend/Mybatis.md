@@ -1,7 +1,7 @@
 # 1. 什么是Mybatis
 MyBatis 是一款优秀的持久层框架，它支持自定义 SQL、存储过程以及高级映射。MyBatis 免除了几乎所有的 JDBC 代码以及设置参数和获取结果集的工作。MyBatis 可以通过简单的 XML 或注解来配置和映射原始类型、接口和 Java POJO（Plain Old Java Objects，普通老式 Java 对象）为数据库中的记录。
 # 2. 使用
-1.1 创建数据库
+1) 创建数据库
 ```sql
 CREATE DATABASE mybatis;
 USE mybatis;
@@ -20,7 +20,7 @@ INSERT INTO user(id, name, pwd) VALUES
 
 SELECT * FROM user;
 ```
-1.2 Idea 连接数据库
+2) Idea 连接数据库
 ```sql
 show variables like'%time_zone';
 set global time_zone='+8:00';
@@ -29,3 +29,46 @@ flush privileges;
 #后，再次输入
 show variables like'%time_zone';
 ```
+3) 在`resources`文件下创建config.xml配置文件
+4) 创建工具类
+```java
+public class MybatisUtils {
+    private static SqlSessionFactory sqlSessionFactory;
+    static {
+        try {
+            //1. 获取sqlSessionFactory对象
+            String resource = "org/mybatis/example/mybatis-config.xml";
+            InputStream inputStream = Resources.getResourceAsStream(resource);
+            sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    // 获得 SqlSession 的实例, SqlSession 提供了在数据库执行 SQL 命令所需的所有方法
+    public static SqlSession setSqlSession(){
+        return sqlSessionFactory.openSession();
+    }
+
+}
+```
+5) 创建实体类 alter + insert
+6) Dao接口
+```java
+public interface UserDao {
+    List<User> getUserList();
+}
+```
+7) 实现Dao接口
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.dao.UserDao">
+    <!-- id 对应UserDao方法名-->
+    <select id="getUserList" resultType="org.example.pojo.User">
+        select * from mybatis.user
+    </select>
+</mapper>
+```
+
