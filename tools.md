@@ -33,3 +33,4 @@ Ctrl+Shift+/: for block comments (/*...*/)、
 - Ctrl + O: Override Methods 
 - Ctrl + I: Implement Methods
 - Ctrl + H: 查看实现类
+- Alter + Insert：自动生成Getter Setter 构造函数
