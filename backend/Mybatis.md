@@ -201,7 +201,6 @@ password=alex123
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <!-- 顺序不能错-->
     <properties resource="db.properties"/>
     <environments default="development">
         <environment id="development">
@@ -219,3 +218,48 @@ password=alex123
     </mappers>
 </configuration>
 ```
+> XML文件中每个元素的顺序要严格遵守，不能错
+##  4. 类型别名（typeAliases）
+类型别名可为 Java 类型设置一个缩写名字。 它仅用于 XML 配置，意在降低冗余的全限定类名书写
+- 方法1：
+```xml
+    <typeAliases>
+        <typeAlias type="org.example.pojo.User" alias="User"/>
+    </typeAliases>
+```
+- 方法二：指定一个包名，MyBatis 会在包名下面搜索需要的 Java Bean
+```xml
+<typeAliases>
+  <package name="domain.blog"/>
+</typeAliases>
+```
+每一个在包 domain.blog 中的 Java Bean，在没有注解的情况下，会使用 Bean 的首字母小写的非限定类名来作为它的别名。 比如 domain.blog.Author 的别名为 author；若有注解，则别名为其注解值。
+```java
+@Alias("author")
+public class Author {
+    ...
+}
+```
+## 5. 设置（settings）
+## 6. 插件（plugins）
+- MybatisPlus
+## 7. 映射器（mappers
+- 方式1：
+```xml
+<!-- 使用相对于类路径的资源引用 -->
+<mappers>
+  <mapper resource="org/mybatis/builder/AuthorMapper.xml"/>
+  <mapper resource="org/mybatis/builder/BlogMapper.xml"/>
+</mappers>
+```
+- 方式2：
+```xml
+<!-- 使用映射器接口实现类的完全限定类名 -->
+<mappers>
+  <mapper class="org.mybatis.builder.AuthorMapper"/>
+  <mapper class="org.mybatis.builder.BlogMapper"/>
+</mappers>
+```
+注意点：
+- 接口和它的Mapper配置文件必须同名
+- 接口与它的Mapper配置文件必须在同一包下
