@@ -144,3 +144,30 @@ namespace里的包名要和Mapper接口里的一致
     </delete>
 ```
 > 增删改需要提交事务 `sqlSession.commit();`
+## 使用Map
+若实体类的字段太多，可使用Map进行操作
+```java
+    // 使用Map
+    int addUser2(Map<String, Object> map);
+```
+```xml
+    <insert id="addUser2" parameterType="map">
+        insert into mybatis.user (id, pwd) values (#{userId}, #{userPassword})
+    </insert>
+```
+```java
+    @Test
+    public void testAddUser2(){
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        Map<String, Object> map = new HashMap<>();
+
+        // key要和映射文件里配置的一致
+        map.put("userId", 5);
+//        map.put("userName","Elon");
+        map.put("userPassword","567");
+        mapper.addUser2(map);
+        sqlSession.commit();
+        sqlSession.close();
+    }
+```
