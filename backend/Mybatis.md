@@ -145,7 +145,7 @@ namespace里的包名要和Mapper接口里的一致
 ```
 > 增删改需要提交事务 `sqlSession.commit();`
 ## 使用Map
-若实体类的字段太多，可使用Map进行操作
+若实体类的字段太多，可使用Map进行操作。或者用**注解**！
 ```java
     // 使用Map
     int addUser2(Map<String, Object> map);
@@ -170,4 +170,15 @@ namespace里的包名要和Mapper接口里的一致
         sqlSession.commit();
         sqlSession.close();
     }
+```
+### 模糊查询
+- 方法一：在java代码中使用通配符`%%`
+```java
+List<User> users = sqlSession.getMapper(UserMapper.class).getUserLike("%a%");
+```
+- 方法二：在配置文件里设置(推荐)
+```xml
+    <select id="getUserLike" resultType="org.example.pojo.User">
+        select * from user where name like "%"#{value}"%"
+    </select>
 ```
