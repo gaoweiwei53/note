@@ -30,6 +30,28 @@ flush privileges;
 show variables like'%time_zone';
 ```
 3) 在`resources`文件下创建config.xml配置文件
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis?useSSH=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=Asia/Shanghai"/>
+                <property name="username" value="root"/>
+                <property name="password" value="alex123"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="org/example/dao/UserMapper.xml"/>
+    </mappers>
+</configuration>
+```
 4) 创建工具类
 ```java
 public class MybatisUtils {
