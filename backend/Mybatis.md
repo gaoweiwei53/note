@@ -71,4 +71,24 @@ public interface UserDao {
     </select>
 </mapper>
 ```
+7) 测试 Junit
+```java
+public class UserDaoTest {
+    @Test
+    public void test(){
+        // 第一步：获取sqlSession对象
+        SqlSession sqlSession = MybatisUtils.getSqlSession();
 
+        // 方式1：getMapper
+        UserDao mapper = sqlSession.getMapper(UserDao.class);
+        List<User> userList = mapper.getUserList();
+
+        for (User user : userList) {
+            System.out.println(user);
+        }
+
+        // 关闭sqlSession
+        sqlSession.close();
+    }
+}
+```
