@@ -182,3 +182,15 @@ List<User> users = sqlSession.getMapper(UserMapper.class).getUserLike("%a%");
         select * from user where name like "%"#{value}"%"
     </select>
 ```
+# 配置优化
+## 2. 环境配置（environments） 
+Mybatis的默认事务管理器是JDBC，连接池POOLED
+## 3. 属性（properties）
+这些属性可以在外部进行配置，并可以进行动态替换。既可以在典型的 Java 属性文件中配置这些属性，也可以在 properties 元素的子元素中设置。(db.properties)
+- 编写配置文件db.properties
+```properties
+driver=com.mysql.cj.jdbc.Driver
+url=jdbc:mysql://localhost:3306/mybatis?useSSH=true;useUnicode=true;characterEncoding=UTF-8;serverTimezone=Asia/Shanghai
+username=root
+password=alex123
+```
