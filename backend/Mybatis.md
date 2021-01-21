@@ -114,3 +114,33 @@ public class UserDaoTest {
     }
 }
 ```
+# 3. GRUD
+namespace里的包名要和Mapper接口里的一致
+## Select
+- id 对应的就是namespace的方法名
+- resultType: sql语句的返回值的类型
+- parameterType: 参数类型
+```xml
+    <select id="getUserById" parameterType="int" resultType="org.example.pojo.User">
+        select * from mybatis.user where id = #{id}
+    </select>
+```
+## Insert
+```xml
+    <insert id="addUser" parameterType="org.example.pojo.User" >
+        insert into mybatis.user (id, name, pwd) values (#{id}, #{name}, #{pwd})
+    </insert>
+```
+## Update
+```xml
+    <update id="updateUser" parameterType="org.example.pojo.User">
+        update mybatis.user set name = #{name}, pwd = #{pwd} where id = #{id}
+    </update>
+```
+## delete
+```xml
+    <delete id="deleteUser" parameterType="int">
+        delete from mybatis.user where id = #{id}
+    </delete>
+```
+> 增删改需要提交事务 `sqlSession.commit();`
