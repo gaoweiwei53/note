@@ -194,3 +194,28 @@ url=jdbc:mysql://localhost:3306/mybatis?useSSH=true;useUnicode=true;characterEnc
 username=root
 password=alex123
 ```
+- 在核心配置文件中引入
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 顺序不能错-->
+    <properties resource="db.properties"/>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="org/example/dao/UserMapper.xml"/>
+    </mappers>
+</configuration>
+```
