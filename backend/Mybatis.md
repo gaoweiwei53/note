@@ -333,3 +333,42 @@ List<User> getUserByLimit(Map<String, Integer> map);
 # Lombok工具
 在实体类中`@data`可以自动生成无参构造函数, *getter*, *setter*, *toString*, *hashcode*, *equals*
 # 多对一的处理
+## 方法1：关联的嵌套 Select 查询
+```
+<mapper namespace="org.example.dao.StudentMapper">
+    <select id="getAllStudent" resultMap="StudentTeacher">
+        select * from student
+    </select>
+    <resultMap id="StudentTeacher" type="Student">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+	<!-- 复杂的属性，我们需要单独处理 对象： association 集合：collection -->
+        <!--给teacher赋一个属性-->
+        <association property="teacher" column="tid" javaType="Teacher" select="getTeacher"/>
+    </resultMap>
+    <select id="getTeacher" resultType="Teacher">
+        select * from teacher where id = #{id}
+    </select>
+</mapper>
+```
+## 方法2：关联的嵌套结果映射
+```xml
+ <!-- Method 2   -->
+ <select id="getAllStudent2" resultMap="StudentTeacher2">
+     select s.id sid, s.name, t.name tname
+     from student s, teacher t
+     where s.tid = t.id
+ </select>
+ <resultMap id="StudentTeacher2" type="Student">
+     <result property="id" column="sid"/>
+     <result property="name" column="sname"/>
+     <association property="teacher" javaType="Teacher">
+         <result property="name" column="tname"/>
+     </association>
+ </resultMap>
+```
+ ## Mysql多对一查询
+ - 子查询
+ - 联表查询
+ # 一对多查询
+ 
