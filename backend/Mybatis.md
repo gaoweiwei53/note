@@ -320,3 +320,16 @@ id,name,pwd => id, name, passsword
 // limit 分页
 List<User> getUserByLimit(Map<String, Integer> map);
 ```
+# 注解开发
+简单的语句可使用使用注解，但是复杂的语句最好使用XML文件配置。
+## 设置自动提交事务
+```java
+ public static SqlSession getSqlSession(){
+     return sqlSessionFactory.openSession(true);
+ }
+```
+实体类文件一定要在核心配置文件里注册。
+## ${}和#{}的区别
+# Lombok工具
+在实体类中`@data`可以自动生成无参构造函数, *getter*, *setter*, *toString*, *hashcode*, *equals*
+# 多对一的处理
