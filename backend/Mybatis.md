@@ -267,7 +267,7 @@ public class Author {
 - 将数据库配置文件从外部引入
 - 实体类别名
 - 保证UserMapper接口和UserMapper.xml改为一致，并放在同一个包下
-# 作用域（Scope）和生命周期
+# 8. 作用域（Scope）和生命周期
 理解我们之前讨论过的不同作用域和生命周期类别是至关重要的，因为错误的使用会导致非常严重的**并发问题**。
 ## SqlSessionFactoryBuilder
 这个类可以被实例化、使用和丢弃，一旦创建了 SqlSessionFactory，就不再需要它了。 因此 SqlSessionFactoryBuilder 实例的最佳作用域是方法作用域（也就是局部方法变量）。 你可以重用 SqlSessionFactoryBuilder 来创建多个 SqlSessionFactory 实例，但最好还是不要一直保留着它，以保证所有的 XML 解析资源可以被释放给更重要的事情。
@@ -276,7 +276,7 @@ public class Author {
 - 最简单的就是使用**单例模式**或者**静态单例模式**。
 ## SqlSession
 每个线程都应该有它自己的 SqlSession 实例。SqlSession 的实例不是线程安全的，因此是不能被共享的，所以它的最佳的作用域是请求或方法作用域。 绝对不能将 SqlSession 实例的引用放在一个类的静态域，甚至一个类的实例变量也不行。 也绝不能将 SqlSession 实例的引用放在任何类型的托管作用域中，比如 Servlet 框架中的 HttpSession。 如果你现在正在使用一种 Web 框架，考虑将 SqlSession 放在一个和 HTTP 请求相似的作用域中。 换句话说，每次收到 HTTP 请求，就可以打开一个 SqlSession，返回一个响应后，就关闭它。 这个关闭操作很重要，为了确保每次都能执行关闭操作，你应该把这个关闭操作放到 finally 块中。 
-# 解决字段名和属性名不一致的问题
+## 解决字段名和属性名不一致的问题
 - 方法1：起别名
 - 方法2：ResultMap
 ```
@@ -293,7 +293,7 @@ id,name,pwd => id, name, passsword
  </select>
 ```
 - ResultMap 的设计思想是，对简单的语句做到零配置，对于复杂一点的语句，只需要描述语句之间的关系就行了。
-# 日志
+# 9. 日志
 ## 日志工厂
 - Log4j
 - STDOUT_LOGGING
@@ -310,7 +310,7 @@ id,name,pwd => id, name, passsword
     <setting name="logImpl" value="LOG4J"/>
 </settings>
 ```
-# 分页
+# 10. 分页
 ```xml
 <select id="getUserByLimit" parameterType="map" resultType="user">
     select * from user limit #{startIndex}, #{pageSize}
@@ -320,7 +320,7 @@ id,name,pwd => id, name, passsword
 // limit 分页
 List<User> getUserByLimit(Map<String, Integer> map);
 ```
-# 注解开发
+# 11. 注解开发
 简单的语句可使用使用注解，但是复杂的语句最好使用XML文件配置。
 ## 设置自动提交事务
 ```java
@@ -330,9 +330,9 @@ List<User> getUserByLimit(Map<String, Integer> map);
 ```
 实体类文件一定要在核心配置文件里注册。
 ## ${}和#{}的区别
-# Lombok工具
+## Lombok工具
 在实体类中`@data`可以自动生成无参构造函数, *getter*, *setter*, *toString*, *hashcode*, *equals*
-# 多对一的处理
+# 12. 多对一的处理
 ## 方法1：关联的嵌套 Select 查询
 ```
 <mapper namespace="org.example.dao.StudentMapper">
@@ -370,7 +370,7 @@ List<User> getUserByLimit(Map<String, Integer> map);
  ## Mysql多对一查询
  - 子查询
  - 联表查询
-# 一对多查询
+# 13. 一对多查询
 ```xml
 <mapper namespace="org.example.dao.TeacherMapper">
     <select id="getTeacherStudent" resultMap="TeacherStudent">
@@ -395,7 +395,7 @@ List<User> getUserByLimit(Map<String, Integer> map);
 - InnoDB底层
 - 索引
 - 索引优化
-# 动态 SQL
+# 14. 动态 SQL
 **动态Sql是指根据不同条件生成不同的SQL语句**
 - if
 - choose (when, otherwise)
