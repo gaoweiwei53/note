@@ -370,5 +370,44 @@ List<User> getUserByLimit(Map<String, Integer> map);
  ## Mysql多对一查询
  - 子查询
  - 联表查询
- # 一对多查询
- 
+# 一对多查询
+```xml
+<mapper namespace="org.example.dao.TeacherMapper">
+    <select id="getTeacherStudent" resultMap="TeacherStudent">
+        select s.id sid, s.name sname, t.name tname, t.id, tid
+        from student s, teacher t
+        where s.tid = t.id and t.id = #{tid}
+    </select>
+    <resultMap id="TeacherStudent" type="Teacher">
+        <result property="id" column="tid"/>
+        <result property="name" column="tname"/>
+        <collection property="students" ofType="Student">
+            <result property="id" column="sid"/>
+            <result property="name" column="sname"/>
+            <result property="tid" column="tid"/>
+        </collection>
+    </resultMap>
+</mapper>
+```
+> `JavaType`返回值类型， `ofType`泛型类型，集合内元素的类型
+## 面试高频
+- Mysql引擎
+- InnoDB底层
+- 索引
+- 索引优化
+# 动态 SQL
+**动态Sql是指根据不同条件生成不同的SQL语句**
+- if
+- choose (when, otherwise)
+- trim (where, set)
+- foreach
+1) 搭建环境
+```sql
+CREATE TABLE blog(
+	id INT NOT NULL COMMENT "博客id",
+    title VARCHAR(30) NOT NULL COMMENT "博客标题",
+    auther VARCHAR(30) NOT NULL COMMENT "博客作者",
+    create_time DATETIME NOT NULL COMMENT "创建时间",
+    views INT NOT NULL COMMENT "浏览量"
+) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4
+```
