@@ -411,3 +411,43 @@ CREATE TABLE blog(
     views INT NOT NULL COMMENT "浏览量"
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8mb4
 ```
+## SQL片段
+有时候我们将一些功能的sql语句抽取出来，方便复用。
+1) 使用SQL标签抽取公共的部分
+```xml
+<sql id="if-title-author">
+    <if test="title != null">
+        title = #{title}
+    </if>
+    <if test="author != null">
+        and author = #{title}
+    </if>
+</sql>
+```
+2) 在需要使用的地方使用`include`标签引用即可
+```xml
+ <select id="queryBlogByIF" parameterType="map" resultType="blog">
+     select * from blog
+     <where>
+         <include refid="if-title-author"></include>
+     </where>
+ </select>
+```
+注意事项：
+- 最好基于单表来定义SQL片段
+- 不要存在`where`标签
+## foreach
+动态 SQL 的另一个常见使用场景是对集合进行遍历（尤其是在构建 IN 条件语句的时候）。
+```xml
+<select id="queryBlogForeach" parameterType="map" resultType="blog">
+    select * from blog
+    <where>
+        <foreach collection="ids" item="id" open="(" close=")" separator="or">
+            id = #{id}
+        </foreach>
+    </where>
+</select>
+```
+> 动态SQL就是拼接SQL语句
+建议：
+- 先写出完整的SQL语句，再对应修改成我们的动态SQL实现通用即可。
