@@ -244,6 +244,7 @@ public class User {
     - 注解只负责完成属性注入
 ## 7.7 使用Java方式配置Spring
 在Spring4之后成为了核心功能！
+
 配置类
 ```java
 @Configuration
