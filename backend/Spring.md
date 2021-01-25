@@ -154,3 +154,92 @@ public void setUserDao(UserDao userDao) {
     <bean id="user2" class="org.example.pojo.User" c:name="xiaohua" c:age="19"/>
 </beans>
 ```
+# 5. Bean的作用域
+- singleton Spring的默认模式
+- prototype 每次从容器中get的时候都会产生新的对象
+- request
+# 6. Bean的自动装配
+- Spring会在上下文自动寻找并自动给bean装备属性
+
+在Spring中有三种装配的方式
+1) 在xml中显示的配置
+2) 在Java中显示配置
+3) 自动装配bean【重要】
+## 6.1 ByName自动装配
+- ByName: 会自动在容器上下文中查找，和自己对象set方法后面的值对应的bean id
+```xml
+<bean id="cat" class="org.example.pojo.Cat"/>
+<bean id="dog" class="org.example.pojo.Dog"/>
+<bean id="people" class="org.example.pojo.People" autowire="byName"/>
+```
+## 6.2 ByType自动装配
+```xml
+<bean id="cat" class="org.example.pojo.Cat"/>
+<bean id="dog" class="org.example.pojo.Dog"/>
+<bean id="people" class="org.example.pojo.People" autowire="byType"/>
+```
+小结：
+- byname需要保证所有bean的id唯一，并且这个bean需要和自动注入的属性的set方法的值一致
+- bytype需要保证所有bean的class唯一，并且这个bean需要和自动注入的属性的类型一致！
+## 6.3 使用注解实现自动装配
+- 导入约束：context约束
+- 配置注解的支持：`<context:annotation-config/>`
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+</beans>
+```
+### @Autowired
+- 直接在属性上使用
+- 使用Autowired可以不用编写Set方法
+- `required`为false表示这个对象可以为null，否则不允许为空
+- 如果@Autowire自动装配的环境比较复杂，自动装配无法通过一个注解@Autowired完成的时候，可以使用@Qualifier("")去配合@Autowired使用，指定一个唯一的bean对象注入。
+```java
+public class People {
+    @Autowired
+    private Cat cat;
+    @Autowired
+    @Qualifier("dog22")
+    private Dog dog;
+    private String name;
+}
+```
+# 7. 使用注解开发
+- 在Spring4之后，使用注解开发必须要保证Aop的包导入了
+- 使用注解需要导入context约束，增加注解的支持
+## 7.1 bean
+## 7.2 属性如何注入
+```java
+@Component
+public class User {
+    @Value("Spring")
+    public String name;
+}
+```
+## 7.3 衍生的注解
+@Component有几个衍生注解，在web开发中，会按照mvc三层架构分层
+- dao `@Repository`
+- service `@Service`
+- controller  `@Controller`
+## 7.4 自动装配置
+- @Autowired: 自动装配通过类型，名字
+- @Nullable:
+- @Resource:
+## 7.5 作用域
+`@Scope("singleton")`
+## 7.6 小结
+- XML与注解：
+    - XML更加万能，适用于任何场合！维护简单方便
+    - 注解不是自己类是用不了，维护相对复杂
+- XML与注解最佳实践
+    - XML用来管理bean
+    - 注解只负责完成属性注入
+## 7.7 使用Java方式配置Spring
