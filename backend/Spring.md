@@ -290,3 +290,23 @@ public class MyTest {
 
 缺点：
 - 一个真实角色就会产生一个代理角色；代码量会翻倍，开发效率变低
+## 8.2 动态代理
+- 动态代理和静态代理角色一样
+- 动态代理的代理类是动态生成的，不是直接写好的
+- 动态代理分为两大类：基于接口的动态代理，基于类的动态代理
+    - 基于接口  JDK动态代理
+    - 基于类  cglib
+    - java字节码实现  javasist
+# 9. AOP
+## 9.1 什么是AOP
+AOP(Aspect Oriented Programming)面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。AOP是OOP的延续，是软件开发中的一个热点，也是Spring框架中的一个重要内容，是函数式编程的一种衍生范型。利用AOP可以对业务逻辑的各个部分进行隔离，从而使业务逻辑各部分之间的耦合读降低，提高程序的可重用性，同时提高开发的效率。 
+
+方式1：使用Spring的API接口
+```xml
+<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>1.9.6</version>
+</dependency>
+```
