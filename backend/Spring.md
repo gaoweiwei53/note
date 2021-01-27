@@ -310,3 +310,11 @@ AOP(Aspect Oriented Programming)面向切面编程，通过预编译方式和运
     <version>1.9.6</version>
 </dependency>
 ```
+方式2：使用自定义实现AOP
+# 10. Spring-Mybatis
+## 10.1 回忆Mybatis
+- 编写实体类
+- 编写核心配置文件
+- 编写接口
+- 编写Mapper.xml
+- 测试
