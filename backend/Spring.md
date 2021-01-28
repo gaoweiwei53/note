@@ -327,4 +327,7 @@ AOP(Aspect Oriented Programming)面向切面编程，通过预编译方式和运
 - 一致性
 - 隔离性
 - 持久性
+## Spring中的事务管理
+- 声明式事务：AOP
+- 编程式事务：需要在代码中进行事务的管理
 
