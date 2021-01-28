@@ -318,3 +318,13 @@ AOP(Aspect Oriented Programming)面向切面编程，通过预编译方式和运
 - 编写接口
 - 编写Mapper.xml
 - 测试
+
+[Mybatis-Spring](http://mybatis.org/spring/zh/index.html)
+
+# 11. 声明式事务
+## 事务ACID原则
+- 原子性
+- 一致性
+- 隔离性
+- 持久性
+
