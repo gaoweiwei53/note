@@ -1,3 +1,5 @@
+### 启动Tomcat时，idea日志输出中文乱码？
+- 修改Tomcat的日志配置文件logging.properties，将UTF-8改为GBK
 # 1. Tomcat
 ## 1.1 Http
 ### http响应
