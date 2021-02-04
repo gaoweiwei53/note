@@ -1,3 +1,4 @@
+在.properties配置文件中写入数据库配置数据，username=root。username是环境变量，spring在对配置文件解析后会直接读取环境变量为我自己电脑用户。在配置文件中修改username=jdbc.username即可
 - [手册](https://docs.spring.io/spring-framework/docs/5.2.0.RELEASE/spring-framework-reference/index.html)
 - [发行](https://repo.spring.io/release/org/springframework/spring/)
 
