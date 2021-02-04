@@ -349,3 +349,13 @@ AOP(Aspect Oriented Programming)面向切面编程，通过预编译方式和运
     - 当业务方法执行成功，没有异常抛出，方法执行完毕时，spring提交事务
     - 当业务方法抛出运行时异常，spring执行回滚，调用事务管理器的rollback.运行时异常的定义：RuntimeExcception和它的子类都是运行时异常。
     - 当业务方法抛出非运行时异常，主要是受查异常时，提交事务。受查异常：在代码中必须处理的异常，例如IOExccception，SQLException
+          
+### Spring中提供的事务处理方案
+1) 适合中小项目使用，注解方案
+    Spring框架自己用aop实现给业务方法增加事务的功能，使用@Transactional注解增加事务。放在publi方法的上面，表示当前方法具有事务。可以给注解的属性赋值，表示具体的隔离级别，传播行为，异常信息等。
+    
+使用@Transactional的步骤：
+ 1) 需要声明事务管理器对象` <bean id="xxx" class="...DataSourceTransanctionManager"`
+ 2) 开启事务注解驱动，告诉spring框架，要使用注解的方式管理事务
+ 3) 在方法上加入@Transactional
+2) 适合大型项目，有很多的类、方法，需要大量的配置事务，使用aspectj框架，在spring配置文件中声明，方法需要的事务，这种方式业务方法和事务配置完全分离。
