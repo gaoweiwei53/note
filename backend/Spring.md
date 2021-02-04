@@ -331,4 +331,21 @@ AOP(Aspect Oriented Programming)面向切面编程，通过预编译方式和运
 ## Spring中的事务管理
 - 声明式事务：AOP
 - 编程式事务：需要在代码中进行事务的管理
-
+处理事务需要做什么
+1) 事务管理器是一个接口和他的众多实现类。接口PlatformTransactionManager，定义了重要的方法commit,rollback.
+    - Myabtis访问数据库使用DataSourceTransanctionManager
+你需要告诉spring用的是哪种数据库的访问技术，声明数据库访问技术对应的事务管理器实现类，在spring的配置文件中使用<bean>声明就可以了
+```xml
+    <bean id="xxx" class="...DataSourceTransanctionManager"
+```
+2) 业务方法需要什么样的事务，需要说明事务的类型
+    1) 事务的隔离级别：有四个值
+    2) 事务的超时时间: 表示方法最长的执行时间
+    3) 传播行为：控制业务方法是不是有事务的，是什么样的事务。有7个传播行为，表示你的业务调用时，事务在方法之间是如何使用的，掌握三个
+          - REQUIRED: 指定的方法必须在事务内执行。若当前存在事务，就加入到事务当中，若没有事务则创建新的事务，默认选择
+          - REQUIRES_NEW: 总是新建一个事务，若当前存在事务，就将当前事务挂起，直到新事务执行完毕。
+          - SUPPORTS：指定的方法支持当前事务，但若当前没有事务，也可以以非事务方式执行
+3) 提交事务，回滚事务的时机
+    - 当业务方法执行成功，没有异常抛出，方法执行完毕时，spring提交事务
+    - 当业务方法抛出运行时异常，spring执行回滚，调用事务管理器的rollback.运行时异常的定义：RuntimeExcception和它的子类都是运行时异常。
+    - 当业务方法抛出非运行时异常，主要是受查异常时，提交事务。受查异常：在代码中必须处理的异常，例如IOExccception，SQLException
