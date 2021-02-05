@@ -86,6 +86,7 @@ String names[] = ac.getDefinitonNames();// 获取每个对象的名称
 ```xml
 <import resource="classpath:**/*.xml"/>
 ```
+可使用通配符一次加载多个文件
 # 3. 依赖注入
 ## 3.1 给对象的属性赋值
 有两种方法
@@ -236,7 +237,68 @@ java类中引用类型和Spring配置文件中<bean>的class属性是同源关�
     <context:annotation-config/>
 </beans>
 ```
+
+# 7. 使用注解开发
+- 在Spring4之后，使用注解开发必须要保证Aop的包导入了
+- 使用注解需要导入context约束，增加注解的支持
+
+使用注解的步骤：
+1) 加入依赖spring-context，在加入spring-context的同时，间接加入spring-aop的依赖
+2) 在类中加入spring的注解
+3) 在配置文件中加入组件扫描器的标签，说明注解在项目中的位置
+
+> @Component @Repository @Service @Controller @Value @AutoWired @Resource
+## 7.1 定义Bean的注解@@Component
+1) 在类中加入spring的注解
+```java
+/**
+ * @Component: 创建对象的，等同于<bean>的功能
+ *  属性：value 就是对象的名称，相当于<bean> 的id
+ *  位置：类的上面
+ * 若不知道名称，默认名称为类名的小写名字
+ */
+@Component(value="myUser")
+public class User {
+    @Value("Spring")
+    public String name;
+}
+```
+2) 在配置文件中加入组件扫描器的标签，说明注解在项目中的位置
+```xml
+<context:component-scan base-package="类的全限定名"
+```
+### 指定多个包的三种方式
+```xml
+<!--方法1-->
+<context:component-scan base-package="org.example.dao1"/>
+<context:component-scan base-package="org.example.dao2"/>
+
+<!--方法2, 使用分号或逗号-->
+<context:component-scan base-package="org.example.dao1;org.example.dao2;"/>
+
+<!--方法3：指定父包-->
+<context:component-scan base-package="org.example"/>
+```
+### @Component衍生的注解
+@Component有几个衍生注解，在web开发中，会按照mvc三层架构分层，并且它们还有额外的功能
+- dao `@Repository`
+- service `@Service`
+- controller  `@Controller`
+## 7.2 简单类型的属性注入@Value
+- 属性：value 表示简单类型的属性值
+- 位置：
+    - 在属性定义的上面，无需set方法，推荐使用
+    - 在set方法上面
+```java
+@Component(value="myUser")
+public class User {
+    @Value("Spring")
+    public String name;
+}
+```
+## 7.3 引用类型的属性注入@AutoWired或@Resource
 ### @Autowired
+@AutoWired实现引用类型的赋值，使用的是自动注入原理，支持byName，byType.默认使用的是byType自动注入
 - 直接在属性上使用
 - 使用Autowired可以不用编写Set方法
 - `required`为false表示这个对象可以为null，否则不允许为空
@@ -251,23 +313,6 @@ public class People {
     private String name;
 }
 ```
-# 7. 使用注解开发
-- 在Spring4之后，使用注解开发必须要保证Aop的包导入了
-- 使用注解需要导入context约束，增加注解的支持
-## 7.1 bean
-## 7.2 属性如何注入
-```java
-@Component
-public class User {
-    @Value("Spring")
-    public String name;
-}
-```
-## 7.3 衍生的注解
-@Component有几个衍生注解，在web开发中，会按照mvc三层架构分层
-- dao `@Repository`
-- service `@Service`
-- controller  `@Controller`
 ## 7.4 自动装配置
 - @Autowired: 自动装配通过类型，名字
 - @Nullable:
