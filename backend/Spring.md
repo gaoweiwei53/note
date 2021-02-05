@@ -303,6 +303,10 @@ public class User {
 - 使用Autowired可以不用编写Set方法
 - `required`为false表示这个对象可以为null，否则不允许为空
 - 如果@Autowire自动装配的环境比较复杂，自动装配无法通过一个注解@Autowired完成的时候，可以使用@Qualifier("")去配合@Autowired使用，指定一个唯一的bean对象注入。
+
+如果要使用byName方式，需要做的是：
+    - 1) 在属性上面加@Autowired
+    - 2) 在属性上面加@Qualifier(value="bean的id"):
 ```java
 public class People {
     @Autowired
