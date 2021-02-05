@@ -83,13 +83,16 @@ String names[] = ac.getDefinitonNames();// 获取每个对象的名称
 执行`ApplicationContext ac = new ClassPathXmlApplicationContext(config);`,`ClassPathXmlApplicationContext`读取配置文件时，创建了对象。
 ## 2.5 Import
 一般用于团队开发，可将多个配置文件导入合并为一个
+```xml
+<import resource="classpath:**/*.xml"/>
+```
 # 3. 依赖注入
 ## 3.1 给对象的属性赋值
 有两种方法
 1) 使用XML配置文件(理解即可)
 2) 使用注解(掌握，常使用)
 ### 基于XML的DI
-Bean 实例在调用无参构造器创建了空值对象后，就要对 Bean对象的属性进行初始化。初始化是由容器自动完成的，称为**注入**。根据注入方式的不同，常用的有两类：设值注入、 构造注入
+Bean 实例在调用无参构造器创建了空值对象后，就要对 Bean对象的属性进行初始化。初始化是由容器自动完成的，称为**注入**。根据注入方式的不同，常用的有两类：set注入、 构造注入
 1) 构造器注入
 使用有参构造方法注入
 - 下标赋值
@@ -98,13 +101,13 @@ Bean 实例在调用无参构造器创建了空值对象后，就要对 Bean对�
     <constructor-arg index="0" value="Data"/>
 </bean>
 ```
-- 通过类型传值 不建议使用，若由几个相同类型的参数，则无法使用
+通过类型传值 不建议使用，若由几个相同类型的参数，则无法使用
 ```xml
 <bean id="user" class="org.example.pojo.User">
     <constructor-arg type="java.lang.String" value="Houmeji"/>
 </bean>
 ```
-- 通过参数名
+通过参数名
 ```xml
 <bean id="user" class="org.example.pojo.User">
     <constructor-arg name="name" value="Hasagei"/>
@@ -168,8 +171,8 @@ Bean 实例在调用无参构造器创建了空值对象后，就要对 Bean对�
 ```
 ## 3.2 自动注入(只能针对引用类型有效，简单类型必须手动赋值)
 ### ByName自动注入
-- ByName: 会自动在容器上下文中查找，和自己对象set方法后面的值对应的bean id  
-Java中的属性名必须和配置文件中<bean> 的 id名称一样且类型一致！
+- 会自动在容器上下文中查找，和自己对象set方法后面的值对应的bean id  
+- Java中的属性名必须和配置文件中<bean> 的 id名称一样且类型一致！
 ```xml
 <bean id="cat" class="org.example.pojo.Cat"/>
 <bean id="dog" class="org.example.pojo.Dog"/>
@@ -178,9 +181,9 @@ Java中的属性名必须和配置文件中<bean> 的 id名称一样且类型一
     
 ### ByType自动注入
 java类中引用类型和Spring配置文件中<bean>的class属性是同源关系的，这样的bean能够赋值给引用类型。
-    - 类型一样
-    - 类型是父子关系
-    - 类型是接口和继承的关系
+- 类型一样
+- 类型是父子关系
+- 类型是接口和继承的关系
 ```xml
 <bean id="cat" class="org.example.pojo.Cat"/>
 <bean id="dog" class="org.example.pojo.Dog"/>
