@@ -1,3 +1,4 @@
+# 1. 前言
 在.properties配置文件中写入数据库配置数据，username=root。username是环境变量，spring在对配置文件解析后会直接读取环境变量为我自己电脑用户。在配置文件中修改username=jdbc.username即可
 - [手册](https://docs.spring.io/spring-framework/docs/5.2.0.RELEASE/spring-framework-reference/index.html)
 - [发行](https://repo.spring.io/release/org/springframework/spring/)
@@ -17,12 +18,27 @@
     <version>5.3.3</version>
 </dependency>
 ```
+## Java创建对象的方式
+1) 构造方法
+2) 反射
+3) 序列化
+4) 克隆
+5) IOC
+6) 动态代理
 ## 优点
 - 控制反转(IOC) 面向切片(AOP)
 - 支持事务的处理
 ## Spring组成
 由七大模块组成
-# 2. IOC理论推导
+## junit
+- 单元：指定的是方法，一个类有很多方法，一个方法称为单元
+### 创建测试方法
+1) public方法
+2) 没有返回值
+3) 方法名自定义
+4) 方法没有参数
+5) 方法上面加入@test, 这样的方法可以单独执行，不需要main方法
+# 2. IOC
 - UserDao接口
 - UserDaoImpl实现类
 - UserService 业务接口
@@ -42,15 +58,40 @@ public void setUserDao(UserDao userDao) {
 - 使用了set注入后，程序不再具有主动性，而变成了被动的接受对象
 
 这种思想从本质解决了问题，程序员不用再去管理对象的创建了，系统的耦合性大大降低，可以更加专注再业务层的实现上，这是IOC的原型！
-## IOC本质
+## 2.1 IOC本质
 控制反转(IOC)是一种设计思想，依赖注入(DI)是实现Ioc的一种方法。没有Ioc的程序中，我们使用面向对象编程，对象的创建与对象间的依赖关系完全硬编码在程序中，对象的创建由程序自己控制，控制反转后将对象的创建转移给第三方。控制反转就是：获得依赖对象的方式反转了。
 
 采用XMl方式配置Bean的时候，Bean的定义信息和实现分离的，而采用注解的方式可以把两者合为一体，Bean的定义信息直接以注解的形式定义在实现类中，从而达到了零配置的目的。
 
 控制反转是一种通过描述(XML或注解)并通过第三方去生产或获取特定对象的方式。在Spring中实现控制反转的是Ioc容器，其实现方法是依赖注入(Dependency Injection)。
-## IOC创建对象的方式
-1) 使用无参构造创建对象，默认
-2) 假设我们要使用有参构造创建
+## 2.2 IOC创建对象的方式
+- 告诉spring创建对象：声明`bean`，就是告诉spring要创建某个类的对象。
+- `id`: 对象的自定义名称，spring通过这个名称找到对象。
+- `class`: 类的全限定名称(不能是接口，因为spring是反射创建对象，必须使用类)
+
+spring是把创建好的对象放入到map中，spring框架有一个map创建对象。其中`id`就是map的key，value就是对象
+## 2.3 获取对象
+- `ApplicationContext`就表示spring容器
+- `ClassPathXmlApplicationContext`:表示从类路径中加载spring的配置文件
+```java
+ApplicationContext ac = new ClassPathXmlApplicationContext(config);
+ac.gtBean("id")
+int nums = ac.getBeanDefinitionCount(); //获取对象的数量
+String names[] = ac.getDefinitonNames();// 获取每个对象的名称
+```
+## 2.4 创建对象的时机
+执行`ApplicationContext ac = new ClassPathXmlApplicationContext(config);`,`ClassPathXmlApplicationContext`读取配置文件时，创建了对象。
+## 2.5 Import
+一般用于团队开发，可将多个配置文件导入合并为一个
+# 3. 依赖注入
+## 3.1 给对象的属性赋值
+有两种方法
+1) 使用XML配置文件(理解即可)
+2) 使用注解(掌握，常使用)
+### 基于XML的DI
+Bean 实例在调用无参构造器创建了空值对象后，就要对 Bean对象的属性进行初始化。初始化是由容器自动完成的，称为**注入**。根据注入方式的不同，常用的有两类：设值注入、 构造注入
+1) 构造器注入
+使用有参构造方法注入
 - 下标赋值
 ```xml
 <bean id="user" class="org.example.pojo.User">
@@ -69,23 +110,8 @@ public void setUserDao(UserDao userDao) {
     <constructor-arg name="name" value="Hasagei"/>
 </bean>
 ```
-
-总结：在配置文件加载的时候，容器中管理的对象就已经初始化了
-# 3. Spring配置
-## 3.1 别名
-`<alias name="user" alias="user2"/>`
-## 3.2 Bean的配置
-- `name`也可以取别名，且功能更强大
-```
-<bean id="user" class="org.example.pojo.User" name="user3 user4">
-    <constructor-arg name="name" value="Hasagei"/>
-</bean>
-```
-## 3.3 Import
-一般用于团队开发，可将多个配置文件导入合并为一个
-# 4. 依赖注入
-## 4.1 构造器注入
-## 4.2 Set注入(重点)
+2) Set注入(重点，80%都使用set注入)
+本质调用set方法赋值  
 - 依赖：bean对象的创建依赖于容器
 - 注入：bean对象中的所有属性，由容器注入  
 ```xml
@@ -96,7 +122,7 @@ public void setUserDao(UserDao userDao) {
       <!-- 1 normal value       -->
       <property name="name" value="Spring"/>
 
-      <!-- 2 bean ref     -->
+      <!-- 2 bean ref address也需要用bean声明     -->
       <property name="address" ref="address"/>
 
       <!-- 3 Array        -->
@@ -140,7 +166,31 @@ public void setUserDao(UserDao userDao) {
       </property>
   </bean>
 ```
-## 4.3 扩展方式注入
+## 3.2 自动注入(只能针对引用类型有效，简单类型必须手动赋值)
+### ByName自动注入
+- ByName: 会自动在容器上下文中查找，和自己对象set方法后面的值对应的bean id  
+Java中的属性名必须和配置文件中<bean> 的 id名称一样且类型一致！
+```xml
+<bean id="cat" class="org.example.pojo.Cat"/>
+<bean id="dog" class="org.example.pojo.Dog"/>
+<bean id="people" class="org.example.pojo.People" autowire="byName"/>
+```
+    
+### ByType自动注入
+java类中引用类型和Spring配置文件中<bean>的class属性是同源关系的，这样的bean能够赋值给引用类型。
+    - 类型一样
+    - 类型是父子关系
+    - 类型是接口和继承的关系
+```xml
+<bean id="cat" class="org.example.pojo.Cat"/>
+<bean id="dog" class="org.example.pojo.Dog"/>
+<bean id="people" class="org.example.pojo.People" autowire="byType"/>
+```
+小结：
+- byname需要保证所有bean的id唯一，并且这个bean需要和自动注入的属性的set方法的值一致
+- bytype需要保证所有bean的class唯一，并且这个bean需要和自动注入的属性的类型一致！
+    
+## 3.3 扩展方式注入
 我们可以使用p命名空间和c命名空间进行注入
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -155,7 +205,7 @@ public void setUserDao(UserDao userDao) {
     <bean id="user2" class="org.example.pojo.User" c:name="xiaohua" c:age="19"/>
 </beans>
 ```
-# 5. Bean的作用域
+#  5. Bean的作用域
 - singleton Spring的默认模式
 - prototype 每次从容器中get的时候都会产生新的对象
 - request
@@ -166,22 +216,7 @@ public void setUserDao(UserDao userDao) {
 1) 在xml中显示的配置
 2) 在Java中显示配置
 3) 自动装配bean【重要】
-## 6.1 ByName自动装配
-- ByName: 会自动在容器上下文中查找，和自己对象set方法后面的值对应的bean id
-```xml
-<bean id="cat" class="org.example.pojo.Cat"/>
-<bean id="dog" class="org.example.pojo.Dog"/>
-<bean id="people" class="org.example.pojo.People" autowire="byName"/>
-```
-## 6.2 ByType自动装配
-```xml
-<bean id="cat" class="org.example.pojo.Cat"/>
-<bean id="dog" class="org.example.pojo.Dog"/>
-<bean id="people" class="org.example.pojo.People" autowire="byType"/>
-```
-小结：
-- byname需要保证所有bean的id唯一，并且这个bean需要和自动注入的属性的set方法的值一致
-- bytype需要保证所有bean的class唯一，并且这个bean需要和自动注入的属性的类型一致！
+
 ## 6.3 使用注解实现自动装配
 - 导入约束：context约束
 - 配置注解的支持：`<context:annotation-config/>`
