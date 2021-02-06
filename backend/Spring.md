@@ -209,36 +209,9 @@ java类中引用类型和Spring配置文件中<bean>的class属性是同源关�
     <bean id="user2" class="org.example.pojo.User" c:name="xiaohua" c:age="19"/>
 </beans>
 ```
-#  5. Bean的作用域
-- singleton Spring的默认模式
-- prototype 每次从容器中get的时候都会产生新的对象
-- request
-# 6. Bean的自动装配
-- Spring会在上下文自动寻找并自动给bean装备属性
 
-在Spring中有三种装配的方式
-1) 在xml中显示的配置
-2) 在Java中显示配置
-3) 自动装配bean【重要】
 
-## 6.3 使用注解实现自动装配
-- 导入约束：context约束
-- 配置注解的支持：`<context:annotation-config/>`
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-        https://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context
-        https://www.springframework.org/schema/context/spring-context.xsd">
-
-    <context:annotation-config/>
-</beans>
-```
-
-# 7. 使用注解开发
+# 4. 使用注解开发
 - 在Spring4之后，使用注解开发必须要保证Aop的包导入了
 - 使用注解需要导入context约束，增加注解的支持
 
@@ -246,9 +219,11 @@ java类中引用类型和Spring配置文件中<bean>的class属性是同源关�
 1) 加入依赖spring-context，在加入spring-context的同时，间接加入spring-aop的依赖
 2) 在类中加入spring的注解
 3) 在配置文件中加入组件扫描器的标签，说明注解在项目中的位置
-
+```xml
+<context:component-scan base-package="类的全限定名"
+```
 > @Component @Repository @Service @Controller @Value @AutoWired @Resource
-## 7.1 定义Bean的注解@@Component
+## 4.1 定义Bean的注解@@Component
 1) 在类中加入spring的注解
 ```java
 /**
@@ -284,7 +259,7 @@ public class User {
 - dao `@Repository`
 - service `@Service`
 - controller  `@Controller`
-## 7.2 简单类型的属性注入@Value
+## 4.2 简单类型的属性注入@Value
 - 属性：value 表示简单类型的属性值
 - 位置：
     - 在属性定义的上面，无需set方法，推荐使用
@@ -296,7 +271,7 @@ public class User {
     public String name;
 }
 ```
-## 7.3 引用类型的属性注入@AutoWired或@Resource
+## 4.3 引用类型的属性注入@AutoWired或@Resource
 ### @Autowired
 @AutoWired实现引用类型的赋值，使用的是自动注入原理，支持byName，byType.默认使用的是byType自动注入
 - 直接在属性上使用
@@ -305,8 +280,8 @@ public class User {
 - 如果@Autowire自动装配的环境比较复杂，自动装配无法通过一个注解@Autowired完成的时候，可以使用@Qualifier("")去配合@Autowired使用，指定一个唯一的bean对象注入。
 
 如果要使用byName方式，需要做的是：
-    - 1) 在属性上面加@Autowired
-    - 2) 在属性上面加@Qualifier(value="bean的id"):
+    1) 在属性上面加@Autowired
+    2) 在属性上面加@Qualifier(value="bean的id")：表示使用指定的bean完成赋值
 ```java
 public class People {
     @Autowired
@@ -317,20 +292,22 @@ public class People {
     private String name;
 }
 ```
-## 7.4 自动装配置
-- @Autowired: 自动装配通过类型，名字
-- @Nullable:
-- @Resource:
-## 7.5 作用域
+### @Resource
+使用的是自动注入原理，支持byName，byType，默认是byName：如果byName赋值失败，再使用byType. 有属性name，可指定名称。
+## 4.4 作用域
 `@Scope("singleton")`
-## 7.6 小结
+
+- singleton Spring的默认模式
+- prototype 每次从容器中get的时候都会产生新的对象
+- request
+## 4.5 小结
 - XML与注解：
-    - XML更加万能，适用于任何场合！维护简单方便
+    - XML更加万能，适用于任何场合！维护简单方便，经常改变的用注解。
     - 注解不是自己类是用不了，维护相对复杂
 - XML与注解最佳实践
     - XML用来管理bean
     - 注解只负责完成属性注入
-## 7.7 使用Java方式配置Spring
+## 4.6 使用Java方式配置Spring
 在Spring4之后成为了核心功能！
 
 配置类
