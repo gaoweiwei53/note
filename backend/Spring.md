@@ -356,15 +356,30 @@ public class MyTest {
 缺点：
 - 一个真实角色就会产生一个代理角色；代码量会翻倍，开发效率变低
 ## 8.2 动态代理
-- 动态代理和静态代理角色一样
-- 动态代理的代理类是动态生成的，不是直接写好的
-- 动态代理分为两大类：基于接口的动态代理，基于类的动态代理
-    - 基于接口  JDK动态代理
-    - 基于类  cglib
-    - java字节码实现  javasist
+动态代理是指目标对象的代理对象是由代理工具(不是真实定义的类)在程序运行时由JVM根据反射等机制动态生成的。代理对象和目标对象的代理关系在程序运行时才确立。
+### JDK动态代理
+动态代理的实现方式有两种：使用JDK的Proxy，与通过CGLIB生成代理。jdk的动态代理要求目标对象必须实现接口。从jdk1.3以来，java语言通过java.lang.reflect包提供三个类支持代理模式Proxy, Method和InovcationHandler
+### CGLIB动态代理
+CGLIB(Code Generation Library)是一个开源项目，它可以在运行期扩展java类与实现java接口。原理是继承，通过继承目标类，创建子类。子类就是代理对象。要求目标类不能是final，方法也不能是final的
+### 动态代理的作用
+1) 在目标源代码不改变的情况下，增加功能
+2) 减少代码的重复
+3) 专注业务逻辑代码，解耦，业务代码和新装功能代码分离
+
 # 9. AOP
 ## 9.1 什么是AOP
-AOP(Aspect Oriented Programming)面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。AOP是OOP的延续，是软件开发中的一个热点，也是Spring框架中的一个重要内容，是函数式编程的一种衍生范型。利用AOP可以对业务逻辑的各个部分进行隔离，从而使业务逻辑各部分之间的耦合读降低，提高程序的可重用性，同时提高开发的效率。 
+AOP(Aspect-oriented Programming)提供了对程序结构的另一种思考方式。在OOP中模块化的关键单元是class，而在AOP中模块化的单元是aspect。
+
+AOP在Spring框架中被用于:
+- 提供声明性企业服务。这类服务中最重要的是声明式事务管理。
+- 让用户实现自定义Aspect，用AOP补充他们对OOP的使用。
+
+**Aspect**: 跨多个类的关注点的模块化。给目标类增加的功能就是切面。像上面用的日志、事务都是切面。特点：一般都是非业务方法。
+
+**JoinPoint**: 连接业务方法和切面的位置。就是业务中的方法
+**Pointcut**: 指多个连接点方法的集合
+**Advice**: 表示切面功能执行的时间 
+
 
 方式1：使用Spring的API接口
 ```xml
@@ -376,6 +391,7 @@ AOP(Aspect Oriented Programming)面向切面编程，通过预编译方式和运
 </dependency>
 ```
 方式2：使用自定义实现AOP
+#
 # 10. Spring-Mybatis
 ## 10.1 回忆Mybatis
 - 编写实体类
@@ -419,7 +435,7 @@ AOP(Aspect Oriented Programming)面向切面编程，通过预编译方式和运
     Spring框架自己用aop实现给业务方法增加事务的功能，使用@Transactional注解增加事务。放在publi方法的上面，表示当前方法具有事务。可以给注解的属性赋值，表示具体的隔离级别，传播行为，异常信息等。
     
 使用@Transactional的步骤：
- 1) 需要声明事务管理器对象` <bean id="xxx" class="...DataSourceTransanctionManager"`
- 2) 开启事务注解驱动，告诉spring框架，要使用注解的方式管理事务
- 3) 在方法上加入@Transactional
+    1) 需要声明事务管理器对象` <bean id="xxx" class="...DataSourceTransanctionManager"`
+    2) 开启事务注解驱动，告诉spring框架，要使用注解的方式管理事务
+    3) 在方法上加入@Transactional
 2) 适合大型项目，有很多的类、方法，需要大量的配置事务，使用aspectj框架，在spring配置文件中声明，方法需要的事务，这种方式业务方法和事务配置完全分离。
