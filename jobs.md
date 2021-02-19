@@ -1,4 +1,4 @@
-1) [百度-Java开发](https://talent.baidu.com/external/baidu/campus.html)
+1) [百度](https://talent.baidu.com/external/baidu/campus.html)
 2) [美团/大众点评](https://hr.meituan.com/)
 3) [豆瓣](https://jobs.douban.com/jobs/intern/)
 4) [Bilibili](https://app.mokahr.com/campus_apply/bilibili01/6205#/)
