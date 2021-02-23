@@ -41,6 +41,12 @@ ubuntu默认的防火防火墙叫做`ufw`,其默认是关闭的
 3) 
 ## 将用户赋予root权限
 1) `sudo visudo`
-2) ...
+2) `alex    ALL=(ALL:ALL) NOPASSWD:ALL`
 
-## [用户、用户组管理](https://blog.csdn.net/freeking101/article/details/78201539)
+[用户、用户组管理](https://blog.csdn.net/freeking101/article/details/78201539) 不用在这里设置
+
+## 建立文件夹
+1) `mkdir /opt/software /opt/module`
+2) `chown alex:alex /opt/module/ /opt/software/`
+
+> 以上命令操作均在root用户下进行
