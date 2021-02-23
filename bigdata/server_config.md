@@ -5,7 +5,7 @@ sudo passwd //按回车
 ```
 
 20.4 server 设置静态ip：
-1) vim编辑`sudo vim /etc/netplan/***.yaml`
+1) `sudo vim /etc/netplan/***.yaml`
 2) 编辑
 ```bash
 network:
@@ -19,3 +19,4 @@ network:
     version: 2
 ```
 3) `sudo netplan apply`
+4) `ip a`
