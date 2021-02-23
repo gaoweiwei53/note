@@ -25,3 +25,22 @@ sudo passwd //按回车
 1) `sudo hostnamectl set-hostname newNameHere`
 2) `sudo nano /etc/hosts` 
 3) `hostnamectl`
+
+## 关闭防火墙
+关闭防火墙不是必须的，只是为了减轻不同节点一直需要通过防火墙通信而造成的负担，所以最好关闭。
+
+ubuntu默认的防火防火墙叫做`ufw`,其默认是关闭的
+- 查看状态 `sudo ufw status`
+- 开启
+   1) `sudo ufw allow ssh/tcp` 或 `sudo ufw allow 22`  只打开使用tcp/ip协议的22端口/打开SSH服务器的22端口
+   2) `sudo ufw enable`
+   3) `sudo ufw disable`
+## 设置远程登录
+1) `ps -ef | grep ssh`查看是否安装openssh-server，若没安装执行2
+2) `sudo apt install openssh-server`
+3) 
+## 将用户赋予root权限
+1) `sudo visudo`
+2) ...
+
+## [用户、用户组管理](https://blog.csdn.net/freeking101/article/details/78201539)
