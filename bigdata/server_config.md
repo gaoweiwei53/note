@@ -146,3 +146,5 @@ hadoop3引入了磁盘间均衡
 ## flume
 1) `rm lib/guava-11.0.2.jar`, 保证`HADOOP_HOME`环境变量已配置
 2) 修改`conf/flume-env.sh`
+# 疑难杂症
+1) [群起flume时java.lang.ClassNotFoundException: com.google.common.collect.Lists](https://stackoverflow.com/questions/64519857/why-flume-failed-to-run-with-the-startup-script)
