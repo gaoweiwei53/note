@@ -7,6 +7,10 @@
 ```bash
 sudo passwd //按回车
 ```
+3）lzo没成功
+4) 移除openjdk
+5) 移除组
+6) 
 ## [虚拟机设置静态ip](https://blog.csdn.net/qq_40824474/article/details/82749007)
 1) 编辑-虚拟网络编辑器-更改设置 设置子网ip, 子网掩码, 网关(地址可随意)
 2) 控制面板-网络连接-VMnet8-属性 ipv4设置，设置的地址和上面的一样，DNS地址和网关地址一样
@@ -131,3 +135,11 @@ done
 3) `chmod +x log.sh`
 
 hadoop3引入了磁盘间均衡
+## Zookeeper
+1) 新建zkData/myid, id必须是1~255
+2) 修改zoo.cfg
+3) `bin/zkCli.sh` 查看zookeeper文件系统
+4) `ls /kafka/brokers/ids` 查看节点情况
+## Kafka
+1) 修改server.properties
+2) 
