@@ -150,5 +150,8 @@ hadoop3引入了磁盘间均衡
 1) 如何让flume可以按日期将数据放在hdfs不同的文件夹里?  使用拦截器，根据数据的时间戳分类
 2) 前面用的时memory channel，现在用的时file channel
 > 问题 几种channel的适用场景？
+> FileChannel也有内存队列，但是它存的不是event(memory channel)，而是文件里数据的索引
+> 为了防止机器挂了而引起索引的丢失，需要定期将内存队列的数据作快照
+> source采集数据，先将数据写到put list中，写完一批，提交put事务，放到channel中
 # 疑难杂症
 1) [群起flume时java.lang.ClassNotFoundException: com.google.common.collect.Lists](https://stackoverflow.com/questions/64519857/why-flume-failed-to-run-with-the-startup-script)
