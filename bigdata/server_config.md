@@ -148,5 +148,7 @@ hadoop3引入了磁盘间均衡
 2) 修改`conf/flume-env.sh`
 ### flume消费kafka，把数据放到hdfs上
 1) 如何让flume可以按日期将数据放在hdfs不同的文件夹里?  使用拦截器，根据数据的时间戳分类
+2) 前面用的时memory channel，现在用的时file channel
+> 问题 几种channel的适用场景？
 # 疑难杂症
 1) [群起flume时java.lang.ClassNotFoundException: com.google.common.collect.Lists](https://stackoverflow.com/questions/64519857/why-flume-failed-to-run-with-the-startup-script)
