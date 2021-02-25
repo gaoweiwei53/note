@@ -1,4 +1,8 @@
 # 1. ubuntu
+## 问题
+1) 没有datanode
+删除data文件夹里的current文件，再`bin/hdfs namenode -format`
+2) 注意删除//etc/hosts文件里第二行
 设置root密码:
 ```bash
 sudo passwd //按回车
@@ -35,10 +39,24 @@ ubuntu默认的防火防火墙叫做`ufw`,其默认是关闭的
    1) `sudo ufw allow ssh/tcp` 或 `sudo ufw allow 22`  只打开使用tcp/ip协议的22端口/打开SSH服务器的22端口
    2) `sudo ufw enable`
    3) `sudo ufw disable`
-## 设置远程登录
+## 设置远程登录和免密登录
 1) `ps -ef | grep ssh`查看是否安装openssh-server，若没安装执行2
 2) `sudo apt install openssh-server`
-3) 
+3) `ssh-keygen -t rsa`
+```bash
+ssh-copy-id hadoop1
+ssh-copy-id hadoop2
+ssh-copy-id hadoop3
+```
+> 在hadoop1, hadoop2配置免密登录就行了
+### root用户不能ssh登录问题
+1) `sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config`
+2) 或者 `vim /etc/ssh/sshd_config`
+```shell
+#PermitRootLogin prohibit-password
+PermitRootLogin yes #加入这一句
+```
+3) `sudo service ssh restart`
 ## 将用户赋予root权限
 1) `sudo visudo`
 2) `alex    ALL=(ALL:ALL) NOPASSWD:ALL`
@@ -50,3 +68,66 @@ ubuntu默认的防火防火墙叫做`ufw`,其默认是关闭的
 2) `chown alex:alex /opt/module/ /opt/software/`
 
 > 以上命令操作均在root用户下进行
+
+## JDK配置
+1) `sudo vim /etc/profile.d/my_env.sh`
+```shell
+#JAVA_HOME
+export JAVA_HOME=/opt/module/jdk-11.0.10
+export PATH=$PATH:$JAVA_HOME/bin
+```
+2) `source /etc/profile.d/my_env.sh`
+3) `java -version`
+
+## 分发脚本
+1) 检查bin目录是否在环境变量中
+2) `vim ~/bin/xsync`
+```shell
+#!/bin/bash
+#1. 判断参数个数
+if [ $# -lt 1 ]
+then
+  echo Not Enough Arguement!
+  exit;
+fi
+#2. 遍历集群所有机器
+for host in hadoop1 hadoop2 hadoop3
+do
+  echo ====================  $host  ====================
+  #3. 遍历所有目录挨个发送
+  for file in $@
+  do
+    #4 判断文件是否存在
+    if [ -e $file ]
+    then
+      #5. 获取父目录
+      pdir=$(cd -P $(dirname $file); pwd)
+      #6. 获取当前文件的名称
+      fname=$(basename $file)
+      ssh $host "mkdir -p $pdir"
+      rsync -av $pdir/$fname $host:$pdir
+    else
+      echo $file does not exists!
+    fi
+  done
+done
+```
+3) `chmod +x xsync`
+4) `xsync /opt/module/jdk-11.0.10/` 要设置免密登录
+5) `sudo /home/alex/bin/xsync /etc/profile.d/my_env.sh`
+6) 要在每台机器上执行`source /etc/profile.d/my_env.sh`
+
+## 集群日志生成脚本
+1) 需要在`~/.bashrc`文件里设置JDK环境变量，然后分发到每个机器上, 然后`source .bashrc`生效。因为`ssh *@* 'command'`的环境变量不一样
+>  或者像这样`ssh hadoop2 "bash --login -c 'java -version'"`
+2) `vim ~/bin/log.sh`
+```shell
+#!/bin/bash
+for i in hadoop102 hadoop103; do
+    echo "========== $i =========="
+    ssh $i "cd /opt/module/applog/; java -jar gmall2020-mock-log-2020-05-10.jar >/dev/null 2>&1 &"
+done 
+```
+3) `chmod +x log.sh`
+
+hadoop3引入了磁盘间均衡
