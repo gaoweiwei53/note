@@ -138,8 +138,11 @@ hadoop3引入了磁盘间均衡
 ## Zookeeper
 1) 新建zkData/myid, id必须是1~255
 2) 修改zoo.cfg
-3) `bin/zkCli.sh` 查看zookeeper文件系统
+3) `bin/zkCli.sh` 查看zookeeper文件系统  `quit`退出
 4) `ls /kafka/brokers/ids` 查看节点情况
 ## Kafka
 1) 修改server.properties
-2) 
+2) 启动时先启动zookeeper，关闭时先关闭kafka
+## flume
+1) `rm lib/guava-11.0.2.jar`, 保证`HADOOP_HOME`环境变量已配置
+2) 修改`conf/flume-env.sh`
