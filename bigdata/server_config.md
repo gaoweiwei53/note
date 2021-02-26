@@ -155,3 +155,5 @@ hadoop3引入了磁盘间均衡
 > source采集数据，先将数据写到put list中，写完一批，提交put事务，放到channel中
 # 疑难杂症
 1) [群起flume时java.lang.ClassNotFoundException: com.google.common.collect.Lists](https://stackoverflow.com/questions/64519857/why-flume-failed-to-run-with-the-startup-script)
+2) [flume java.lang.OutOfMemoryError: Java heap space](https://blog.csdn.net/weixin_46122692/article/details/110200293)
+3) [Failed to initialize Log on [channel=c1]](https://serverfault.com/questions/690588/flume-error-log-while-using-filechannel): 删除data和checkpoint文件夹
