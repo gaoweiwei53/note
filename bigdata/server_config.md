@@ -157,3 +157,4 @@ hadoop3引入了磁盘间均衡
 1) [群起flume时java.lang.ClassNotFoundException: com.google.common.collect.Lists](https://stackoverflow.com/questions/64519857/why-flume-failed-to-run-with-the-startup-script)
 2) [flume java.lang.OutOfMemoryError: Java heap space](https://blog.csdn.net/weixin_46122692/article/details/110200293)
 3) [Failed to initialize Log on [channel=c1]](https://serverfault.com/questions/690588/flume-error-log-while-using-filechannel): 删除data和checkpoint文件夹
+4) flume输出到kafka的每条消息前乱码？: `a1.channels.c1.parseAsFlumeEvent = false:`
