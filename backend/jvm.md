@@ -1,3 +1,24 @@
+# 常用JVM参数
+## 内存
+[参考](https://youzhixueyuan.com/jvm-memory-model-and-parameter-configuration.html)
+1) `-Xms` 表示JVM初始化时的堆内存大小，单位可以是k, m, g
+2) `-Xmx` 表示JVM可使用最大的堆内存。
+> 最好设置相同大小
+
+## GC
+JVM has four types of GC implementations:
+- **Serial** Garbage Collector
+- **Parallel** Garbage Collector
+- **CMS** Garbage Collector
+- **G1** Garbage Collector
+
+可以使用以下参数设置：
+```shell
+-XX:+UseSerialGC
+-XX:+UseParallelGC
+-XX:+USeParNewGC
+-XX:+UseG1GC
+```
 # 名词解释
 **字面量(Literal)**: a literal is a notation for representing a fixed value in source code.字面量是代码中固定值的表示，`x = 1;`中 `x`是变量(Variable), `1`是字面量。  
 **句柄(handle)**: a handle is an abstract reference to a resource.Common resource handles include file descriptors, network sockets, database connections, process identifiers (PIDs), and job IDs.
