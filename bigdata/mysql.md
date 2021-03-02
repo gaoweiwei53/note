@@ -100,4 +100,19 @@ CREATE TEMPORARY TABLE 临时表名 AS
     LIMIT 0,10000
 );
 ```
+### 一些问题
+### 1. utf8和utf8mb4的区别?
+mb4就是most bytes 4的意思，专门用来兼容四字节的unicode, utf8mb4是utf8的超集。mysql支持的 utf8 编码最大字符长度为 3 字节，如果遇到 4 字节的宽字符就会插入异常了。
+### 2. 什么是Online DDL?
+MySQL各版本，对于DDL的处理方式是不同的，主要有三种：
+- Copy Table算法
+- Inplace 算法
+- Online方式: online方式支持DDL时不仅可以读，还可以写。Online DDL提供了在表更改过程中并发执行DML的功能。
+### 3. Mysql有哪些数据库引擎，有什么区别
+- InnoDB: Mysql默认的数据库引擎; 支持事务; 支持外键; 是聚集索引; 不保存表的总行数;
+- MyISAM:不支持事务; 不支持外键; 是非聚集索引; 保存有表的总行数
+
+## 4. 什么是聚集索引？
+
+## 5. mysql索引使用的是什么算法？ 
 
