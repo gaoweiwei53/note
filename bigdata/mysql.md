@@ -14,6 +14,14 @@ flush privileges;
  mysql -u root -p gmall < /opt/module/db_log/gmal.sql  #会出现问题
 ```
 在workbench里，新的数据库上将sql脚本上加上`SET GLOBAL log_bin_trust_function_creators = 1;`语句再执行
+
+### 卸载mysql
+1) `dpkg --list|grep mysql`
+```bash
+sudo apt purge mysql-server mysql-common mysql-client mysql-community-client  mysql-community-client-core mysql-community-client-plugins mysql-community-server mysql-community-server-core mysql-apt-config
+```
+2) `sudo apt autoremove`
+3) `sudo apt autoclean`
 # 1. [Ubuntu 安装mysql](https://www.zhihu.com/search?type=content&q=mysql%20ubuntu)
 ### 方法1：从ubuntu仓库中安装
 ```bash
