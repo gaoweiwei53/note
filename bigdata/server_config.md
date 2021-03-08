@@ -153,6 +153,20 @@ hadoop3引入了磁盘间均衡
 > FileChannel也有内存队列，但是它存的不是event(memory channel)，而是文件里数据的索引
 > 为了防止机器挂了而引起索引的丢失，需要定期将内存队列的数据作快照
 > source采集数据，先将数据写到put list中，写完一批，提交put事务，放到channel中
+
+## Sqoop
+### 简介
+Sqoop是用来在hadoop和关系数据库之间转移数据的工具。
+### 安装
+1) `cp sqoop-env-template.sh sqoop-env.sh`
+2) `vim sqoop-env.sh`
+```shell
+export HADOOP_COMMON_HOME=/opt/module/hadoop-3.1.3
+export HADOOP_MAPRED_HOME=/opt/module/hadoop-3.1.3
+export HIVE_HOME=/opt/module/hive
+export ZOOKEEPER_HOME=/opt/module/zookeeper-3.5.7
+export ZOOCFGDIR=/opt/module/zookeeper-3.5.7/conf
+```
 # 疑难杂症
 1) [群起flume时java.lang.ClassNotFoundException: com.google.common.collect.Lists](https://stackoverflow.com/questions/64519857/why-flume-failed-to-run-with-the-startup-script)
 2) [flume java.lang.OutOfMemoryError: Java heap space](https://blog.csdn.net/weixin_46122692/article/details/110200293)
