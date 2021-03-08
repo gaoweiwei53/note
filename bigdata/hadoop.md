@@ -63,7 +63,7 @@ Hadoop框架为每个由`InputFormat`产生的`InputSplit`, 生成一个map任�
 
 中间的已排序的输出总是被存储为`(key-len, key, value-len, value)`的格式. 应用可以通过配置文件配置`CompressionCodec`, 控制中间输出，是否或怎样被压缩。.
 
-## How Many Maps?
+## 多少个Maps合适?
 `map`的数量通常由输入数据的大小决定，即输入数据总的Bloks数量
 
 合适的数量是每个节点大约10-100个，之前对cpu-light的map任务，已经被设置300个.
@@ -97,7 +97,7 @@ Reduce任务的输出常通过`Context.write(WritableComparable, Writable)`被�
 
 `Reducer`的输出是没有被排序的。？？
 
-### How Many Reduces?
+### 多少个Reduces合适?
 合适的reduce数量应该是 `0.95~1.75 * (<no. of nodes> * <no. of maximum containers per node>)`.
 
 如果是0.95，所有的reduce都可以立即启动，并在mapps完成时开始传输maps输出。若是1.75，速度更快的，在负载平衡方面做得更好节点，将完成第一轮reduce，并启动第二轮reduce.
@@ -106,12 +106,12 @@ Reduce任务的输出常通过`Context.write(WritableComparable, Writable)`被�
 
 The scaling factors above are slightly less than whole numbers to reserve a few reduce slots in the framework for speculative-tasks and failed tasks.
 
-## Reducer NONE
+## 没有Reducer
 如果不需要reduce任务，则可以将reduce-tasks的数量设置为零。
 
 在这种情况下，map任务的输出直接进入文件系统，进入`FileOutputFormat.setOutputPath(Job, Path)`设置的输出路径。在将map输出写入文件系统之前，框架不会对它们进行排序。
 
-## Partitioner
+## 分区器 Partitioner
 Partitioner partitions the key space.
 
 Partitioner控制中间map输出的key的分区。通常通过哈希函数。分区总数与job的reduce任务数相同。
