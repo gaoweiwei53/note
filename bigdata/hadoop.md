@@ -30,3 +30,14 @@
 2) MapReduce任务本地优化：shuffle密集型的任务，性能提升30%以上
 3) 优化了对守护进程和mr任务的堆管理配置
 4) 第三方依赖包升级：jersey，netty，cglib等
+# 2. MapReduce
+## 概述
+MapReduce job 通常将输入的数据集分割成独立的数据块，这些数据块由map任务以完全并行的方式处理。框架**对map的输出进行排序**，然后将其输入到reduce任务。通常，作业的输入和输出都存储在文件系统中。
+
+MapReduce框架由一个**master**  *ResourceManager*, 每一个节点中的worker *NodeManager* 和每个aplication的*MRAppMaster*组成
+
+## Inputs and Outputs
+MapReduce框架操作的是键值<key,value>, key 和 value类需要被框架序列化，因此他们需要实现`Writable`接口. 此外, `key`类需要实现 `WritableComparable`接口以能够完成框架对其**排序**
+> (input) <k1, v1> -> map -> <k2, v2> -> combine -> <k2, v2> -> reduce -> <k3, v3> (output)
+
+Input and Output types of a MapReduce job:
