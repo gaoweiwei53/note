@@ -184,6 +184,19 @@ bin/sqoop import \
 --fields-terminated-by '\t' \
 --split-by id
 ```
+或者
+```shell
+bin/sqoop import \
+--connect jdbc:mysql://hadoop102:3306/gmall \
+--username root \
+--password 000000 \
+--query "select id, login_name from user_info where id >= 10 and id <= 30 and \$CONDITIONS" \
+--target-dir /test \
+--delete-target-dir \
+--num-mappers 1 \
+--fields-terminated-by '\t' \
+--split-by id
+```
 Sqoop可以将数据从数据库导入HDFS, Hive, HBase, 但是只能将数据从HDFS到入数据库
 # 疑难杂症
 1) [群起flume时java.lang.ClassNotFoundException: com.google.common.collect.Lists](https://stackoverflow.com/questions/64519857/why-flume-failed-to-run-with-the-startup-script)
