@@ -167,6 +167,23 @@ export HIVE_HOME=/opt/module/hive
 export ZOOKEEPER_HOME=/opt/module/zookeeper-3.5.7
 export ZOOCFGDIR=/opt/module/zookeeper-3.5.7/conf
 ```
+3) 拷贝java-mysql连接jar包至sqoop的lib文件夹下
+4) 测试：`bin/sqoop list-databases --connect jdbc:mysql://hadoop102:3306/ --username root --password 000000`
+5) 从Mysql导数据至HDFS
+```shell
+bin/sqoop import \
+--connect jdbc:mysql://hadoop102:3306/gmall \
+--username root \
+--password 000000 \
+--table user_info \
+--columns id,login_name \
+--where "id >= 10 and id <= 30" \
+--target-dir /test \
+--delete-target-dir \
+--num-mappers 1 \
+--fields-terminated-by '\t' \
+--split-by id
+```
 Sqoop可以将数据从数据库导入HDFS, Hive, HBase, 但是只能将数据从HDFS到入数据库
 # 疑难杂症
 1) [群起flume时java.lang.ClassNotFoundException: com.google.common.collect.Lists](https://stackoverflow.com/questions/64519857/why-flume-failed-to-run-with-the-startup-script)
