@@ -74,19 +74,18 @@ Reducer的作用是将一系列中间输出的同一个key对应的values减少�
 
 Reduce的数量，用户可通过`Job.setNumReduceTasks(int)`来设置.
 
-Overall, Reducer implementations are passed the Job for the job via the Job.setReducerClass(Class) method and can override it to initialize themselves. The framework then calls reduce(WritableComparable, Iterable<Writable>, Context) method for each <key, (list of values)> pair in the grouped inputs. Applications can then override the cleanup(Context) method to perform any required cleanup.
+总的来说，Reducer的实现通过`Job.setReducerClass(Class)`方法传给job的，也可以重写它来初始化它自己。框架然后为输出组里的每个`<key, (list of values)> `调用`reduce(WritableComparable, Iterable<Writable>, Context)`. 然后应用也可以重写`cleanup(Context)`方法来执行任何需要的清理。
 
-Reducer has 3 primary phases: shuffle, sort and reduce.
+> Reducer has 3 primary phases: **shuffle**, **sort** and **reduce**.
 
-Shuffle
-Input to the Reducer is the sorted output of the mappers. In this phase the framework fetches the relevant partition of the output of all the mappers, via HTTP.
+### Shuffle
+输入到Reducer里的是**已排序的mappers输出**, 在这个阶段框架通过`HTTP`获取所有`mapper`输出的相关分区。
+### Sort
+这在阶段，框架通过`key`把reducer的输入分组(因为不同的mapper可能输出了相同的key)
 
-Sort
-The framework groups Reducer inputs by keys (since different mappers may have output the same key) in this stage.
+*shuffe*和*sort*阶段是同时发生的。
 
-The shuffle and sort phases occur simultaneously; while map-outputs are being fetched they are merged.
-
-Secondary Sort
+## Secondary Sort
 If equivalence rules for grouping the intermediate keys are required to be different from those for grouping keys before reduction, then one may specify a Comparator via Job.setSortComparatorClass(Class). Since Job.setGroupingComparatorClass(Class) can be used to control how intermediate keys are grouped, these can be used in conjunction to simulate secondary sort on values.
 
 Reduce
