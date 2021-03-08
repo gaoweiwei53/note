@@ -167,6 +167,7 @@ export HIVE_HOME=/opt/module/hive
 export ZOOKEEPER_HOME=/opt/module/zookeeper-3.5.7
 export ZOOCFGDIR=/opt/module/zookeeper-3.5.7/conf
 ```
+Sqoop可以将数据从数据库导入HDFS, Hive, HBase, 但是只能将数据从HDFS到入数据库
 # 疑难杂症
 1) [群起flume时java.lang.ClassNotFoundException: com.google.common.collect.Lists](https://stackoverflow.com/questions/64519857/why-flume-failed-to-run-with-the-startup-script)
 2) [flume java.lang.OutOfMemoryError: Java heap space](https://blog.csdn.net/weixin_46122692/article/details/110200293)
