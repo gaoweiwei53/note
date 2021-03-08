@@ -48,44 +48,31 @@ Input and Output types of a MapReduce job:
 Mapper是将输入数据转换为中间记录的单个任务。转换后的中间数据不需要与输入数据的类型相同。
 
 Hadoop框架为每个由`InputFormat`产生的`InputSplit`, 生成一个map任务。
-Overall, mapper implementations are passed to the job via Job.setMapperClass(Class) method. The framework then calls map(WritableComparable, Writable, Context) for each key/value pair in the InputSplit for that task. Applications can then override the cleanup(Context) method to perform any required cleanup.
 
-Output pairs do not need to be of the same types as input pairs. A given input pair may map to zero or many output pairs. Output pairs are collected with calls to context.write(WritableComparable, Writable).
+总的来说, `mapper` 的实现通过 `Job.setMapperClass(Class)` 方法被传递给`job`. 框架然后为每个在`InputSplit`里的key/value对调用 `map(WritableComparable, Writable, Context)`. 应用然后可以重写`cleanup(Context)`方法来执行任何需要的清理。
 
-Applications can use the Counter to report its statistics.
+输出对不需要和输入对的类型一样.一个给定的输入对可能被map到0到很多个输出对。输出对通过调用的`context.write(WritableComparable, Writable)`方法被收集。
 
-All intermediate values associated with a given output key are subsequently grouped by the framework, and passed to the Reducer(s) to determine the final output. Users can control the grouping by specifying a Comparator via Job.setGroupingComparatorClass(Class).
+应用可以使用`Counter`来报告统计信息。
 
-The Mapper outputs are sorted and then partitioned per Reducer. The total number of partitions is the same as the number of reduce tasks for the job. Users can control which keys (and hence records) go to which Reducer by implementing a custom Partitioner.
+所有的给定的key对应的中间value接着会被框架分组, 传给`Reducer`，最后输出。用户可以通过`Job.setGroupingComparatorClass(Class)`制定一个` Comparator`控制这个分组过程.
 
-Users can optionally specify a combiner, via Job.setCombinerClass(Class), to perform local aggregation of the intermediate outputs, which helps to cut down the amount of data transferred from the Mapper to the Reducer.
+`Mapper`的输出会被排序然后被分到每个`Reducer`对应的分区上. 总的分区的数量和这个job的`Reduce`任务数量相同。用户可以通过实现自定义的`Partitioner`来控制哪个keys (and hence records)去往哪个
 
-The intermediate, sorted outputs are always stored in a simple (key-len, key, value-len, value) format. Applications can control if, and how, the intermediate outputs are to be compressed and the CompressionCodec to be used via the Configuration.
-Overall, mapper implementations are passed to the job via Job.setMapperClass(Class) method. The framework then calls map(WritableComparable, Writable, Context) for each key/value pair in the InputSplit for that task. Applications can then override the cleanup(Context) method to perform any required cleanup.
+用户可以选择性的通过`Job.setCombinerClass`指定一个`combiner`, 来在本地聚合中间输出，者可以减小`Mapper`到`Reducer`的之间的传输量。
 
-Output pairs do not need to be of the same types as input pairs. A given input pair may map to zero or many output pairs. Output pairs are collected with calls to context.write(WritableComparable, Writable).
+中间的已排序的输出总是被存储为`(key-len, key, value-len, value)`的格式. 应用可以通过配置文件配置`CompressionCodec`, 控制中间输出，是否或怎样被压缩。.
 
-Applications can use the Counter to report its statistics.
+## How Many Maps?
+`map`的数量通常由输入数据的大小决定，即输入数据总的Bloks数量
 
-All intermediate values associated with a given output key are subsequently grouped by the framework, and passed to the Reducer(s) to determine the final output. Users can control the grouping by specifying a Comparator via Job.setGroupingComparatorClass(Class).
+合适的数量是每个节点大约10-100个，之前对cpu-light的map任务，已经被设置300个.
 
-The Mapper outputs are sorted and then partitioned per Reducer. The total number of partitions is the same as the number of reduce tasks for the job. Users can control which keys (and hence records) go to which Reducer by implementing a custom Partitioner.
+因此，你希望10TB的输入数据的每个block大小为128M, 那么会有82,000 个maps, 除非通过`Configuration.set(MRJobConfig.NUM_MAPS, int)`来设置更多。
+## Reducer
+Reducer的作用是将一系列中间输出的同一个key对应的values减少为更小规模的values集合
 
-Users can optionally specify a combiner, via Job.setCombinerClass(Class), to perform local aggregation of the intermediate outputs, which helps to cut down the amount of data transferred from the Mapper to the Reducer.
-
-The intermediate, sorted outputs are always stored in a simple (key-len, key, value-len, value) format. Applications can control if, and how, the intermediate outputs are to be compressed and the CompressionCodec to be used via the Configuration.
-
-How Many Maps?
-The number of maps is usually driven by the total size of the inputs, that is, the total number of blocks of the input files.
-
-The right level of parallelism for maps seems to be around 10-100 maps per-node, although it has been set up to 300 maps for very cpu-light map tasks. Task setup takes a while, so it is best if the maps take at least a minute to execute.
-
-Thus, if you expect 10TB of input data and have a blocksize of 128MB, you’ll end up with 82,000 maps, unless Configuration.set(MRJobConfig.NUM_MAPS, int) (which only provides a hint to the framework) is used to set it even higher.
-
-Reducer
-Reducer reduces a set of intermediate values which share a key to a smaller set of values.
-
-The number of reduces for the job is set by the user via Job.setNumReduceTasks(int).
+Reduce的数量，用户可通过`Job.setNumReduceTasks(int)`来设置.
 
 Overall, Reducer implementations are passed the Job for the job via the Job.setReducerClass(Class) method and can override it to initialize themselves. The framework then calls reduce(WritableComparable, Iterable<Writable>, Context) method for each <key, (list of values)> pair in the grouped inputs. Applications can then override the cleanup(Context) method to perform any required cleanup.
 
