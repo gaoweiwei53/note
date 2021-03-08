@@ -31,19 +31,19 @@
 3) 优化了对守护进程和mr任务的堆管理配置
 4) 第三方依赖包升级：jersey，netty，cglib等
 # 2. MapReduce
-## 概述
+## 2.1 概述
 MapReduce job 通常将输入的数据集分割成独立的数据块，这些数据块由map任务以完全并行的方式处理。框架**对map的输出进行排序**，然后将其输入到reduce任务。通常，作业的输入和输出都存储在文件系统中。
 
 MapReduce框架由一个**master**  *ResourceManager*, 每一个节点中的worker *NodeManager* 和每个aplication的*MRAppMaster*组成
 
-## Inputs and Outputs
+## 2.2 Inputs and Outputs
 MapReduce框架操作的是键值<key,value>, key 和 value类需要被框架序列化，因此他们需要实现`Writable`接口. 此外, `key`类需要实现 `WritableComparable`接口以能够完成框架对其**排序**
 
 Input and Output types of a MapReduce job:
 ```
 (input) <k1, v1> -> map -> <k2, v2> -> combine -> <k2, v2> -> reduce -> <k3, v3> (output)
 ```
-## Mapper
+## 2.3 Mapper
 Mapper是将输入数据转换为中间记录的单个任务。转换后的中间数据不需要与输入数据的类型相同。
 
 Hadoop框架为每个由`InputFormat`产生的`InputSplit`, 生成一个map任务。
@@ -68,7 +68,7 @@ Hadoop框架为每个由`InputFormat`产生的`InputSplit`, 生成一个map任�
 合适的数量是每个节点大约10-100个，之前对cpu-light的map任务，已经被设置300个.
 
 因此，你希望10TB的输入数据的每个block大小为128M, 那么会有82,000 个maps, 除非通过`Configuration.set(MRJobConfig.NUM_MAPS, int)`来设置更多。
-## Reducer
+## 2.4 Reducer
 Reducer的作用是将一系列中间输出的同一个key对应的values减少为更小规模的values集合
 
 Reduce的数量，用户可通过`Job.setNumReduceTasks(int)`来设置.
@@ -110,14 +110,14 @@ The scaling factors above are slightly less than whole numbers to reserve a few 
 
 在这种情况下，map任务的输出直接进入文件系统，进入`FileOutputFormat.setOutputPath(Job, Path)`设置的输出路径。在将map输出写入文件系统之前，框架不会对它们进行排序。
 
-## 分区器 Partitioner
+## 2.5 分区器 Partitioner
 Partitioner partitions the key space.
 
 Partitioner控制中间map输出的key的分区。通常通过哈希函数。分区总数与job的reduce任务数相同。
 
 `HashPartitioner`是默认的分区器.
 
-## Counter
+## 2.6 Counter
 `Counter`是MapReduce应用程序报告统计数据的工具。
 
 Mapper and Reducer可以使用 `Counter`来报告统计数据.
