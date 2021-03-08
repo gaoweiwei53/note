@@ -86,42 +86,41 @@ Reduce的数量，用户可通过`Job.setNumReduceTasks(int)`来设置.
 *shuffe*和*sort*阶段是同时发生的。
 
 ## Secondary Sort
-If equivalence rules for grouping the intermediate keys are required to be different from those for grouping keys before reduction, then one may specify a Comparator via Job.setSortComparatorClass(Class). Since Job.setGroupingComparatorClass(Class) can be used to control how intermediate keys are grouped, these can be used in conjunction to simulate secondary sort on values.
+如果中间key分组的规则需要与`reduce`之前对key分组的规则不同，则可以通过`Job.setSortComparatorClass(Class)`指定一个` Comparator`。因为可以使用`Job.setGroupingComparatorClass(Class)`来控制中间key的分组方式。这些可以一起使用来模拟对value的第二次排序。
 
-Reduce
-In this phase the reduce(WritableComparable, Iterable<Writable>, Context) method is called for each <key, (list of values)> pair in the grouped inputs.
+## Reduce
+在这个阶段，`reduce(WritableComparable, Iterable<Writable>, Context)`会被为，已分组的输入中的每一个` <key, (list of values)> `对而调用。
 
-The output of the reduce task is typically written to the FileSystem via Context.write(WritableComparable, Writable).
+Reduce任务的输出常通过`Context.write(WritableComparable, Writable)`被写入文件系统。
 
-Applications can use the Counter to report its statistics.
+应用也可以使用`Counter`来报告统计信息。
 
-The output of the Reducer is not sorted.
+`Reducer`的输出是没有被排序的。？？
 
-How Many Reduces?
-The right number of reduces seems to be 0.95 or 1.75 multiplied by (<no. of nodes> * <no. of maximum containers per node>).
+### How Many Reduces?
+合适的reduce数量应该是 `0.95~1.75 * (<no. of nodes> * <no. of maximum containers per node>)`.
 
-With 0.95 all of the reduces can launch immediately and start transferring map outputs as the maps finish. With 1.75 the faster nodes will finish their first round of reduces and launch a second wave of reduces doing a much better job of load balancing.
+如果是0.95，所有的reduce都可以立即启动，并在mapps完成时开始传输maps输出。若是1.75，速度更快的，在负载平衡方面做得更好节点，将完成第一轮reduce，并启动第二轮reduce.
 
-Increasing the number of reduces increases the framework overhead, but increases load balancing and lowers the cost of failures.
+增加reduce数量增加会增加框架开销，但会提高负载平衡并降低故障成本。
 
 The scaling factors above are slightly less than whole numbers to reserve a few reduce slots in the framework for speculative-tasks and failed tasks.
 
-Reducer NONE
-It is legal to set the number of reduce-tasks to zero if no reduction is desired.
+## Reducer NONE
+如果不需要reduce任务，则可以将reduce-tasks的数量设置为零。
 
-In this case the outputs of the map-tasks go directly to the FileSystem, into the output path set by FileOutputFormat.setOutputPath(Job, Path). The framework does not sort the map-outputs before writing them out to the FileSystem.
+在这种情况下，map任务的输出直接进入文件系统，进入`FileOutputFormat.setOutputPath(Job, Path)`设置的输出路径。在将map输出写入文件系统之前，框架不会对它们进行排序。
 
-Partitioner
+## Partitioner
 Partitioner partitions the key space.
 
-Partitioner controls the partitioning of the keys of the intermediate map-outputs. The key (or a subset of the key) is used to derive the partition, typically by a hash function. The total number of partitions is the same as the number of reduce tasks for the job. Hence this controls which of the m reduce tasks the intermediate key (and hence the record) is sent to for reduction.
+Partitioner控制中间map输出的key的分区。通常通过哈希函数。分区总数与job的reduce任务数相同。
 
-HashPartitioner is the default Partitioner.
+`HashPartitioner`是默认的分区器.
 
-Counter
-Counter is a facility for MapReduce applications to report its statistics.
+## Counter
+`Counter`是MapReduce应用程序报告统计数据的工具。
 
-Mapper and Reducer implementations can use the Counter to report statistics.
+Mapper and Reducer可以使用 `Counter`来报告统计数据.
 
-Hadoop MapReduce comes bundled with a library of generally useful mappers, reducers, and partitioners.
-
+Hadoop MapReduce附带了一个通用的mappers、reducers和分区器库。
