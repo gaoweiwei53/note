@@ -44,7 +44,6 @@ Input and Output types of a MapReduce job:
 (input) <k1, v1> -> map -> <k2, v2> -> combine -> <k2, v2> -> reduce -> <k3, v3> (output)
 ```
 ## Mapper
-## Reduce
 Mapper是将输入数据转换为中间记录的单个任务。转换后的中间数据不需要与输入数据的类型相同。
 
 Hadoop框架为每个由`InputFormat`产生的`InputSplit`, 生成一个map任务。
@@ -63,7 +62,7 @@ Hadoop框架为每个由`InputFormat`产生的`InputSplit`, 生成一个map任�
 
 中间的已排序的输出总是被存储为`(key-len, key, value-len, value)`的格式. 应用可以通过配置文件配置`CompressionCodec`, 控制中间输出，是否或怎样被压缩。.
 
-## 多少个Maps合适?
+### 多少个Maps合适?
 `map`的数量通常由输入数据的大小决定，即输入数据总的Bloks数量
 
 合适的数量是每个节点大约10-100个，之前对cpu-light的map任务，已经被设置300个.
@@ -85,10 +84,10 @@ Reduce的数量，用户可通过`Job.setNumReduceTasks(int)`来设置.
 
 *shuffe*和*sort*阶段是同时发生的。
 
-## Secondary Sort
+### Secondary Sort
 如果中间key分组的规则需要与`reduce`之前对key分组的规则不同，则可以通过`Job.setSortComparatorClass(Class)`指定一个` Comparator`。因为可以使用`Job.setGroupingComparatorClass(Class)`来控制中间key的分组方式。这些可以一起使用来模拟对value的第二次排序。
 
-## Reduce
+### Reduce
 在这个阶段，`reduce(WritableComparable, Iterable<Writable>, Context)`会被为，已分组的输入中的每一个` <key, (list of values)> `对而调用。
 
 Reduce任务的输出常通过`Context.write(WritableComparable, Writable)`被写入文件系统。
@@ -106,7 +105,7 @@ Reduce任务的输出常通过`Context.write(WritableComparable, Writable)`被�
 
 The scaling factors above are slightly less than whole numbers to reserve a few reduce slots in the framework for speculative-tasks and failed tasks.
 
-## 没有Reducer
+### 没有Reducer
 如果不需要reduce任务，则可以将reduce-tasks的数量设置为零。
 
 在这种情况下，map任务的输出直接进入文件系统，进入`FileOutputFormat.setOutputPath(Job, Path)`设置的输出路径。在将map输出写入文件系统之前，框架不会对它们进行排序。
