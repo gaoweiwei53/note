@@ -5,6 +5,7 @@
 
 # Linux Command
 1. `find`:查找指定文件下和子文件夹下的文件
+2.  `find / -name sth`: 查找文件
 # 软件
 - [JDK8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
 - [JDK11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
