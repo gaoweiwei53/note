@@ -202,6 +202,17 @@ SET hive.merge.smallfiles.avgsize = 16777216;
 ```
 ####  合理设置 Reduce 数
 
-
+# 函数
+## 1. 内置函数
+## 2. 常用内置函数
+## 3. 自定义函数
+### 根据UDF类别分为以下三种
+1) UDF(User-Define-Function) 一进一出
+2) UDAF(User-Defined Aggregation Function) 多进一出
+3) UDTF(User-Defined TRable-Generating Function) 一进多出
+### 编程步骤
+1) 继承Hive提供的类
+2) 实现类中的抽象方法
+3) 在hive的命令行窗口创建函数
 
 
