@@ -205,6 +205,21 @@ SET hive.merge.smallfiles.avgsize = 16777216;
 # 函数
 ## 1. 内置函数
 ## 2. 常用内置函数
+
+### 行转列函数 `explode(array or map)`
+将hive一列中复杂的Array或Map结构拆分多行
+
+`lateral view`用于和`split`, `explode`等UDTF一起使用，将一列数据拆成多行数据后，它将拆分得到的多行数据与其它某个原始字段进行对应形成一个临时表。例如：
+```sql
+SELECT
+movie,
+category_name
+FROM
+movie_info
+lateral VIEW
+explode(split(category,",")) movie_info_tmp AS category_name;
+```
+其中`movie_info_tmp`是形成的临时表名称，`category_name`是拆分得到的列名称
 ## 3. 自定义函数
 ### 根据UDF类别分为以下三种
 1) UDF(User-Define-Function) 一进一出
