@@ -206,7 +206,7 @@ SET hive.merge.smallfiles.avgsize = 16777216;
 ## 1. 内置函数
 ## 2. 常用内置函数
 
-### 行转列函数 `explode(array or map)`
+### `explode(array or map)`
 将hive一列中复杂的Array或Map结构拆分多行
 
 `lateral view`用于和`split`, `explode`等UDTF一起使用，将一列数据拆成多行数据后，它将拆分得到的多行数据与其它某个原始字段进行对应形成一个临时表。例如：
