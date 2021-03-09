@@ -110,6 +110,23 @@ Managed table的数据，元数据、统计信息是由Hive所拥有，它的属
 分区实在原始的一张表内进一步划分，为了方便管理和提高查询效率。比如可将按照日期的来存储一张信息表，以后便可对表按日期来分析。
 # 5. 动态分区
 关系型数据库中，对分区表 Insert 数据时候，数据库自动会根据分区字段的值，将数据插入到相应的分区中，Hive 中也提供了类似的机制，即动态分区(Dynamic Partition)。
+```sql
+insert into table dept_no_par partition(deptno)
+select dname, loc, deptno from dept;
+```
+会以`select`语句后最后一个字段的查询结果来进行分区
+
+要设置
+```shell
+set hive.exec.dynamic.partition=true
+set hive.exec.dynamic.partiotion.mode=nonstrict
+```
+
+Hive3新特性：`partition(deptno)`可以省略
+```sql
+insert into table dept_no_par
+select dname, loc, deptno from dept;
+```
 # 6. 分桶
 分区针对的是数据的存储路径；分桶针对的是数据文件。
 ## 创建分桶表
