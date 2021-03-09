@@ -128,6 +128,10 @@ Hive 支持的存储数据的格式主要有：TEXTFILE 、SEQUENCEFILE、ORC、
 ### 行存储与列存储的区别
 - 行存储：在查询一整行的数据的时候，行存储更快
 - 列存储：在查询特定字段的时侯，列存储更快
+
+### Parquet
+
+
 ### Orc存储
 到每个 Orc 文件由 1 个或多个 stripe 组成，每个 stripe 一般为 HDFS的块大小，每一个 stripe 包含多条记录，这些记录按照列进行独立存储，对应到 Parquet中的 row group 的概念。每个 Stripe 里有三部分组成，分别是 Index Data，Row Data，StripeFooter： 
 # 9. 调优
