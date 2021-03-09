@@ -95,10 +95,14 @@ A Web User Interface (UI) for HiveServer2 provides configuration, logging, metri
 当 `distribute by` 和 `sorts by` 字段相同时，可以使用 `cluster by` 方式。
 
 # 3. 外部表、内部表(管理表)
-## 内部表(Managed Table)与外部表的区别
+## Managed Table与External Table的区别
+默认Hive创建的是managed table. 
+
+Managed table的数据，元数据、统计信息是由Hive所拥有，它的属性、数据结构只能由Hive命令行改变。
+
 在hive中删除管理表的时候，元数据和HDFS中的文件都会被一起删除，而删除外部表的时候，只会删除相应的元数据，hdfs里的文件不会被删除。
 ## 使用场景
-一般将收集到的原始数据，如日志，存为**外部表**，在外部表的基础上进行分析，产生的中间表和结果表使用**管理表**进行存储。
+一般将收集到的原始数据，如日志，存为**External table**，在外部表的基础上进行分析，产生的中间表和结果表使用**管理表**进行存储。
 # 4. 分区表
 分区实在原始的一张表内进一步划分，为了方便管理和提高查询效率。比如可将按照日期的来存储一张信息表，以后便可对表按日期来分析。
 # 5. 动态分区
