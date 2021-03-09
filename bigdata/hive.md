@@ -130,10 +130,16 @@ Hive 支持的存储数据的格式主要有：TEXTFILE 、SEQUENCEFILE、ORC、
 - 列存储：在查询特定字段的时侯，列存储更快
 
 ### Parquet
-
-
+- 完美支持嵌套式结构
+- 不支持ACID
+- 不支持Update操作(delete, update等)
+- 支持索引
 ### Orc存储
 到每个 Orc 文件由 1 个或多个 stripe 组成，每个 stripe 一般为 HDFS的块大小，每一个 stripe 包含多条记录，这些记录按照列进行独立存储，对应到 Parquet中的 row group 的概念。每个 Stripe 里有三部分组成，分别是 Index Data，Row Data，StripeFooter： 
+- 多层级嵌套表达起来复杂，性能和空间损失较大
+- 支持ACID，Update操作
+- 支持索引
+- 性能比Parquet稍高
 # 9. 调优
 ## Join优化
 将 key 相对分散，并且数据量小的表放在 join 的左边，可以使用 map join 让小的维度表先进内存。在 map 端完成 join。
