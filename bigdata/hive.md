@@ -1,9 +1,11 @@
 # 1. Hive 简介
 ## 1.1 什么是hive
 Hive本质：将HSQL转化为Mapreduce程序  
-(1) Hive处理的数据存储在HDFS  
-(2) Hive分析数据的底层实现是Mapreduce  
-(3) 运行在yarn上  
+1) Hive处理的数据存储在HDFS  
+2) Hive分析数据的底层实现是Mapreduce，可以换成Spark  
+3) 运行在yarn上
+4) hive不需要搭建分布式
+
 ## 1.2 Hive的结构
 - Client
 - Metastore  
@@ -81,17 +83,23 @@ $HIVE_HOME/bin/beeline -u jdbc:hive2://localhost:10000
 By default, it will be (localhost:10000), so the address will look like jdbc:hive2://localhost:10000.  
 A Web User Interface (UI) for HiveServer2 provides configuration, logging, metrics and active session information. The Web UI is available at port 10002 (127.0.0.1:10002) by default. 
 # 2. 语句
+## 2.1 DDL
+## 2.2 DML
 `show create table test;`查看建表语句
 
 `where`后不能用分组函数，`having` 在 `group by`语句后生效，只用于`group by`分组统计语句。
 ## 排序
 `Order By`：全局排序，只有一个 Reducer。
 
-`Sort By`：对于大规模的数据集 `order by` 的效率非常低。在很多情况下，并不需要全局排序，此时可以使用` sort by`。
+`Sort By`：对于大规模的数据集 `order by` 的效率非常低。在很多情况下，并不需要全局排序，此时可以使用` sort by`。`sort by`每个reduce局部有序。
 
 `Sort by` 为每个 reducer 产生一个排序文件。每个 Reducer 内部进行排序，对全局结果集来说不是排序。  
-`Distribute By`在有些情况下，我们需要控制某个特定行应该到哪个 reducer，通常是为了进行后续的聚集操作。`distribute by` 子句可以做这件事。`distribute by` 类似 MR 中 partition
-（自定义分区），进行分区，结合 `sort by` 使用。  Hive 要求 `DISTRIBUTE BY` 语句要写在 `SORT BY` 语句之前。 
+
+`Distribute By`在有些情况下，我们需要控制某个特定行应该到哪个 reducer，通常是为了进行后续的聚集操作。通过指定某个字段进行分区，结合`sort by`从而达到分区内有序。`distribute by` 类似 MR 中 partition
+（自定义分区），进行分区。  Hive 要求 `DISTRIBUTE BY` 语句要写在 `SORT BY` 语句之前。 
+```sql
+select * from emp distribute by deptno sort by sal;
+```
 当 `distribute by` 和 `sorts by` 字段相同时，可以使用 `cluster by` 方式。
 
 # 3. 外部表、内部表(管理表)
