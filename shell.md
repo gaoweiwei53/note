@@ -70,5 +70,5 @@ command > /dev/null 2>&1
 
 命令最后加 `&`, 可以让阻塞在bash前台的程序在后台运行
 ```bash
-ssh $i "bin/flume-ng agent --conf-file flume-kafka.conf --name a1 -Dflume.root.logger=INFO,LOGFILE >log1.txt 2>&1  &"
+ssh $i "nohup bin/flume-ng agent --conf-file flume-kafka.conf --name a1 -Dflume.root.logger=INFO,LOGFILE >log1.txt 2>&1  &"
 ```
