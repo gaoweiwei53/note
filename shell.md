@@ -60,3 +60,7 @@ echo "a * b : $val"
 ```shell
  command > file 2>&1
 ```
+如果希望屏蔽 stdout 和 stderr，可以这样写：
+```shell
+command > /dev/null 2>&1
+```
