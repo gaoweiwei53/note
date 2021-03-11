@@ -228,6 +228,12 @@ lateral VIEW
 explode(split(category,",")) movie_info_tmp AS category_name;
 ```
 其中`movie_info_tmp`是形成的临时表名称，`category_name`是拆分得到的列名称
+
+### 日期函数
+- `date_format`
+- `date_add`
+- `next_day`
+- `last_day`
 ## 3. 自定义函数
 ### 根据UDF类别分为以下三种
 1) UDF(User-Define-Function) 一进一出
