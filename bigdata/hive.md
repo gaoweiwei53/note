@@ -256,8 +256,8 @@ explode(split(category,",")) movie_info_tmp AS category_name;
 ### 日期函数
 - `date_format`
 - `date_add`
-- `next_day`
-- `last_day`
+- `next_day(string start_date, string day_of_week)`: 返回下周周几所对应的日期
+- `last_day`: 返回该日所在的月的最后一天的日期
 ## 3. 自定义函数
 ### 根据UDF类别分为以下三种
 1) UDF(User-Define-Function) 一进一出
