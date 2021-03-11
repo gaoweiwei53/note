@@ -205,6 +205,7 @@ Sqoop可以将数据从数据库导入HDFS, Hive, HBase, 但是只能将数据�
 4) flume输出到kafka的每条消息前乱码？: `a1.channels.c1.parseAsFlumeEvent = false:`
 5) [flume输出到hdfs java.lang.NoClassDefFoundError: org/apache/hadoop/conf/Configuration](https://blog.csdn.net/windavi/article/details/106699432)
 # 数仓理论
+## 一定要仔细确保每个表创建成功、数据导入成功。否则后面的创建的表也会出现问题！
 ## 建仓步骤
 ### 1. OSD层
 1) 保持数据原貌不做任何修改，起到备份数据的作用。比如日志数据，只建一个日志表，其中只有一列属性，就是每条日志类容。保持原始数据内容和结构不改变。
