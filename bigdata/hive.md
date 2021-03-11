@@ -238,4 +238,9 @@ explode(split(category,",")) movie_info_tmp AS category_name;
 2) 实现类中的抽象方法
 3) 在hive的命令行窗口创建函数
 
+## Hive数据类型
+### 复杂数据类型
+- map
+- array
+- struct
 
