@@ -65,3 +65,10 @@ command > file 2>&1
 command > /dev/null 2>&1
 ```
 > `2>&1`之间不能由空格
+
+命令前加`nohup`，可以让运行的程序不会随bash的关闭而关闭
+
+命令最后加 `&`, 可以让阻塞在bash前台的程序在后台运行
+```bash
+ssh $i "bin/flume-ng agent --conf-file flume-kafka.conf --name a1 -Dflume.root.logger=INFO,LOGFILE >log1.txt 2>&1  &"
+```
