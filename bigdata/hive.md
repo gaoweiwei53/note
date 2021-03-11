@@ -102,6 +102,30 @@ select * from emp distribute by deptno sort by sal;
 ```
 当 `distribute by` 和 `sorts by` 字段相同时，可以使用 `cluster by` 方式。
 
+## `WITH`
+`with`可用在`select`语句之前，配合`as alias`可用别名代替该子查询，以复用。
+```sql
+WITH t1 as (SELECT 1), 
+t2 as (SELECT 2),
+t3 as (SELECT 3)
+SELECT * from t1 
+UNION ALL
+SELECT * from t2
+UNION ALL 
+SELECT * from t3;
+
+WITH t11 as (SELECT 10),
+t12 as (SELECT 20),
+t13 as (SELECT 3) 
+INSERT INTO t1 
+SELECT * from t11 
+UNION ALL 
+SELECT * from t12 
+UNION ALL 
+SELECT * from t13;
+```
+
+
 # 3. 外部表、内部表(管理表)
 ## Managed Table与External Table的区别
 默认Hive创建的是managed table. 
