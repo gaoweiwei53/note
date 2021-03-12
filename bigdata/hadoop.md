@@ -123,3 +123,21 @@ Partitioner控制中间map输出的key的分区。通常通过哈希函数。分
 Mapper and Reducer可以使用 `Counter`来报告统计数据.
 
 Hadoop MapReduce附带了一个通用的mappers、reducers和分区器库。
+
+# Yarn
+Yarn的思想是将资源管理和调度/监测分离。Yarn的做法是有一个全局的ResourceManager(AM)和每个应用的ApplicationMaster(AM).一个应用就是一个job.
+
+ResourceManager和NodeManager组成了数据计算框架。ResourceManager负责所有应用程序之间的资源调度。NodeManager是每台机器的框架代理，负责监控Containers的资源使用情况(cpu、内存、磁盘、网络)，并将这些情况报告给ResourceManager/Scheduler。
+
+ResourceManager有两个主要组件:
+- Scheduler
+- ApplicationsManager。
+
+Scheduler负责将资源分配给各种正在运行的应用程序，这些应用程序受到的容量、队列等限制。Scheduler是纯粹的调度器，因为它不执行对应用程序状态的监视或跟踪。此外，它不能保证由于应用程序失败或硬件失败而重新启动失败的任务。Scheduler根据应用程序的资源需求执行调度功能;它是基于resource Container的抽象概念来实现的，resource Container包含了内存、cpu、磁盘、网络等元素。
+
+- CapacityScheduler
+- FairScheduler
+
+ApplicationsManager负责接受作业提交，与第一个容器协商以执行特定于应用程序的ApplicationMaster，并提供在失败时重新启动ApplicationMaster容器的服务。每个应用程序的ApplicationMaster负责与Scheduler协商适当的资源容器，跟踪它们的状态并监控进程。
+
+NodeManager负责启动和管理节点上的container。container执行AppMaster指定的任务。
