@@ -124,7 +124,7 @@ Mapper and Reducer可以使用 `Counter`来报告统计数据.
 
 Hadoop MapReduce附带了一个通用的mappers、reducers和分区器库。
 
-# Yarn
+# [Yarn](https://blog.csdn.net/weixin_44466534/article/details/104759104#:~:text=Apache%20Hadoop%20Yarn%20%28Yet,Another%20Resource%20Negotiator%EF%BC%8C%E5%8F%A6%E4%B8%80%E7%A7%8D%E8%B5%84%E6%BA%90%E5%8D%8F%E8%B0%83%E8%80%85%29%EF%BC%8C%E6%98%AF%E4%B8%80%E7%A7%8D%E6%96%B0%E7%9A%84%20Hadoop%20%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E5%99%A8%EF%BC%8C%E5%AE%83%E6%98%AF%E4%B8%80%E4%B8%AA%E9%80%9A%E7%94%A8%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%92%8C%E8%B0%83%E5%BA%A6%E5%B9%B3%E5%8F%B0%EF%BC%8C%E5%8F%AF%E4%B8%BA%E4%B8%8A%E5%B1%82%E5%BA%94%E7%94%A8%E6%8F%90%E4%BE%9B%E7%BB%9F%E4%B8%80%E7%9A%84%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E5%92%8C%E8%B0%83%E5%BA%A6%E3%80%82) 
 Yarn的思想是将资源管理和调度/监测分离。Yarn的做法是有一个全局的ResourceManager(AM)和每个应用的ApplicationMaster(AM).一个应用就是一个job.
 
 ResourceManager和NodeManager组成了数据计算框架。ResourceManager负责所有应用程序之间的资源调度。NodeManager是每台机器的框架代理，负责监控Containers的资源使用情况(cpu、内存、磁盘、网络)，并将这些情况报告给ResourceManager/Scheduler。
