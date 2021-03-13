@@ -180,7 +180,10 @@ row format delimited fields terminated by '\t';
 ## 分桶规则
 根据结果可知：Hive 的分桶采用对分桶字段的值进行哈希，然后除以桶的个数求余的方式决定该条记录存放在哪个桶当中
 # 7. 窗口函数
-`over()`?
+`over()`
+1) `over()` 默认此时每一行的窗口都是所有的行
+2) `over(order by orderdate)` 每一行累积
+3) `over(partition by name)每一行根据 name来区分窗口`, 每一个name出现的次数
 # 8. 压缩与存储
 ## 8.1 存储
 Hive 支持的存储数据的格式主要有：TEXTFILE 、SEQUENCEFILE、ORC、PARQUET。**其中前两个按行存储，后两个是按列存储的。**  
