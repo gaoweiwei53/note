@@ -180,6 +180,7 @@ row format delimited fields terminated by '\t';
 ## 分桶规则
 根据结果可知：Hive 的分桶采用对分桶字段的值进行哈希，然后除以桶的个数求余的方式决定该条记录存放在哪个桶当中
 # 7. 窗口函数
+窗口函数对于点击流处理和时间序列/滑动窗口分析非常有用。
 `over()`
 1) `over()` 默认此时每一行的窗口都是所有的行
 2) `over(order by orderdate)` 每一行累积
@@ -281,6 +282,28 @@ explode(split(category,",")) movie_info_tmp AS category_name;
 3) 在hive的命令行窗口创建函数
 
 ## Hive数据类型
+### 数值类型
+- tinyint 1字节有符号整数
+- smallint 2字节有符号整数
+- int 4字节有符号整数
+- bigint 8字节有符号整数
+- float 4字节单精度浮点数
+- double 8字节双精度浮点数
+- double precision double的别称
+- decimal 用户定义范围和精度的定点值
+- numeric decimal的别称
+### 日期类型
+- timestamp
+- date
+- interval
+### 字符串类型
+- string
+- varchar
+- char
+### 二进制类型
+- binary
+### 布尔类型
+- boolean
 ### 复杂数据类型
 - map
 - array
