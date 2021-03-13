@@ -2,8 +2,6 @@
 |:-:|:-:|
 |The Beatles|1960|
 |The Rolling Stones|1962|
-|The Who|1964|
-|The Kinks|1964|
 |Pink Floyd|1965|
 |Deep Purple|1968|
 |Led Zeppelin|1968|
