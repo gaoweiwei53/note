@@ -3,11 +3,17 @@
 - 有些算子仅仅简单地在一个时间点记录单个event，然而有些算子记录着多个events。这些算子被称为有状态地(Stateful).
 - Flink需要记录State来实现容错，通过使用[checkpoints](https://ci.apache.org/projects/flink/flink-docs-release-1.11//ci.apache.org/projects/flink/flink-docs-release-1.11/dev/stream/state/checkpointing.html) 和 [savepoints](https://ci.apache.org/projects/flink/flink-docs-release-1.11//ci.apache.org/projects/flink/flink-docs-release-1.11/ops/state/savepoints.html).   
 
-## Checkpointing
-Flink容错机制的核心部分是画出分布式数据流和算子state的一致快照snapshots.
-It is inspired by the standard [Chandy-Lamport algorithm](http://research.microsoft.com/en-us/um/people/lamport/pubs/chandy.pdf) for distributed snapshots and is specifically tailored to Flink’s execution model.
+## Checkpointing 和 Savepoint
+当前checkpoint和savepoint在实现上并没有什么区别，只是在概念不同。
+
+checkpoint的生命周期是由flink框架本身管理，是由flink创建，拥有和释放，不需要用户参与。作为一种恢复和周期性触发的方法，设计目标是:1)轻量;2)尽可能快地恢复。检查点通常在用户终止作业之后被删除(除非显式地配置为保留检查点)。
+
+而Savepoint是由用户创建、拥有和删除的，用于手动备份和恢复。例如Flink版本的更新、更改job graph、更改并行度等。Savepoint在工作终止后继续存在。保存点的生成和恢复成本可能会更高一些，并且更多地关注可移植性和对前面提到的作业更改的支持。
+
+[Chandy-Lamport algorithm](http://research.microsoft.com/en-us/um/people/lamport/pubs/chandy.pdf) for distributed snapshots and is specifically tailored to Flink’s execution model.
 ## State Backends
-## Savepoints
+
+
 ## WaterMark
 ### 什么是watermark
 watermark的本质是一种时间戳，它可用来处理乱序事件。数据流中的 Watermark 用于表示 timestamp 小于 Watermark 的数据，都已经到达了，window 的执行也是由 Watermark 触发的。Watermark 可以理解成一个延迟触发机制，我们可以设置 Watermark 的延时时 长 t， 每 次 系 统 会 校 验 已 经 到 达 的 数 据 中 最 大 的 maxEventTime， 然 后 认 定eventTime 小于 maxEventTime - t 的所有数据都已经到达，如果有窗口的停止时间
