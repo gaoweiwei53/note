@@ -76,7 +76,7 @@ Flink 程序包括以下几个步骤：
 6) `Aggregations` 具体指`sum`, `min`, `max`, `minBy`, `maxBy`
 7) `window()`
 8) `windowAll()`
-9) `apply()` in Window 
+9) `apply()` in Window
 10)`reduce()` in Window
 11) `Aggregations` in Window 
 12) `union()`
