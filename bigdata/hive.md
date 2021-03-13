@@ -175,6 +175,8 @@ explode(split(category,",")) movie_info_tmp AS category_name;
 `LEAD`和`LAG`通过指定与当前行的偏移量来比较表中的不同行。使用这些函数来分析数据的变化和变化量。
 
 `first_value`和`last_value` 分析函数来查找列、表达式或行组中的第一个值和最后一个值。必须指定排序条件来确定第一个和最后一个值。
+
+[参考1](https://dwgeek.com/hadoop-hive-analytic-functions-examples.html/#:~:text=Lead%20and%20Lag%20Hadoop%20Hive%20analytic%20functions%20used,to%20analyze%20change%20and%20variation%20in%20the%20data.)
 ### 分析函数
 - `RANK`
 - `ROW_NUMBER`
