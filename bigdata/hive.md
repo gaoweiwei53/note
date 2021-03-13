@@ -182,14 +182,15 @@ explode(split(category,",")) movie_info_tmp AS category_name;
 
 - `over()` 此时窗口是表的所有行
 - `over(order by)` 累积，第一行的窗口只包含自己，第二行的窗口为前两行...
-- `over(partition by column_name) 根据column_name来分组开窗`
+- `over(partition by column_name)` 根据column_name来分组开窗
+- `over(partition by column_name1 order by column_name2)`  先分组，再排序，在次基础上开窗。
 
 ### 语法
 ```sql
 SELECT <columns_name>, <aggregate>(column_name)/Windowing functions/Analytics functions OVER (<windowing specification>) FROM <table_name>;
 ```
 - [参考1](https://bigdataprogrammers.com/windowing-functions-in-hive/)
-- [参考2]https://cwiki.apache.org/confluence/display/Hive/LanguageManual+WindowingAndAnalytics)
+- [参考2](ttps://cwiki.apache.org/confluence/display/Hive/LanguageManual+WindowingAndAnalytics)
 # 2. 语句
 ## 2.1 DDL
 ## 2.2 DML
