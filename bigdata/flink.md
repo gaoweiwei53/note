@@ -39,11 +39,11 @@ env.setStateBackend(new FsStateBackend("hdfs://namenode:40010/flink/checkpoints"
 Flink运行时由两种类型进程构成：一个***JobManager***和一个或多个***TaskManager***
 ### JobManager
 该进程包含三个部分：
-- ResourceManager  
+- **ResourceManager** 
 ResourceManager负责资源分配，管理**task slots**(资源调度地单位)。
-- Dispatcher
+- **Dispatcher**  
 提供一个REST接口来提交Flink应用去执行，为每一个job开启新的**job master**
-- JobMaster
+- **JobMaster**  
 负责管理一个**JobGraph**地执行
 ### TaskManager
 执行一个dataflow的任务，一个TaskManager有一个或多个**task slot**
