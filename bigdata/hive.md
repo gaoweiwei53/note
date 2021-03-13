@@ -153,24 +153,24 @@ explode(split(category,",")) movie_info_tmp AS category_name;
 1) 继承Hive提供的类
 2) 实现类中的抽象方法
 3) 在hive的命令行窗口创建函数
-# 7. 开窗和分析函数
+## 开窗和分析函数
 
 开窗可以在数据上创建的一个窗口，为了进行一些聚合操作COUNT, AVG, MIN, MAX和分析函数LEAD, LAG, FIRST_VALUE, and LAST_VALUE.
 
 窗口函数对于点击流处理和时间序列/滑动窗口分析非常有用。
-## 开窗函数
+### 开窗函数
 - LEAD
 - LAG
 - FIRST_VALUE
 - LASR_VALUE
-## 分析函数
+### 分析函数
 - RANK
 - ROW_NUMBER
 - DENSE_RANK
 - CUME_DIST
 - PERCENT_RANK
 - NTILE
-## `over` 子句
+### `over` 子句
 - 和`over`一起常用的聚合函数
   - COUNT
   - SUM
@@ -179,15 +179,15 @@ explode(split(category,",")) movie_info_tmp AS category_name;
   - AVG
 - PARTITION BY 将数据分组再开窗
 - PARTITION BY 和 ORDER BY
+
+- `over()` 此时窗口是表的所有行
+- `over(order by)` 累积，第一行的窗口只包含自己，第二行的窗口为前两行...
+- `over(partition by column_name) 根据column_name来分组开窗`
+
 ### 语法
 ```sql
 SELECT <columns_name>, <aggregate>(column_name)/Windowing functions/Analytics functions OVER (<windowing specification>) FROM <table_name>;
 ```
-`over()`
-1) `over()` 此时窗口是表的所有行
-2) `over(order by)` 累积，第一行的窗口只包含自己，第二行的窗口为前两行...
-3) `over(partition by column_name) 根据column_name来分组开窗`
-
 - [参考1](https://bigdataprogrammers.com/windowing-functions-in-hive/)
 - [参考2]https://cwiki.apache.org/confluence/display/Hive/LanguageManual+WindowingAndAnalytics)
 # 2. 语句
