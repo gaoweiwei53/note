@@ -68,29 +68,29 @@ Flink 程序包括以下几个步骤：
 
 ## 算子
 ### DataStrem算子
-1) `Map` 1->1 
-2) `FlatMap` 1->N
-3) `Filter`
-4) `KeyBy`
-5) `Reduce` N->1
+1) `map()` 1->1 
+2) `flatMap()` 1->N
+3) `filter()`
+4) `keyBy()`
+5) `reduce()` N->1
 6) `Aggregations` 具体指`sum`, `min`, `max`, `minBy`, `maxBy`
-7) `Window`
-8) `WindowAll`
-9) `apply` in Window 
-10)`reduce` in Window
+7) `window()`
+8) `windowAll()`
+9) `apply()` in Window 
+10)`reduce()` in Window
 11) `Aggregations` in Window 
-12) `union`
-13) `Join` in Window
-14) `intervalJoin`
-15) `coGroup` in Window
-16) `connect`
-17) `map`, `flatmap` On ConnectedStreams 
-18) `Iterate`
-19) `project`
+12) `union()`
+13) `join()` in Window
+14) `intervalJoin()`
+15) `coGroup()` in Window
+16) `connect()`
+17) `map()`, `flatmap()` On ConnectedStreams 
+18) `Iterate()`
+19) `project()`
 
 ### 物理分区
-1) `partitionCustom` 自定义分区
-2) `shuffle` 随机分区
+1) `partitionCustom()` 自定义分区
+2) `shuffle()` 随机分区
 3) `rebalance()` ？
 4) `rescale()`
 5) `broadcast()` 将元素广播大到每个分区
