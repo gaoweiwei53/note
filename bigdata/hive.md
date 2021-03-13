@@ -79,9 +79,9 @@ $HIVE_HOME/bin/hive --service metastore
 ```bash
 $HIVE_HOME/bin/hiveserver2
 ```
-By default, it will be (localhost:10000), so the address will look like jdbc:hive2://localhost:10000.  
-A Web User Interface (UI) for HiveServer2 provides configuration, logging, metrics and active session information. The Web UI is available at port 10002 (127.0.0.1:10002) by default. 
-2) 使用beeline有两种工作方式
+HiveServer2 WebUI: 端口10002 (默认127.0.0.1:10002)
+
+2) beeline有两种工作方式
   - Emdedded mode: 不用单独启动hiveserver2,直接
   ```shell
   bin/beeline -u jdbc:hive2://
