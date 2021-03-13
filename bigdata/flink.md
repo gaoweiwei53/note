@@ -17,13 +17,22 @@ checkpoint的生命周期是由flink框架本身管理，是由flink创建，拥
 - 转化函数用key/value state接口存储value
 - 转换函数实现`CheckpointedFunction`接口来让本地变量容错。
 
+状态在内部是如何表示的，以及它在checkpoint上是如何保存的以及在哪里保存的，都取决于所选的状态后端。
+
 Flink自带三种状态后端
 - MemoryStateBackend 默认
 - FsStateBackend
 - RocksDBStateBackend
 
+`MemoryStateBackend`将状态保存在Java堆上，Key/value状态和窗口操作使用哈希表保存值。
+`FsStateBackend`将状态快照保存在配置的文件路径上
+`RocksDBStateBackend`将数据存在`RocksDB`中，RockDB存储在TaskManager数据文件夹里
 
-状态在内部是如何表示的，以及它在checkpoint上是如何保存的以及在哪里保存的，都取决于所选的状态后端。
+## 设置状态后端
+```java
+StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+env.setStateBackend(new FsStateBackend("hdfs://namenode:40010/flink/checkpoints"));
+```
 ## WaterMark
 ### 什么是watermark
 watermark的本质是一种时间戳，它可用来处理乱序事件。数据流中的 Watermark 用于表示 timestamp 小于 Watermark 的数据，都已经到达了，window 的执行也是由 Watermark 触发的。Watermark 可以理解成一个延迟触发机制，我们可以设置 Watermark 的延时时 长 t， 每 次 系 统 会 校 验 已 经 到 达 的 数 据 中 最 大 的 maxEventTime， 然 后 认 定eventTime 小于 maxEventTime - t 的所有数据都已经到达，如果有窗口的停止时间
