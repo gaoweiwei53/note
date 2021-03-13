@@ -73,16 +73,16 @@ Flink 程序包括以下几个步骤：
 3) `Filter`
 4) `KeyBy`
 5) `Reduce` N->1
-6) `Aggregations` 具体指`sum``min``max``minBy``maxBy`
+6) `Aggregations` 具体指`sum`, `min`, `max`, `minBy`, `maxBy`
 7) `Window`
 8) `WindowAll`
-9) Window `apply`
-10) Window `reduce`
-11) `Aggregations` on window 
+9) `apply` in Window 
+10)`reduce` in Window
+11) `Aggregations` in Window 
 12) `union`
-13) Window `Join`
+13) `Join` in Window
 14) `intervalJoin`
-15) Window `coGroup`
+15) `coGroup` in Window
 16) `connect`
 17) `map`, `flatmap` On ConnectedStreams 
 18) `Iterate`
