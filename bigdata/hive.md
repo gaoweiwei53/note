@@ -79,7 +79,7 @@ $HIVE_HOME/bin/hive --service metastore
 ```bash
 $HIVE_HOME/bin/hiveserver2
 ```
-HiveServer2 WebUI: 端口10002 (默认127.0.0.1:10002)
+> HiveServer2 WebUI: 端口10002 (默认127.0.0.1:10002)
 
 2) beeline有两种工作方式
   - Emdedded mode: 不用单独启动hiveserver2,直接
@@ -90,6 +90,7 @@ HiveServer2 WebUI: 端口10002 (默认127.0.0.1:10002)
   ```shell
   bin/beeline -u jdbc:hive2://host:port -n username
   ```
+> username默认似乎是linux当前用户
 # 2. 语句
 ## 2.1 DDL
 ## 2.2 DML
