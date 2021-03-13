@@ -10,10 +10,20 @@ checkpoint的生命周期是由flink框架本身管理，是由flink创建，拥
 
 而Savepoint是由用户创建、拥有和删除的，用于手动备份和恢复。例如Flink版本的更新、更改job graph、更改并行度等。Savepoint在工作终止后继续存在。保存点的生成和恢复成本可能会更高一些，并且更多地关注可移植性和对前面提到的作业更改的支持。
 
-[Chandy-Lamport algorithm](http://research.microsoft.com/en-us/um/people/lamport/pubs/chandy.pdf) for distributed snapshots and is specifically tailored to Flink’s execution model.
+[Chandy-Lamport algorithm](http://research.microsoft.com/en-us/um/people/lamport/pubs/chandy.pdf) 
 ## State Backends
+写在Data Stream API中的程序，常有几种保存状态的方法：
+- 在被触发之前，窗口收集或聚合元素
+- 转化函数用key/value state接口存储value
+- 转换函数实现`CheckpointedFunction`接口来让本地变量容错。
+
+Flink自带三种状态后端
+- MemoryStateBackend 默认
+- FsStateBackend
+- RocksDBStateBackend
 
 
+状态在内部是如何表示的，以及它在checkpoint上是如何保存的以及在哪里保存的，都取决于所选的状态后端。
 ## WaterMark
 ### 什么是watermark
 watermark的本质是一种时间戳，它可用来处理乱序事件。数据流中的 Watermark 用于表示 timestamp 小于 Watermark 的数据，都已经到达了，window 的执行也是由 Watermark 触发的。Watermark 可以理解成一个延迟触发机制，我们可以设置 Watermark 的延时时 长 t， 每 次 系 统 会 校 验 已 经 到 达 的 数 据 中 最 大 的 maxEventTime， 然 后 认 定eventTime 小于 maxEventTime - t 的所有数据都已经到达，如果有窗口的停止时间
