@@ -77,7 +77,7 @@ Flink 程序包括以下几个步骤：
 7) `window()`
 8) `windowAll()`
 9) `apply()` in Window
-10)`reduce()` in Window
+10) `reduce()` in Window
 11) `Aggregations` in Window 
 12) `union()`
 13) `join()` in Window
