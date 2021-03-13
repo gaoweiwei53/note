@@ -172,6 +172,7 @@ explode(split(category,",")) movie_info_tmp AS category_name;
 - `FIRST_VALUE`
 - `LASR_VALUE`
 
+通过指定与当前行的偏移量来比较表中的不同行。使用这些函数来分析数据的变化和变化量。
 ### 分析函数
 - `RANK`
 - `ROW_NUMBER`
