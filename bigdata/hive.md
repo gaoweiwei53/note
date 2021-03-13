@@ -172,7 +172,9 @@ explode(split(category,",")) movie_info_tmp AS category_name;
 - `FIRST_VALUE`
 - `LASR_VALUE`
 
-通过指定与当前行的偏移量来比较表中的不同行。使用这些函数来分析数据的变化和变化量。
+`LEAD`和`LAG`通过指定与当前行的偏移量来比较表中的不同行。使用这些函数来分析数据的变化和变化量。
+
+`first_value`和`last_value` 分析函数来查找列、表达式或行组中的第一个值和最后一个值。必须指定排序条件来确定第一个和最后一个值。
 ### 分析函数
 - `RANK`
 - `ROW_NUMBER`
@@ -188,7 +190,7 @@ explode(split(category,",")) movie_info_tmp AS category_name;
   - `MAX`
   - `AVG`
 - `PARTITION BY` 将数据分组再开窗
-- `PARTITION BY` 和 ORDER BY
+- `PARTITION BY` 和 `ORDER BY`
 
 - `over()` 此时窗口是表的所有行
 - `over(order by)` 累积，第一行的窗口只包含自己，第二行的窗口为前两行...
