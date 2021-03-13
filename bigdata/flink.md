@@ -36,7 +36,7 @@ env.setStateBackend(new FsStateBackend("hdfs://namenode:40010/flink/checkpoints"
 # Flink 架构
 ![flink架构](https://ci.apache.org/projects/flink/flink-docs-release-1.12/fig/processes.svg)
 
-Flink运行时由两种类型地进程构成：一个*JobManager*和一个或多个*TaskManager*
+Flink运行时由两种类型地进程构成：一个***JobManager***和一个或多个***TaskManager***
 ## WaterMark
 ### 什么是watermark
 watermark的本质是一种时间戳，它可用来处理乱序事件。数据流中的 Watermark 用于表示 timestamp 小于 Watermark 的数据，都已经到达了，window 的执行也是由 Watermark 触发的。Watermark 可以理解成一个延迟触发机制，我们可以设置 Watermark 的延时时 长 t， 每 次 系 统 会 校 验 已 经 到 达 的 数 据 中 最 大 的 maxEventTime， 然 后 认 定eventTime 小于 maxEventTime - t 的所有数据都已经到达，如果有窗口的停止时间
