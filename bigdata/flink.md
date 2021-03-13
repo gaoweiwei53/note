@@ -65,6 +65,40 @@ Flink 程序包括以下几个步骤：
 * 3 使用算子对数据进行操纵
 * 4 指出计算结果输出的地方
 * 5 启动程序的执行
+
+## 算子
+### DataStrem算子
+1) `Map` 1->1 
+2) `FlatMap` 1->N
+3) `Filter`
+4) `KeyBy`
+5) `Reduce` N->1
+6) `Aggregations` 具体指`sum``min``max``minBy``maxBy`
+7) `Window`
+8) `WindowAll`
+9) Window `apply`
+10) Window `reduce`
+11) `Aggregations` on window 
+12) `union`
+13) Window `Join`
+14) `intervalJoin`
+15) Window `coGroup`
+16) `connect`
+17) `map`, `flatmap` On ConnectedStreams 
+18) `Iterate`
+19) `project`
+
+### 物理分区
+1) `partitionCustom` 自定义分区
+2) `shuffle` 随机分区
+3) `rebalance()` ？
+4) `rescale()`
+5) `broadcast()` 将元素广播大到每个分区
+
+## 任务链
+1) `startNewChain()`
+2) `disableChaining()`
+3) `slotSharingGroup()`
 ## 2.5 Window
 ### 窗口类型
 - Time Window
