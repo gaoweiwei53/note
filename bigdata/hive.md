@@ -283,8 +283,8 @@ explode(split(category,",")) movie_info_tmp AS category_name;
 
 ## Hive数据类型
 ### 数值类型
-- tinyint 1字节有符号整数
-- smallint 2字节有符号整数
+- tinyint 1字节有符号整数 -128 to 127
+- smallint 2字节有符号整数  -32768 to 32767
 - int 4字节有符号整数
 - bigint 8字节有符号整数
 - float 4字节单精度浮点数
