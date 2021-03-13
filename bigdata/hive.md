@@ -167,7 +167,7 @@ explode(split(category,",")) movie_info_tmp AS category_name;
 
 窗口函数对于点击流处理和时间序列/滑动窗口分析非常有用。
 ### 开窗函数
-- `LEAD(column, offset, default)` 用在`over`前，用来返回下offset行的数据, offset默认是1，如果上offset行没有数据会返回null，也可以用`default`指定。
+- `LEAD(column, offset, default)` 用在`over`前，用来返回下offset行的数据, offset默认是1，如果下offset行没有数据会返回null，也可以用`default`指定。
 - `LAG(column, offset, default)` 返回上offset行，参数同上
 - `FIRST_VALUE`
 - `LASR_VALUE`
