@@ -121,6 +121,14 @@ $HIVE_HOME/bin/hiveserver2
 - struct
 
 # 函数
+## 查看函数和用法
+```sql
+show functions;
+show functions like '*month*';
+
+desc function month;
+desc function extended add_months;
+```
 ## 1. 内置函数
 ## 2. 常用内置函数
 
@@ -193,6 +201,10 @@ SELECT <columns_name>, <aggregate>(column_name)/Windowing functions/Analytics fu
 - [参考2](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+WindowingAndAnalytics)
 # 2. 语句
 ## 2.1 DDL
+用文件插入数据
+```sql
+load data local inpath "path/file" into table table_name;
+```
 ## 2.2 DML
 `show create table test;`查看建表语句
 
