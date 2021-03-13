@@ -91,6 +91,105 @@ $HIVE_HOME/bin/hiveserver2
   bin/beeline -u jdbc:hive2://host:port -n username
   ```
 > username默认似乎是linux当前用户
+
+# Hive数据类型
+### 数值类型
+- tinyint 1字节有符号整数 -128 to 127
+- smallint 2字节有符号整数  -32768 to 32767
+- int 4字节有符号整数
+- bigint 8字节有符号整数
+- float 4字节单精度浮点数
+- double 8字节双精度浮点数
+- double precision double的别称
+- decimal 用户定义范围和精度的定点值
+- numeric decimal的别称
+### 日期类型
+- timestamp
+- date
+- interval
+### 字符串类型
+- string
+- varchar
+- char
+### 二进制类型
+- binary
+### 布尔类型
+- boolean
+### 复杂数据类型
+- map
+- array
+- struct
+
+# 函数
+## 1. 内置函数
+## 2. 常用内置函数
+
+### `explode(array or map)`
+将hive一列中复杂的Array或Map结构拆分多行
+
+`lateral view`用于和`split`, `explode`等UDTF一起使用，将一列数据拆成多行数据后，它将拆分得到的多行数据与其它某个原始字段进行对应形成一个临时表。例如：
+```sql
+SELECT
+movie,
+category_name
+FROM
+movie_info
+lateral VIEW
+explode(split(category,",")) movie_info_tmp AS category_name;
+```
+其中`movie_info_tmp`是形成的临时表名称，`category_name`是拆分得到的列名称
+
+### 日期函数
+- `date_format`
+- `date_add`
+- `next_day(string start_date, string day_of_week)`: 返回下周周几所对应的日期
+- `last_day`: 返回该日所在的月的最后一天的日期
+## 3. 自定义函数
+### 根据UDF类别分为以下三种
+1) UDF(User-Define-Function) 一进一出
+2) UDAF(User-Defined Aggregation Function) 多进一出
+3) UDTF(User-Defined TRable-Generating Function) 一进多出
+### 编程步骤
+1) 继承Hive提供的类
+2) 实现类中的抽象方法
+3) 在hive的命令行窗口创建函数
+# 7. 开窗和分析函数
+
+开窗可以在数据上创建的一个窗口，为了进行一些聚合操作COUNT, AVG, MIN, MAX和分析函数LEAD, LAG, FIRST_VALUE, and LAST_VALUE.
+
+窗口函数对于点击流处理和时间序列/滑动窗口分析非常有用。
+## 开窗函数
+- LEAD
+- LAG
+- FIRST_VALUE
+- LASR_VALUE
+## 分析函数
+- RANK
+- ROW_NUMBER
+- DENSE_RANK
+- CUME_DIST
+- PERCENT_RANK
+- NTILE
+## `over` 子句
+- 和`over`一起常用的聚合函数
+  - COUNT
+  - SUM
+  - MIN
+  - MAX
+  - AVG
+- PARTITION BY 将数据分组再开窗
+- PARTITION BY 和 ORDER BY
+### 语法
+```sql
+SELECT <columns_name>, <aggregate>(column_name)/Windowing functions/Analytics functions OVER (<windowing specification>) FROM <table_name>;
+```
+`over()`
+1) `over()` 此时窗口是表的所有行
+2) `over(order by)` 累积，第一行的窗口只包含自己，第二行的窗口为前两行...
+3) `over(partition by column_name) 根据column_name来分组开窗`
+
+- [参考1](https://bigdataprogrammers.com/windowing-functions-in-hive/)
+- [参考2]https://cwiki.apache.org/confluence/display/Hive/LanguageManual+WindowingAndAnalytics)
 # 2. 语句
 ## 2.1 DDL
 ## 2.2 DML
@@ -179,43 +278,7 @@ row format delimited fields terminated by '\t';
 ```
 ## 分桶规则
 根据结果可知：Hive 的分桶采用对分桶字段的值进行哈希，然后除以桶的个数求余的方式决定该条记录存放在哪个桶当中
-# 7. 开窗和分析函数
 
-开窗可以在数据上创建的一个窗口，为了进行一些聚合操作COUNT, AVG, MIN, MAX和分析函数LEAD, LAG, FIRST_VALUE, and LAST_VALUE.
-
-窗口函数对于点击流处理和时间序列/滑动窗口分析非常有用。
-## 开窗函数
-- LEAD
-- LAG
-- FIRST_VALUE
-- LASR_VALUE
-## 分析函数
-- RANK
-- ROW_NUMBER
-- DENSE_RANK
-- CUME_DIST
-- PERCENT_RANK
-- NTILE
-## `over` 子句
-- 和`over`一起常用的聚合函数
-  - COUNT
-  - SUM
-  - MIN
-  - MAX
-  - AVG
-- PARTITION BY 将数据分组再开窗
-- PARTITION BY 和 ORDER BY
-### 语法
-```sql
-SELECT <columns_name>, <aggregate>(column_name)/Windowing functions/Analytics functions OVER (<windowing specification>) FROM <table_name>;
-```
-`over()`
-1) `over()` 此时窗口是表的所有行
-2) `over(order by)` 累积，第一行的窗口只包含自己，第二行的窗口为前两行...
-3) `over(partition by column_name) 根据column_name来分组开窗`
-
-- [参考1](https://bigdataprogrammers.com/windowing-functions-in-hive/)
-- [参考2]https://cwiki.apache.org/confluence/display/Hive/LanguageManual+WindowingAndAnalytics)
 # 8. 压缩与存储
 ## 8.1 存储
 Hive 支持的存储数据的格式主要有：TEXTFILE 、SEQUENCEFILE、ORC、PARQUET。**其中前两个按行存储，后两个是按列存储的。**  
@@ -278,65 +341,6 @@ SET hive.merge.smallfiles.avgsize = 16777216;
 ```
 ####  合理设置 Reduce 数
 
-# 函数
-## 1. 内置函数
-## 2. 常用内置函数
 
-### `explode(array or map)`
-将hive一列中复杂的Array或Map结构拆分多行
 
-`lateral view`用于和`split`, `explode`等UDTF一起使用，将一列数据拆成多行数据后，它将拆分得到的多行数据与其它某个原始字段进行对应形成一个临时表。例如：
-```sql
-SELECT
-movie,
-category_name
-FROM
-movie_info
-lateral VIEW
-explode(split(category,",")) movie_info_tmp AS category_name;
-```
-其中`movie_info_tmp`是形成的临时表名称，`category_name`是拆分得到的列名称
-
-### 日期函数
-- `date_format`
-- `date_add`
-- `next_day(string start_date, string day_of_week)`: 返回下周周几所对应的日期
-- `last_day`: 返回该日所在的月的最后一天的日期
-## 3. 自定义函数
-### 根据UDF类别分为以下三种
-1) UDF(User-Define-Function) 一进一出
-2) UDAF(User-Defined Aggregation Function) 多进一出
-3) UDTF(User-Defined TRable-Generating Function) 一进多出
-### 编程步骤
-1) 继承Hive提供的类
-2) 实现类中的抽象方法
-3) 在hive的命令行窗口创建函数
-
-## Hive数据类型
-### 数值类型
-- tinyint 1字节有符号整数 -128 to 127
-- smallint 2字节有符号整数  -32768 to 32767
-- int 4字节有符号整数
-- bigint 8字节有符号整数
-- float 4字节单精度浮点数
-- double 8字节双精度浮点数
-- double precision double的别称
-- decimal 用户定义范围和精度的定点值
-- numeric decimal的别称
-### 日期类型
-- timestamp
-- date
-- interval
-### 字符串类型
-- string
-- varchar
-- char
-### 二进制类型
-- binary
-### 布尔类型
-- boolean
-### 复杂数据类型
-- map
-- array
-- struct
 
