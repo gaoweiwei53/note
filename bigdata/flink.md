@@ -53,7 +53,7 @@ watermark的本质是一种时间戳，它用来处理事件乱序的问题。�
 
 Watermark 可以理解成一个延迟触发机制，我们可以设置 Watermark 的延时时 长 t， 每 次 系 统 会 校 验 已 经 到 达 的 数 据 中 最 大 的 maxEventTime， 然 后 认 定eventTime 小于 maxEventTime - t 的所有数据都已经到达，如果有窗口的停止时间等于 maxEventTime – t，那么这个窗口被触发执行。当 Flink 接收到每一条数据时，都会产生一条 Watermark，这条 Watermark就等于当前所有到达数据中的 maxEventTime - 延迟时长。
 ### 分布式处理时watermark的传递机制
-向下游传递时采用广播传递。接收上游数据时，为每个上游分别设置一个watermark分区，再按照分区中值最小的watermark为准。
+向下游传递时采用广播传递。接收上游数据时，为每个上游分别设置一个watermark分区(Partition WM)，再按照分区中值最小的watermark为准, 将当前Partition WM中最小的watermark传递给下游。
 ## State and Fault Tolerance in Batch Programs
 在批处理程序中不使用*checkpointing*
 # 2. DataStream
