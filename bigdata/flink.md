@@ -49,8 +49,8 @@ ResourceManager负责资源分配，管理**task slots**(资源调度地单位)�
 执行一个dataflow的任务，一个TaskManager有一个或多个**task slot**
 ## WaterMark
 ### 什么是watermark
-watermark的本质是一种时间戳，它可用来处理乱序事件。数据流中的 Watermark 用于表示 timestamp 小于 Watermark 的数据，都已经到达了，window 的执行也是由 Watermark 触发的。Watermark 可以理解成一个延迟触发机制，我们可以设置 Watermark 的延时时 长 t， 每 次 系 统 会 校 验 已 经 到 达 的 数 据 中 最 大 的 maxEventTime， 然 后 认 定eventTime 小于 maxEventTime - t 的所有数据都已经到达，如果有窗口的停止时间
-等于 maxEventTime – t，那么这个窗口被触发执行。当 Flink 接收到每一条数据时，都会产生一条 Watermark，这条 Watermark就等于当前所有到达数据中的 maxEventTime - 延迟时长，也就是说，Watermark是由数据携带的，一旦数据携带的 Watermark 比当前未触发的窗口的停止时间要晚，那么就会触发相应窗口的执行。由于 Watermark 是由数据携带的，因此，如果运行过程中无法获取新的数据，那么没有被触发的窗口将永远都不被触发。
+watermark的本质是一种时间戳，它用来处理事件乱序的问题。数据流中的 Watermark 用于表示 timestamp 小于 Watermark 的数据，都已经到达了，window 的执行也是由 Watermark 触发的。Watermark 可以理解成一个延迟触发机制，我们可以设置 Watermark 的延时时 长 t， 每 次 系 统 会 校 验 已 经 到 达 的 数 据 中 最 大 的 maxEventTime， 然 后 认 定eventTime 小于 maxEventTime - t 的所有数据都已经到达，如果有窗口的停止时间
+等于 maxEventTime – t，那么这个窗口被触发执行。当 Flink 接收到每一条数据时，都会产生一条 Watermark，这条 Watermark就等于当前所有到达数据中的 maxEventTime - 延迟时长。
 ### 分布式处理时watermark的传递机制
 向下游传递时采用广播传递。接收上游数据时，为每个上游分别设置一个watermark分区，再按照分区中值最小的watermark为准。
 ## State and Fault Tolerance in Batch Programs
