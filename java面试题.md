@@ -23,3 +23,6 @@ JDK是java开发工具，是开发java应用的工具包，其包括jre，还有
 ## equals 和 ==的区别？
 - equals()比较两个对象的内容
 - 对于基本类型，比较的是值，对于对象，比较的是对象在内存中的地址。
+##  Hashcode
+- hashCode()相等的两个对象他们的equal()不一定相等。
+- equal()相等的两个对象他们的hashCode()一定相等。
