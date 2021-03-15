@@ -26,3 +26,9 @@ JDK是java开发工具，是开发java应用的工具包，其包括jre，还有
 ##  Hashcode
 - hashCode()相等的两个对象他们的equal()不一定相等。
 - equal()相等的两个对象他们的hashCode()一定相等。
+## final修饰符的作用
+ final修饰符用来修饰类、方法和变量，final 修饰的类不能够被继承，修饰的方法不能被继承类重写，修饰的变量为常量，是不可修改的。
+## Math.round(-1.5)的值
+等于 -1, round()返回四舍五入，负.5小数返回较大整数，如-1.5返回-1，1.5返回2
+## String str="i"与 String str=new String("i")一样吗？
+不一样，因为内存的分配方式不一样。String str = "i"的方式，Java虚拟机会将其分配到常量池中，而常量池中没有重复的元素；tring str = new String("i")则会被分到堆内存中。
