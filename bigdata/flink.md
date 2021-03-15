@@ -132,3 +132,14 @@ Flink里的State可分为三种：
 背压是根据输出Buffer的可用性来判断的。如果没有可用的缓冲区(至少一个)用于输出，则表明任务存在背压。
 
 ### 怎么解决背压？
+
+## 任务失败重启
+任务失败重启具体包括重启任务和将一些受影响的任务恢复到正常状态。
+### Restart strategies
+- Fixed Delay Restart Strategy
+- Failure Rate Restart Strategy
+- No Restart Strategy
+- Fallback Restart Strategy
+### Failover strategies
+- Restart All Failover 恢复job中所有任务
+- Restart Pipelined Region Failover 将任务划分为不相邻的区域 
