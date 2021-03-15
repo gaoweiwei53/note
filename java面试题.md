@@ -31,4 +31,4 @@ JDK是java开发工具，是开发java应用的工具包，其包括jre，还有
 ## Math.round(-1.5)的值
 等于 -1, round()返回四舍五入，负.5小数返回较大整数，如-1.5返回-1，1.5返回2
 ## String str="i"与 String str=new String("i")一样吗？
-不一样，因为内存的分配方式不一样。String str = "i"的方式，Java虚拟机会将其分配到常量池中，而常量池中没有重复的元素；tring str = new String("i")则会被分到堆内存中。
+不一样，因为内存的分配方式不一样。String str = "i"的方式，Java虚拟机会将其分配到常量池中，而常量池中没有重复的元素；String str = new String("i")则会被分到堆内存中。
