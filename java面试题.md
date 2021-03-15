@@ -42,12 +42,12 @@ JDK是java开发工具，是开发java应用的工具包，其包括jre，还有
 - 构造方法，类方法（用 static 修饰的方法）不能声明为抽象方法。
 - 抽象类的子类必须给出抽象类中的抽象方法的具体实现，除非该子类也是抽象类
 #### java的I/O流分为几种？
-按流向分类：
-- 输入流
-- 输出流
-按处理数据不同分类：
-- 字节流：二进制，可以处理一切文件，包括：纯文本、doc、音频、视频等。
-- 字符流：文本文件，只能处理纯文本。
-按功能不同分类：
-- 节点流：包裹源头。FileInputStream/FileOutputStream FileReader/FileWriter
-- 处理流：增强功能，提高性能。BufferInputStream/BufferOutputStream BufferReader/BufferWriter
+- 按流向分类：
+    - 输入流
+    - 输出流
+- 按处理数据不同分类：
+    - 字节流：二进制，可以处理一切文件，包括：纯文本、doc、音频、视频等。
+    - 字符流：文本文件，只能处理纯文本。
+- 按功能不同分类：
+    - 节点流：包裹源头。FileInputStream/FileOutputStream FileReader/FileWriter
+    - 处理流：增强功能，提高性能。BufferInputStream/BufferOutputStream BufferReader/BufferWriter
