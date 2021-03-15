@@ -142,4 +142,4 @@ Flink里的State可分为三种：
 - Fallback Restart Strategy
 ### Failover strategies
 - Restart All Failover 恢复job中所有任务
-- Restart Pipelined Region Failover 将任务划分为不相邻的区域 
+- Restart Pipelined Region Failover 将任务划分为不相邻的区域, 当有任务失败时，flink计算最小的必须重启恢复的区域集，将这些区域集里的任务重启。
