@@ -8,6 +8,7 @@
 2.  `find / -name sth`: 查找文件
 3.  `free -h`/`top`: 查看内存使用
 4. swap分区的作用是，当系统物理内存吃紧时，Linux 会将内存中不常访问的数据保存到 swap 上，这样系统就有更多的物理内存为各个进程服务，而当系统需要访问 swap 上存储的内容时，再将 swap 上的数据加载到内存中。
+5. `lsof - i:端口号` 查看某个端口是否被占用 
 # 软件
 - [JDK8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
 - [JDK11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
