@@ -181,7 +181,8 @@ Timed Waiting 以一个具体时间的等待  Runnable -> waiting: `wait(long)`,
 - `notify()`: 执行此方法，会唤醒被wait的一个线程。如果有多个线程被wait，就唤醒优先级高的
 - `notifyAll()`: 会唤醒所有被wait的线程 
 
-[代码](#测试)
+[代码](#线程方法)
+
 说明
 - `wait()`, `notify()`, `notifyAll()`必须使用在同步代码块或同步方法种
 - `wait()`, `notify()`, `notifyAll()`三个方法的调用者必须是同步代码块或同步方法中的同步monitor
@@ -203,9 +204,46 @@ wait()：让出CPU资源和锁资源。
 
 
 ## 代码
-1) <a id="测试"> `wait`, `sleep`, `notify()`</a>
+1) <a id="线程方法"> `wait`, `sleep`, `notify()`</a>
 ```java
-
+class Number implements Runable{
+	private int number = 1;
+	@Override
+	public void run(){
+		while(true){
+			synchronized(this){
+				notify();
+				if (number < 100) {
+					try{
+						Thread.sleep();
+					} catch (InterruptedException e){
+						e.printStackTrace();
+					}
+					System.out.println(Thread.currentThread().getName() + ":" + number);
+					number++;
+					try{
+						wait();
+					} catch (InterruptedException e){
+						e.printStackTrace();
+					}
+				} else{
+					break;
+				}
+			}
+		}
+	}
+}
+public class CommunicationTest{
+	public static void main(String[] args) {
+		Number number = new Number();
+		Thread t1 = new Thread(number);
+		Thread t2 = new Thread(number);
+		t1.setName("线程1");
+		t1.setName("线程2");
+		t1.start();
+		t1.start();
+	}
+}
 ```
 
 
