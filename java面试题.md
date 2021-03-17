@@ -108,10 +108,31 @@ ArrayList是通过可增长容量的数组实现的，LinkedList是通过双链�
     ```java
     String[] arr={"王昭君","妲己","后羿","鲁班","程咬金"};
     ArrayList<String> list3=new ArrayList<String>();
-	 	 Collections.addAll(list3, arr);
+    Collections.addAll(list3, arr);
     ```
 - List转数组(方法)
     - list.toArray(new String[list.size()])(常用) 
+
+#### 8. ArrayList 和 Vector 的区别是什么？
+都是基于数组实现的
+- Vector比ArrayList先存在。Vector是同步的，Vector的对象是线程安全的；ArrayList是异步的，ArrayList的对象不是线程安全的。同步影响执行效率，所以ArrayList比Vector性能好。
+- ArrayList和Vector都有一个初始的容量大小，当存储的空间不够时，需要增加存储空间，Vector默认增长原来的一倍，而ArrayList是原来的0.5倍。ArrayList与Vector都可以设置初始的空间大小，Vector还可以设置增长的空间大小。
+#### 9. Array 和 ArrayList 有何区别？
+- Array可以包含基本类型和对象类型，ArrayList只能包含对象类型。
+- Array大小是固定的，ArrayList的大小是动态变化的。
+- ArrayList提供了更多的方法和特性，比如：addAll()，removeAll()，iterator()等等。
+
+#### 10. 迭代器 Iterator 是什么？怎么使用
+ - Iterator是一个接口，定义了`hasNext()`, `Next()`, `remove()`等方法
+
+集合类一般在类中定义定义一个内部类实现迭代器接口，同时定义一个方法用来返回该迭代器类的对象。使用的时候调用该方法，即可获得该集合的迭代器。
+#### 11. Iterator和ListIterator的区别
+1.使用范围不同，Iterator可以应用于所有的集合，Set、List和Map和这些集合的子类型。而ListIterator只能用于List及其子类型。
+2.ListIterator有add方法，可以向List中添加对象，而Iterator不能。
+3.ListIterator和Iterator都有hasNext()和next()方法，可以实现顺序向后遍历，但是ListIterator有hasPrevious()和previous()方法，可以实现逆向（顺序向前）遍历。Iterator不可以。
+4.ListIterator可以定位当前索引的位置，nextIndex()和previousIndex()可以实现。Iterator没有此功能。
+5.都可实现删除操作，但是ListIterator可以实现对象的修改，set()方法可以实现。Iterator仅能遍历，不能修改。
+
 ## 并发编程
 #### 1. java线程的状态有几种？
 # 计算机网络
