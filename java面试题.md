@@ -82,3 +82,4 @@ HashMap通过hashcode对其内容进行快速查找，而 TreeMap中所有的元
 - HashMap：适用于在Map中插入、删除和定位元素。
 - Treemap：适用于按自然顺序或自定义顺序遍历键(key)
 - HashMap通常比TreeMap快一点(树和哈希表的数据结构使然)，建议多使用HashMap，在需要排序的Map时候才用TreeMap
+- HashMap和TreeMap都是非同步的
