@@ -52,10 +52,33 @@ JDK是java开发工具，是开发java应用的工具包，其包括jre，还有
     - 节点流：包裹源头。FileInputStream/FileOutputStream FileReader/FileWriter
     - 处理流：增强功能，提高性能。BufferInputStream/BufferOutputStream BufferReader/BufferWriter
 
-#### BIO, NIO, AIO有什么区别？
+#### 12. BIO, NIO, AIO有什么区别？
 - Java BIO  
 Block IO，客户端有连接请求时服务器端就需要启动一个线程进行处理，如果这个连接不做任何事情会造成不必要的线程开销，当然可以通过线程池机制改善。
 - Java NIO  
 No block IO，客户端发送的连接请求都会注册到多路复用器上，多路复用器轮询到连接有I/O请求时才启动一个线程进行处理。
 - Java AIO(NIO.2)  
 Asynchronous non-blocking IO, 客户端的I/O请求都是由OS先完成了再通知服务器应用去启动线程进行处理
+
+#### 13. Collection 和 Collections 有什么区别？
+- Collection是一个集合接口。它提供了对集合对象进行基本操作的通用方法。
+- Collections 是一个包装类。它包含有各种有关集合操作的静态方法。
+
+#### 14. HashMap 和 Hashtable 有什么区别？
+- Hashtable
+    - key和value为非null 
+    - Hashtable是同步的，也就说时线程安全的
+    - 如果不需要线程安全，推荐使用`HashMap`
+    - 如果需要线程安全高并发，推荐使用`java.util.concurrent.ConcurrentHashMap`
+
+- Hashmap
+    - 允许key和value的值为null，不过只能允许一个bull key
+    - 不是同步的
+
+#### 15. 如何决定使用 HashMap 还是 TreeMap？
+HashMap通过hashcode对其内容进行快速查找，而 TreeMap中所有的元素都保持着某种固定的顺序，如果需要得到一个有序的结果你就应该使用TreeMap（HashMap中元素的排列顺序是不固定的）。
+- HashMap：基于哈希表实现
+- TreeMap：基于**红黑树**实现
+- HashMap：适用于在Map中插入、删除和定位元素。
+- Treemap：适用于按自然顺序或自定义顺序遍历键(key)
+- HashMap通常比TreeMap快一点(树和哈希表的数据结构使然)，建议多使用HashMap，在需要排序的Map时候才用TreeMap
