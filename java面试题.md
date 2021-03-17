@@ -127,16 +127,41 @@ ArrayList是通过可增长容量的数组实现的，LinkedList是通过双链�
 
 集合类一般在类中定义定义一个内部类实现迭代器接口，同时定义一个方法用来返回该迭代器类的对象。使用的时候调用该方法，即可获得该集合的迭代器。
 #### 11. Iterator和ListIterator的区别
-1.使用范围不同，Iterator可以应用于所有的集合，Set、List和Map和这些集合的子类型。而ListIterator只能用于List及其子类型。
-2.ListIterator有add方法，可以向List中添加对象，而Iterator不能。
-3.ListIterator和Iterator都有hasNext()和next()方法，可以实现顺序向后遍历，但是ListIterator有hasPrevious()和previous()方法，可以实现逆向（顺序向前）遍历。Iterator不可以。
-4.ListIterator可以定位当前索引的位置，nextIndex()和previousIndex()可以实现。Iterator没有此功能。
-5.都可实现删除操作，但是ListIterator可以实现对象的修改，set()方法可以实现。Iterator仅能遍历，不能修改。
+- 使用范围不同，Iterator可以应用于所有的集合，Set、List和Map和这些集合的子类型。而ListIterator只能用于List及其子类型。
+- ListIterator有add方法，可以向List中添加对象，而Iterator不能。
+- ListIterator和Iterator都有hasNext()和next()方法，可以实现顺序向后遍历，但是ListIterator有hasPrevious()和previous()方法，可以实现逆向（顺序向前）遍历。Iterator不可以。
+- ListIterator可以定位当前索引的位置，nextIndex()和previousIndex()可以实现。Iterator没有此功能。
+- 都可实现删除操作，但是ListIterator可以实现对象的修改，set()方法可以实现。Iterator仅能遍历，不能修改。
+#### 12. 怎么确保一个集合不被修改
+通过Collections工具类的静态方法unmodifiableCollection（list）, 该静态方法内部返回了Collections的静态内部类UnmodifiableCollection对象，同样实现了Collection集合的方法，只不过在比如add、remove等修改的方法中直接抛出UnsupportedOperationException()异常，因此实现了集合不能修改的功能。
 
 ## 并发编程
-#### 1. java线程的状态有几种？
+#### 1. 并发和并行的区别？
+- 并行是同一时刻，多个任务同时执行
+- 并行是在一个时间段内，多个任务可交替执行
+
+> 单核CPU内，任务只能并发执行，无法并行执行，多核CPU内，每个核可并行执行任务
+
+#### 2. 进程和线程
+- 进程：是正在运行的程序的实例。
+- 线程：包含在进程之中，是进程中的实际执行实体，是操作系统能够进行运算调度的最小单位。
+
+不同的进程使用独立的地址空间和资源，不同的线程共享地址空间和系统资源
+#### 3. java线程的状态有几种？
+#### 4. 守护线程是什么？使用场景？
+守护线程在JVM中是一个低优先级的线程，它在后台运行，例如垃圾收集(gc)等任务，当所有用户线程完成执行时结束时，守护线程本身正在运行也不会阻止JVM退出
+
+可以使用`setDaemon(boolean)`方法在线程启动之前更改线程守护进程属性
+
+事实上，User Thread（用户线程）和Daemon Thread（守护线程）从本质上来说并没有什么区别，唯一的不同之处：如果用户线程已经全部退出运行了，只剩下守护线程存在了，虚拟机也就退出了。
 # 计算机网络
 #### 1. 说说TCP三次握手的过程，为什么要用三次，两次不行吗？
+# 操作系统
+#### 1. 进程的状态有哪些
+分为三态模型和五态模型
+- 三态模型
+- 五态模型
+
 
 
 
