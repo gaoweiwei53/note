@@ -77,9 +77,7 @@ Asynchronous non-blocking IO, 客户端的I/O请求都是由OS先完成了再通
 
 #### 15. 如何决定使用 HashMap 还是 TreeMap？
 HashMap通过hashcode对其内容进行快速查找，而 TreeMap中所有的元素都保持着某种固定的顺序，如果需要得到一个有序的结果你就应该使用TreeMap（HashMap中元素的排列顺序是不固定的）。
-- HashMap：基于哈希表实现
-- TreeMap：基于**红黑树**实现
-- HashMap：适用于在Map中插入、删除和定位元素。
-- Treemap：适用于按自然顺序或自定义顺序遍历键(key)
+- HashMap：基于哈希表实现，适用于在Map中插入、删除和定位元素。
+- TreeMap：基于**红黑树**实现，适用于按自然顺序或自定义顺序遍历键(key)
 - HashMap通常比TreeMap快一点(树和哈希表的数据结构使然)，建议多使用HashMap，在需要排序的Map时候才用TreeMap
 - HashMap和TreeMap都是非同步的
