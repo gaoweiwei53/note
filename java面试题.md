@@ -176,10 +176,12 @@ Waiting无限时间的等待 Runnable -> waiting: `wait()`, `join()` 切回Runna
 
 Timed Waiting 以一个具体时间的等待  Runnable -> waiting: `wait(long)`, `join(long)`, `sleep(long)`, 切回Runnable: `notify()`, `notifyAll()`
 #### 6. 线程的方法
-- `sleep()`: 会休眠当前线程指定时间，释放 CPU 资源，不释放对象锁，休眠时间到自动苏醒继续执行；
-- `wait()`: 执行此方法，当前线程释放CPU资源和monitor锁，进入阻塞状态。
-- `notify()`: 执行此方法，会唤醒被wait的一个线程。如果有多个线程被wait，就唤醒优先级高的
-- `notifyAll()`: 会唤醒所有被wait的线程 
+- `sleep()`: 休眠当前线程，释放 CPU 资源，不释放对象锁，休眠时间到自动苏醒继续执行
+- `wait()`: 当前线程释放CPU资源和monitor锁，进入阻塞状态。
+- `notify()`: 唤醒被wait的一个线程。如果有多个线程被wait，就唤醒优先级高的。线程被唤醒后，需要竞争锁，获取到锁之后再继续执行。
+- `notifyAll()`: 会唤醒所有被wait的线程
+- `join()`: 如果某个线程调用另一个线程的`join()`方法`t.join()`，那么当前线程将被挂起，直到目标线程t结束才恢复
+- `yield()`: 线程告诉调度器，表示愿意让出对CPU的当前使用权，但是调度器可以自由忽略这个提示。 **不常用**
 
 [代码](#线程方法)
 
@@ -189,10 +191,8 @@ Timed Waiting 以一个具体时间的等待  Runnable -> waiting: `wait(long)`,
 - `wait()`, `notify()`, `notifyAll()`定义在Object类中
 
 
-通过sleep方法实现的暂停，程序是顺序进入同步块的，只有当上一个线程执行完成的时候，下一个线程才能进入同步方法，sleep暂停期间一直持有monitor对象锁，其他线程是不能进入的。而wait方法则不同，当调用wait方法后，当前线程会释放持有的monitor对象锁，因此，其他线程还可以进入到同步方法，线程被唤醒后，需要竞争锁，获取到锁之后再继续执行。
-
-sleep(long mills)：让出CPU资源，但是不会释放锁资源。
-wait()：让出CPU资源和锁资源。
+`sleep(long mills)`：让出CPU资源，但是不会释放锁资源。
+`wait()`：让出CPU资源和锁资源。
 # 计算机网络
 #### 1. 说说TCP三次握手的过程，为什么要用三次，两次不行吗？
 # 操作系统
@@ -206,6 +206,7 @@ wait()：让出CPU资源和锁资源。
 ## 代码
 1) <a id="线程方法"> `wait`, `sleep`, `notify()`</a>
 ```java
+// 两个线程交叉打印数字
 class Number implements Runable{
 	private int number = 1;
 	@Override
