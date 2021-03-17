@@ -1,4 +1,5 @@
 # Java
+## 语法基础
 #### 1. Java基本数据类型几个？
 Java提供了八种基本类型。六种数字类型（四个整数型，两个浮点型），一种字符类型，还有一种布尔型。
 - byte   1字节
@@ -60,11 +61,15 @@ No block IO，客户端发送的连接请求都会注册到多路复用器上，
 - Java AIO(NIO.2)  
 Asynchronous non-blocking IO, 客户端的I/O请求都是由OS先完成了再通知服务器应用去启动线程进行处理
 
-#### 13. Collection 和 Collections 有什么区别？
+#### 13. 说说对面向对象的理解？
+#### 14. 说说java8 java9 java11的新特性？函数式接口
+
+## 集合
+#### 1. Collection 和 Collections 有什么区别？
 - Collection是一个集合接口。它提供了对集合对象进行基本操作的通用方法。
 - Collections 是一个包装类。它包含有各种有关集合操作的静态方法。
 
-#### 14. HashMap 和 Hashtable 有什么区别？
+#### 2. HashMap 和 Hashtable 有什么区别？
 - Hashtable
     - key和value为非null 
     - Hashtable是同步的，也就说时线程安全的
@@ -76,21 +81,21 @@ Asynchronous non-blocking IO, 客户端的I/O请求都是由OS先完成了再通
     - 允许key和value的值为null，不过只能允许一个bull key
     - 不是同步的
 
-#### 15. 如何决定使用 HashMap 还是 TreeMap？
+#### 3. 如何决定使用 HashMap 还是 TreeMap？
 HashMap通过hashcode对其内容进行快速查找，而 TreeMap中所有的元素都保持着某种固定的顺序，如果需要得到一个有序的结果你就应该使用TreeMap（HashMap中元素的排列顺序是不固定的）。
 - HashMap：基于哈希表实现，适用于在Map中插入、删除和定位元素。
 - TreeMap：基于**红黑树**实现，适用于按自然顺序或自定义顺序遍历键(key)
 - HashMap通常比TreeMap快一点(树和哈希表的数据结构使然)，建议多使用HashMap，在需要排序的Map时候才用TreeMap
 - HashMap和TreeMap都是非同步的
 
-#### 16. 说一下 HashMap 的实现原理？
+#### 4. 说一下 HashMap 的实现原理？
 - load factor: a=n/m 其中n 为关键字个数，m为表长。表示Hsah表中元素的填满的程度.若:加载因子越大,填满的元素越多,好处是,空间利用率高了,但:冲突的机会加大了.反之,加载因子越小,填满的元素越少,好处是:冲突的机会减小了,但空间浪费多了。冲突的机会越大,则查找的成本越高.反之,查找的成本越小.因而,查找时间就越小.
 - rehash: 在散列，当load factor达到阈值时，散列表进行扩容。
 
 HashMap是通过Hash表实现的，该Hash表是由数组和单链表构成的。当不发生hash冲突时，将数据放在对应的数组位置，当发生hash冲突时，使用单链表结构，将新加入的数据作为到链表的下一个节点。
-#### 17. 说说对面向对象的理解？
-#### 18. 说说java8 java9 java11的新特性？函数式接口
-#### java线程的状态有几种？
+
+## 并发编程
+#### 1. java线程的状态有几种？
 # 计算机网络
 #### 1. 说说TCP三次握手的过程，为什么要用三次，两次不行吗？
 
