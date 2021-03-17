@@ -156,12 +156,16 @@ ArrayList是通过可增长容量的数组实现的，LinkedList是通过双链�
 事实上，User Thread（用户线程）和Daemon Thread（守护线程）从本质上来说并没有什么区别，唯一的不同之处：如果用户线程已经全部退出运行了，只剩下守护线程存在了，虚拟机也就退出了。
 #### 5. java线程有哪几种状态？
 6种
-- New when created, not yet started
-- Runnable executing, 包括running
-- Blocked waiting for a monitor lock
-- Waiting 无限时间的等待 `wait()`, `join()` 切回Runnable: `notify()`, `notifyAll()`
-- Timed Waiting 以一个具体时间的等待  `wait(long)`, `join(long)`, `sleep(long)`, 切回Runnable: `notify()`, `notifyAll()`
-- Terminated 
+- New
+- Runnable
+- Blocked
+- Waiting 
+- Timed Waiting 
+- Terminated
+
+Waiting无限时间的等待 Runnable -> waiting: `wait()`, `join()` 切回Runnable: `notify()`, `notifyAll()`
+
+Timed Waiting 以一个具体时间的等待  Runnable -> waiting: `wait(long)`, `join(long)`, `sleep(long)`, 切回Runnable: `notify()`, `notifyAll()`
 # 计算机网络
 #### 1. 说说TCP三次握手的过程，为什么要用三次，两次不行吗？
 # 操作系统
