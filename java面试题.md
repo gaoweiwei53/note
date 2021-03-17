@@ -70,6 +70,7 @@ Asynchronous non-blocking IO, 客户端的I/O请求都是由OS先完成了再通
     - Hashtable是同步的，也就说时线程安全的
     - 如果不需要线程安全，推荐使用`HashMap`
     - 如果需要线程安全高并发，推荐使用`java.util.concurrent.ConcurrentHashMap`
+    - ConcurrentHashMap也是线程安全的，但性能比HashTable好很多，HashTable是锁整个Map对象，而ConcurrentHashMap是锁Map的部分结构
 
 - Hashmap
     - 允许key和value的值为null，不过只能允许一个bull key
@@ -81,3 +82,18 @@ HashMap通过hashcode对其内容进行快速查找，而 TreeMap中所有的元
 - TreeMap：基于**红黑树**实现，适用于按自然顺序或自定义顺序遍历键(key)
 - HashMap通常比TreeMap快一点(树和哈希表的数据结构使然)，建议多使用HashMap，在需要排序的Map时候才用TreeMap
 - HashMap和TreeMap都是非同步的
+
+#### 16. 说一下 HashMap 的实现原理？
+- load factor: a=n/m 其中n 为关键字个数，m为表长。表示Hsah表中元素的填满的程度.若:加载因子越大,填满的元素越多,好处是,空间利用率高了,但:冲突的机会加大了.反之,加载因子越小,填满的元素越少,好处是:冲突的机会减小了,但空间浪费多了。冲突的机会越大,则查找的成本越高.反之,查找的成本越小.因而,查找时间就越小.
+- rehash: 在散列，当load factor达到阈值时，散列表进行扩容。
+
+HashMap是通过Hash表实现的，该Hash表是由数组和单链表构成的。当不发生hash冲突时，将数据放在对应的数组位置，当发生hash冲突时，使用单链表结构，将新加入的数据作为到链表的下一个节点。
+#### 17. 说说对面向对象的理解？
+#### 18. 说说java8 java9 java11的新特性？函数式接口
+#### java线程的状态有几种？
+# 计算机网络
+#### 1. 说说TCP三次握手的过程，为什么要用三次，两次不行吗？
+
+
+
+
