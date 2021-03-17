@@ -93,7 +93,25 @@ HashMap通过hashcode对其内容进行快速查找，而 TreeMap中所有的元
 - rehash: 在散列，当load factor达到阈值时，散列表进行扩容。
 
 HashMap是通过Hash表实现的，该Hash表是由数组和单链表构成的。当不发生hash冲突时，将数据放在对应的数组位置，当发生hash冲突时，使用单链表结构，将新加入的数据作为到链表的下一个节点。
+#### 5. 说一下 HashSet 的实现原理？
+HashSet的是基于HashMap实现的，将set需要存储的值放在map的key里的，value是一个空的object对象(PRESENT).
+#### 6. ArrayList 和 LinkedList 的区别是什么？
+ArrayList是通过可增长容量的数组实现的，LinkedList是通过双链表实现的。
+- ArrayList：查找的时候性能好
+- LinkedList：添加删除元素的时候性能好
 
+#### 7. 如何实现数组和 List 之间的转换？
+- 数组转List
+    - 通过 Arrays.asList(strArray) 方式,将数组转换List后，不能对List增删，只能查改，否则抛异常。
+    - 通过ArrayList的构造器，将Arrays.asList(arr)的返回值转为ArrayList。  
+    - 通过集合工具类Collections.addAll()方法(最高效)。
+    ```java
+    String[] arr={"王昭君","妲己","后羿","鲁班","程咬金"};
+    ArrayList<String> list3=new ArrayList<String>();
+	 	 Collections.addAll(list3, arr);
+    ```
+- List转数组(方法)
+    - list.toArray(new String[list.size()])(常用) 
 ## 并发编程
 #### 1. java线程的状态有几种？
 # 计算机网络
