@@ -205,17 +205,17 @@ Runnable和Callable的区别是，
 `start()`方法用来启动该新的线程，`run()`方法会在该线程里执行。如果不调用`start()`, 直接调用`run()`, 该线程不会被启动，`run()`方法会被调用线程即main线程当作普通的类方法执行。
 #### 10. 创建线程池有几种方式？
 有两种：
-1) `ThreadPoolExecutor
-```java
-ExecutorService service = new ThreadPoolExecutor(8,8, more args here...);
-```
+1) `ThreadPoolExecutor`
+    ```java
+    ExecutorService service = new ThreadPoolExecutor(8,8, more args here...);
+    ```
 2) `Executors`工厂
-```java
-ExecutorService service = Executors.newFixedThreadPool(8);
-ExecutorService service = Executors.newCachedThreadPool(8);
-ExecutorService service = Executors.newScheduledThreadPool(8);
-ExecutorService service = Executors.newFixedThreadPool(8);
-```
+    ```java
+    ExecutorService service = Executors.newFixedThreadPool(8);
+    ExecutorService service = Executors.newCachedThreadPool(8);
+    ExecutorService service = Executors.newScheduledThreadPool(8);
+    ExecutorService service = Executors.newFixedThreadPool(8);
+    ```
 # 计算机网络
 #### 1. 说说TCP三次握手的过程，为什么要用三次，两次不行吗？
 # 操作系统
