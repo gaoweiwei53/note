@@ -190,9 +190,32 @@ Timed Waiting 以一个具体时间的等待  Runnable -> waiting: `wait(long)`,
 - `wait()`, `notify()`, `notifyAll()`三个方法的调用者必须是同步代码块或同步方法中的同步monitor
 - `wait()`, `notify()`, `notifyAll()`定义在Object类中
 
-
 `sleep(long mills)`：让出CPU资源，但是不会释放锁资源。
 `wait()`：让出CPU资源和锁资源。
+#### 7. 创建线程的方式
+1) 通过继承Thread类实现,重写`run()`方法，缺点：单继承的限制----无法继承其它父类; 多个线程之间无法共享该线程类的实例变量。
+2) 实现Runnable接口，实现`run()`方法，较继承Thread类，避免单继承的局限性，适合资源共享。
+3) 使用Callable，接口中要覆盖的方法是`call()`, 此方法可以抛异常,而前两种不能 而且此方法可以有返回值
+
+#### 8. Runnable和Callable的区别
+Runnable和Callable的区别是，
+- Callable规定的方法是call(),Runnable规定的方法是run().
+- Callable的`call()`可以有返回值并可以抛出异常，而Runnable的`run()`方法没有返回值，不抛出异常。
+#### 9. `start()`和`run()`方法的区别？
+`start()`方法用来启动该新的线程，`run()`方法会在该线程里执行。如果不调用`start()`, 直接调用`run()`, 该线程不会被启动，`run()`方法会被调用线程即main线程当作普通的类方法执行。
+#### 10. 创建线程池有几种方式？
+有两种：
+1) `ThreadPoolExecutor
+```java
+ExecutorService service = new ThreadPoolExecutor(8,8, more args here...);
+```
+2) `Executors`工厂
+```java
+ExecutorService service = Executors.newFixedThreadPool(8);
+ExecutorService service = Executors.newCachedThreadPool(8);
+ExecutorService service = Executors.newScheduledThreadPool(8);
+ExecutorService service = Executors.newFixedThreadPool(8);
+```
 # 计算机网络
 #### 1. 说说TCP三次握手的过程，为什么要用三次，两次不行吗？
 # 操作系统
