@@ -63,6 +63,9 @@ Asynchronous non-blocking IO, 客户端的I/O请求都是由OS先完成了再通
 
 #### 13. 说说对面向对象的理解？
 #### 14. 说说java8 java9 java11的新特性？函数式接口
+- 默认方法：Java 8允许我们给接口添加一个非抽象的方法实现，只需要使用 default关键字即可
+- lambda表达式
+- Stream API
 #### 15. `instanceof`的作用？
 a instanceof A: 判断a是否位类A的实例
 #### 16. 说说红黑树？
@@ -73,6 +76,12 @@ a instanceof A: 判断a是否位类A的实例
 （3）每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！]
 （4）如果一个节点是红色的，则它的子节点必须是黑色的。
 （5）从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点。
+#### 17. 什么是函数式接口
+函数式接口是只包含一个抽象方法声明的接口。`java.lang.Runnable` 就是一种函数式接口，在 `Runnable` 接口中只声明了一个方法 `void run()`. 函数式接口都可用用lambda表达式来简化书写。
+#### 18. Stream
+在 Java 8 中, 集合接口有两个方法来生成流：
+- stream() − 为集合创建串行流。
+- parallelStream() − 为集合创建并行流。
 ## 集合
 #### 1. Collection 和 Collections 有什么区别？
 - Collection是一个集合接口。它提供了对集合对象进行基本操作的通用方法。
