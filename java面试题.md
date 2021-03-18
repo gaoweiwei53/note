@@ -209,13 +209,19 @@ Runnable和Callable的区别是，
     ```java
     ExecutorService service = new ThreadPoolExecutor(8,8, more args here...);
     ```
-2) `Executors`工厂
+2) `Executors`工厂, 其实调用静态方法最终返回的也是`ThreadPoolExecutor`对象，**建议使用**
     ```java
-    ExecutorService service = Executors.newFixedThreadPool(8);
-    ExecutorService service = Executors.newCachedThreadPool(8);
-    ExecutorService service = Executors.newScheduledThreadPool(8);
-    ExecutorService service = Executors.newFixedThreadPool(8);
+    ExecutorService service = Executors.newFixedThreadPool(8); // 固定数量的线程
+    ExecutorService service = Executors.newCachedThreadPool(8); // 适合执行许多短时间存活的异步任务
+    ExecutorService service = Executors.newScheduledThreadPool(8); //
+    ExecutorService service = Executors.newSingleThreadExecutor(8);
     ```
+#### 11. 线程池有哪些状态？
+1) **Running**    接收新的任务，处理队列任务
+2) **Shutdown**   不接收新的任务，但处理队列任务  
+3) **Stop**       不接收新的任务，不处理队列任务
+4) **Tidying**    所有任务都已终止，`workCount`为0，线程将转为Tidying状态，并会执行`terminated()`钩子方法
+5) **Terminated** `terminated()`方法执行完成后
 # 计算机网络
 #### 1. 说说TCP三次握手的过程，为什么要用三次，两次不行吗？
 # 操作系统
