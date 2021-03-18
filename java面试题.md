@@ -230,7 +230,13 @@ Runnable和Callable的区别是，
 - SHUTDOWN -> TIDYING 队列和线程池都为空
 - STOP -> TIDYING 线程池为空
 - TIDYING -> TERMINATED `terminated()`方法执行完成后
- 
+
+#### 12. 线程池中 submit()和 execute()方法有什么区别？
+两个方法都可以向线程池提交任务
+- `execute()`只能接收`Runnable`, `submit()`可接收`Runnable`或`Callable`
+- `execute()`没有返回值, 它定义在`Executor`接口中; 而 `submit()` 有返回值, 返回持有计算结果的 `Future` 对象, 它定义在`ExecutorService`接口中
+
+> `ExecutorService`接口继承了`Executor`接口
 # 计算机网络
 #### 1. 说说TCP三次握手的过程，为什么要用三次，两次不行吗？
 # 操作系统
