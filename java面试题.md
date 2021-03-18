@@ -225,6 +225,12 @@ Runnable和Callable的区别是，
 |**Tidying**|所有任务都已终止，`workCount`为0，线程将转为Tidying状态，并会执行`terminated()`钩子方法|
 |**Terminated**|`terminated()`方法执行完成后|
 
+- RUNNING -> SHUTDOWN  调用`shutdown()`
+- (RUNNING or SHUTDOWN) -> STOP 调用`shutdownNow()`
+- SHUTDOWN -> TIDYING 队列和线程池都为空
+- STOP -> TIDYING 线程池为空
+- TIDYING -> TERMINATED `terminated()`方法执行完成后
+ 
 # 计算机网络
 #### 1. 说说TCP三次握手的过程，为什么要用三次，两次不行吗？
 # 操作系统
