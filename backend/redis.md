@@ -1,4 +1,4 @@
-[Redis](https://redis.io/)
+[Redis, 最新版本6.2](https://redis.io/)
 # 1. NoSql的四大分类
 ## KV键值对
 - 新浪：Redis
@@ -10,17 +10,27 @@
 - HBse
 - 分布式文件系统
 ## 图关系数据库
-
+## 2. Redis简介
+redis是什么？什么场景需要用redis？
 # 2. Redis安装
-1. make编译 可以选择make install 
-2. 分别拷贝 命令和配置文件至新建的文件夹 bin conf
-3. 修改配置文件，设置后台启动
-4. 启动Redis
-5. 查看进程
+1) 下载
 ```bash
-ps -ef|grep redis
+$ wget https://download.redis.io/releases/redis-6.2.1.tar.gz
+$ tar xzf redis-6.2.1.tar.gz
+$ cd redis-6.2.1
+$ make
 ```
-6. 退出连接 shutdown exit
+2) 分别拷贝`src`下命令和配置文件至新建的文件夹 `bin` `conf`
+3) 修改配置文件，设置后台启动
+```shell
+daemonize yes
+```
+5) 启动Redis
+6) 查看进程
+```bash
+ps -ef | grep redis
+```
+6) 退出连接 shutdown exit
 
 # 3. Redis基础知识
 1. redis默认有16个数据库，默认的是第0个，可以使用`select`命令切换
