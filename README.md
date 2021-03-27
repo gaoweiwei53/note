@@ -11,6 +11,7 @@
 5. `lsof -i:端口号` 查看某个端口是否被占用 
 6. `netstat -nl`： 只显示监听端口 
 7. ` + 大M(shift m)` 按内存使用降序排列
+8. `ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head` 
 # 软件
 - [JDK8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
 - [JDK11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
