@@ -1,3 +1,5 @@
+# 资料
+1. [ucsd](https://cseweb.ucsd.edu/classes/sp16/cse291-e/index/lecture_index.html)
 # CAP theorem(CAP 定理)
 - Consistency: Every read receives the most recent write or an error
 - Availability: Every request receives a (non-error) response, without the guarantee that it contains the most recent write
