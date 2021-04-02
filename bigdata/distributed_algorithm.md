@@ -11,7 +11,7 @@
 # 一致性算法(consensus algorithm)
 ## 1. Paxos(1989)
 复杂难懂
-## 2. [Zab](https://marcoserafini.github.io/papers/zab.pdf)(2009之前) 
+## 2. [Zab](https://marcoserafini.github.io/papers/zab.pdf)(before 2009) 
 Zab is a crash-recovery atomic broadcast algorithm we designed for the ZooKeeper coordination service
 ## 3. [Raft](https://raft.github.io/raft.pdf)(2013)
 ## 时钟同步算法(clock synchronization algorithm)
