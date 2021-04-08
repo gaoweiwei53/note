@@ -1,4 +1,6 @@
 # 1. SparkCore
+## 概念
+1) RDD: 一个RDD(Resilient Distribution Dataset)代表一个不可变的，分区的元素集合
 1. 窄依赖指的是每一个父RDD的 Partition 最多被子RDD的一个 Partition 使用
 2. 宽依赖指的是多个子 RDD的 Partition 会依赖同一个父RDD的 Partition，会引起 shuffle
 3. Spark 三大数据结构
