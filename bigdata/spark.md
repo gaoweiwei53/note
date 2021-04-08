@@ -5,6 +5,7 @@
 2) 窄依赖指的是每一个父RDD的 Partition 最多被子RDD的一个 Partition 使用
 3) 宽依赖指的是多个子 RDD的 Partition 会依赖同一个父RDD的 Partition，会引起 shuffle
 4) Driver: 执行应用的`main()`函数的进程，它会创建***`SparkContext`***
+
 Spark 三大数据结构
 1) RDD
 2) 广播变量：分布式只读共享变量
