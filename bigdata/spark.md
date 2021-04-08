@@ -4,7 +4,7 @@
 它本质是一种不可变地，分区的记录集合。RDD一个核心特性是每个RDD都记录了血缘，当某个RDD失败之后，它可以通过血缘来恢复。
 2) 窄依赖指的是每一个父RDD的 Partition 最多被子RDD的一个 Partition 使用
 3) 宽依赖指的是多个子 RDD的 Partition 会依赖同一个父RDD的 Partition，会引起 shuffle
-4) Driver: 执行应用的`main()`函数的进程，它会创建***`SparkContext`***
+4) Driver: 执行应用的`main()`函数的进程，它会创建`SparkContext`
 
 Spark 三大数据结构
 1) RDD
