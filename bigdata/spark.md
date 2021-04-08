@@ -10,10 +10,10 @@ RDD: 分布式数据集
 累加器：分布式只写共享变量
 ## 任务划分
 RDD任务切分中间分为：Application、Job、Stage 和 Task
-1）Application：初始化一个 SparkContext 即生成一个Application
-2）Job：一个Action 算子就会生成一个 Job
-3）Stage：根据RDD之间的依赖关系的不同将 Job 划分成不同的 Stage，遇到一个宽依赖 则划分一个 Stage。
-4）Task：Stage 是一个 TaskSet，将 Stage 划分的结果发送到不同的 Executor 执行即为一个 Task。
+1) Application：初始化一个 SparkContext 即生成一个Application
+2) Job：一个Action 算子就会生成一个 Job
+3) Stage：根据RDD之间的依赖关系的不同将 Job 划分成不同的 Stage，遇到一个宽依赖 则划分一个 Stage。
+4) Task：Stage 是一个 TaskSet，将 Stage 划分的结果发送到不同的 Executor 执行即为一个 Task。
 ##  RDD缓存
 RDD通过 persist 方法或 cache 方法可以将前面的计算结果缓存，默认情况下 persist()会把数据以序列化的形式缓存在 JVM 的堆空间中。 但是并不是这两个方法被调用时立即缓存，而是触发后面的 action 时，该RDD将会 被缓存在计算节点的内存中，并供后面重用。
 ## RDD CheckPoint
@@ -25,9 +25,10 @@ rdd.checkpoint
 RDD缓存和CheckPoint的区别是一个保存在内存中，后者保存在磁盘中
 ## 键值对RDD数据分区
 Spark 目前支持**Hash 分区**和**Range 分区**，用户也可以自定义分区，Hash 分区为当前的默认分区，Spark 中分区器直接决定了RDD中分区的个数、RDD中每条数据经过 Shuffle 过程属于哪个分区和 Reduce 的个数。
+
 注意：
- (1)只有Key-Value 类型的RDD才有分区的，非Key-Value 类型的RDD分区的值是None
- (2)每个RDD的分区 ID 范围：0~numPartitions-1，决定这个值是属于那个分区的。
+- 只有Key-Value 类型的RDD才有分区的，非Key-Value 类型的RDD分区的值是None
+- 每个RDD的分区 ID 范围：0~numPartitions-1，决定这个值是属于那个分区的。
  ### Hash 分区
  HashPartitioner 分区的原理：对于给定的 key，计算其 hashCode，并除以分区的个数取余，如果余数小于 0，则用余数+分区的个数（否则加 0），最后返回的值就是这个 key 所 属的分区 ID。
  ### Ranger 分区
@@ -37,9 +38,9 @@ Spark 目前支持**Hash 分区**和**Range 分区**，用户也可以自定义�
  第二步：判断 key 在 rangeBounds 中所处的范围，给出该 key 值在下一个RDD中的 分区 id 下标；该分区器要求 RDD中的KEY类型必须是可以排序的
  ### 自定义分区
  要实现自定义的分区器，你需要继承 org.apache.spark.Partitioner 类并实现下面三个方法。 
- （1）numPartitions: Int:返回创建出来的分区数。 
- （2）getPartition(key: Any): Int:返回给定键的分区编号(0 到numPartitions-1)。 
- （3）equals():Java 判断相等性的标准方法。这个方法的实现非常重要，Spark 需要用这个 方法来检查你的分区器对象是否和其他分区器实例相同，这样 Spark 才可以判断两个 RDD 的分区方式是否相同。
+1) numPartitions: Int:返回创建出来的分区数。 
+2) getPartition(key: Any): Int:返回给定键的分区编号(0 到numPartitions-1)。 
+3) equals():Java 判断相等性的标准方法。这个方法的实现非常重要，Spark 需要用这个 方法来检查你的分区器对象是否和其他分区器实例相同，这样 Spark 才可以判断两个 RDD 的分区方式是否相同。
  ## 数据读取与保存
  Spark 的数据读取及数据保存可以从两个维度来作区分：文件格式以及文件系统。 文件格式分为：Text 文件、Json 文件、Csv 文件、Sequence 文件以及 Object 文件； 文件系统分为：本地文件系统、HDFS、HBASE 以及数据库。
  ## 累加器
@@ -54,9 +55,9 @@ scala> val broadcastVar = sc.broadcast(Array(1, 2, 3))
 scala> broadcastVar.value res33: Array[Int] = Array(1, 2, 3)
 ```
 使用广播变量的过程如下：
-(1) 通过对一个类型 T的对象调用 SparkContext.broadcast 创建出一个Broadcast[T]对
+1) 通过对一个类型 T的对象调用 SparkContext.broadcast 创建出一个Broadcast[T]对
 象。任何可序列化的类型都可以这么实现。 
-(2) 通过 value 属性访问该对象的值(在 Java 中为 value()方法)。 (3) 变量只会被发到各个节点一次，应作为只读值处理(修改这个值不会影响到别的节
+2) 通过 value 属性访问该对象的值(在 Java 中为 value()方法)。 (3) 变量只会被发到各个节点一次，应作为只读值处理(修改这个值不会影响到别的节
 点)。
 # 2. Spark SQL
 # 3. SparkStreaming
