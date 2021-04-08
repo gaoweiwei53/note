@@ -50,7 +50,7 @@ new Socket()
 new Socket(1000)
 new Socket(4000, 6000)
 ```
-## Case Classes
+## Case Class
 case class 和一般的类差不多，但是有一些自己的特性，默认会实现几个方法。在模式匹配中很好用。
 使用case classes有很多好处，如下：
 - Case class constructor parameters are public val fields by default, so accessor methods are generated for each parameter.
@@ -69,15 +69,46 @@ An object is a value. The definition of an object looks like a class, but uses t
 ```scala
 object Box
 ```
-
-
 ## Companion objects
 和类名一样的object的叫Companion object，对应的这个类叫这个对象的companion class.他们可以互相访问彼此的私有成员
 ## Case objects
-A case object is like an object, a case object has more features than a regular object. 包括：
+case object和普通的object类似，只是它具有更多的特性, 包括：
 - It’s serializable
 - It has a default `hashCode` implementation
 - It has an improved `toString` implementation
-主要代替普通的`object`用在两种地方：
+代替普通的`object`主要用在两种地方：
 - When creating enumerations
 - When creating containers for “messages” that you want to pass between other objects (such as with the Akka actors library)
+## trait
+trait相当于java中的接口，在里面定义方法但是不用实现。PS: java8中接口里也可以有具体方法
+
+实现多个接口用`with`:
+```scala
+trait Speaker {
+    def speak(): String
+}
+
+trait TailWagger {
+    def startTail(): Unit
+    def stopTail(): Unit
+}
+
+trait Runner {
+    def startRunning(): Unit
+    def stopRunning(): Unit
+}
+class Dog extends Speaker with TailWagger with Runner {
+
+    // Speaker
+    def speak(): String = "Woof!"
+
+    // TailWagger
+    def startTail(): Unit = println("tail is wagging")
+    def stopTail(): Unit = println("tail is stopped")
+
+    // Runner
+    def startRunning(): Unit = println("I'm running")
+    def stopRunning(): Unit = println("Stopped running")
+
+}
+```
