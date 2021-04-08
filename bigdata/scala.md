@@ -64,8 +64,8 @@ case class 和一般的类差不多，但是有一些自己的特性，默认会
 **Pattern guards**:用在`case`中的布尔表达式：`if <boolean expression>`
 ## Sealed classes
 Traits and classes可以被标识`sealed`, 表示其子类型必须在同一个文件中申明。主要为了模式匹配知道所有的情况。
-## Singleton Objects
-An object is a value. The definition of an object looks like a class, but uses the keyword `object`:
+## 单例类Singleton Objects
+单例类是一种只能拥有一个对象的类，用`object`定义:
 ```scala
 object Box
 ```
@@ -111,4 +111,11 @@ class Dog extends Speaker with TailWagger with Runner {
     def stopRunning(): Unit = println("Stopped running")
 
 }
+```
+## 抽象类
+抽象类和trait类似，一般用trait就行了，抽象类很少用。只在以下两种情况用：
+1) 创建需要构造参数的基类
+3) Scala代码会被java代码调用
+```scala
+abstract class Animal(name: String)
 ```
