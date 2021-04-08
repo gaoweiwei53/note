@@ -2,15 +2,14 @@
 ## 概念
 1) RDD: 提出这个概念的动机是之前的大数据框架是将计算得到的中间结果存在外存中，这样对那些需要迭代计算的任务很不适合，因为不同地计算需要用到中间结果，因此提出RDD这个抽象以能够不同地应用重用数据。
 它本质是一种不可变地，分区地记录集合。RDD一个核心特性是每个RDD都记录了血缘，当某个RDD失败之后，它可以通过血缘来恢复。
-3. 窄依赖指的是每一个父RDD的 Partition 最多被子RDD的一个 Partition 使用
-4. 宽依赖指的是多个子 RDD的 Partition 会依赖同一个父RDD的 Partition，会引起 shuffle
-5. Spark 三大数据结构
-6) RDD
-7) 广播变量
-8) 累加器
-RDD: 分布式数据集
-广播变量：分布式只读共享变量
-累加器：分布式只写共享变量
+2) 窄依赖指的是每一个父RDD的 Partition 最多被子RDD的一个 Partition 使用
+3) 宽依赖指的是多个子 RDD的 Partition 会依赖同一个父RDD的 Partition，会引起 shuffle
+4) Driver: 执行应用的`main()`函数的进程，它会创建***`SparkContext`***
+Spark 三大数据结构
+1) RDD
+2) 广播变量：分布式只读共享变量
+3) 累加器：分布式只写共享变量
+
 ## 任务划分
 RDD任务切分中间分为：Application、Job、Stage 和 Task
 1) Application：初始化一个 SparkContext 即生成一个Application
