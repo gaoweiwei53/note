@@ -89,8 +89,8 @@ Note: 使用 updateStateByKey 需要对检查点目录进行配置，会使用�
 ## Transform
 和Map()函数的逻辑类似，但是map函数是作用于数据上的，而transform作用于每个RDD上，可实现RDD-RDD的转换。
 # Spark任务提交流程
-```scala
-// 1. 执行SparkSubmit类里的main方法 
-super.doSubmit(args)
-// 2. parseArguments方法中创建SparkSubmitArguments(arg)
-```
+1) `Client`向`ResourceManager`提交`Application`
+2) `ResourceManager`启动`ApplicationMaster`
+3) `ApplicationMaster`根据参数启动`Driver`线程，并初始化`SparkContext`
+4)  `ApplicationMaster`向`ResourceManager`注册，申请资源
+5)  返回资源列表
