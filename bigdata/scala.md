@@ -1,3 +1,5 @@
+# 语法点
+1) [`self =>`](https://stackoverflow.com/questions/52024763/what-is-the-self-meaning-in-new-class-of-scala)
 # 2.13新特性
 1) `2.13`最主要的更新是重新设计了标准库集合(Standard library collections)，使其更简洁、更安全、性能更好
 2) 标准库：`Future`更快和更健壮
