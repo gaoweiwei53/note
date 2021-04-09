@@ -88,3 +88,9 @@ UpdateStateByKey Operation 算子允许在伴随着新的信息不断更新时�
 Note: 使用 updateStateByKey 需要对检查点目录进行配置，会使用检查点来保存状态
 ## Transform
 和Map()函数的逻辑类似，但是map函数是作用于数据上的，而transform作用于每个RDD上，可实现RDD-RDD的转换。
+# Spark任务提交流程
+```scala
+// 1. 执行SparkSubmit类里的main方法 
+super.doSubmit(args)
+// 2. parseArguments方法中创建SparkSubmitArguments(arg)
+```
