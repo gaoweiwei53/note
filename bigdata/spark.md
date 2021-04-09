@@ -93,4 +93,4 @@ Note: 使用 updateStateByKey 需要对检查点目录进行配置，会使用�
 2) `ResourceManager`启动`ApplicationMaster`
 3) `ApplicationMaster`根据参数启动`Driver`线程，并初始化`SparkContext`
 4)  `ApplicationMaster`向`ResourceManager`注册，申请资源
-5)  返回资源列表
+5)  返回资源列表(Seq[Container])，本质上返回的是一些可用的Container
