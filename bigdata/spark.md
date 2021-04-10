@@ -96,6 +96,6 @@ Note: 使用 updateStateByKey 需要对检查点目录进行配置，会使用�
 5) 返回资源列表(Seq[Container])，本质上返回的是一些可用的Container / RM返回Container给Driver
 6) Driver在对应的Container上启动Executor
 7) Executor向Driver反向注册
-8) Executor全部注册玩，Driver开始执行main函数
+8) Executor全部注册完，Driver开始执行main函数
 9) Driver执行函数时，遇到action算子就会触发一个job，根据宽依赖划分stage，每个stage生成taskset，将task分发到Executor上执行
 10) Executor会不断与Driver通信，报告任务运行的情况
