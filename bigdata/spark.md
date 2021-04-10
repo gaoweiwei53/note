@@ -104,4 +104,18 @@ Note: 使用 updateStateByKey 需要对检查点目录进行配置，会使用�
 2) 在每一个Spark应用里，如果job由不同的线程提交，这些job会并发运行。
 ## 1. 跨应用调度
 有不同的选择，最简单的选择是*static partitioning*资源。使用这种方法，每一个应用被提供它能使用和维持的最大数量的资源。standalone、Yarn和粗粒度的Mesos模式使用的就是这种方式。
-- **Standalone** 模式: 默认情况下
+- **Standalone** 模式: 默认情况下，被提交到standalone模式集群里的应用会按**FIFO**顺序运行，每个应用会尝试使用所有可用的节点。用户可以通过设置`spark.cores.max`限制一个应用所使用的节点数量。
+- **Mesos**: 如在Mesos上使用静态分区(static partitioning)，需要将`spark.mesos.coarse`设置为`true`
+- **Yarn**： `-num-executors`可以控制Yarn分配多少个executor到集群上
+
+在Mesos上的第二种选择是动态共享CPU的核心。
+
+## 动态资源分配
+Spark提供一个机制来根据负载动态地调整应用的资源。这个特性在多应用共享资源的时候非常有用。
+
+可以两种方法来使用这个特性。1) 应用的`spark.dynamicAllocation.enabled`和`spark.dynamicAllocation.shuffleTracking.enabled`必须设置为`true`.2) 当设置了外部shuffle时，` spark.dynamicAllocation.enabled`和`spark.shuffle.service.enabled `必须被设置为`true`.
+## 资源分配策略
+Spark应该在executor不再被使用时丢弃它们，再executor被需要的时候获取它们。但没有明确的方法来预测这些情况。我们需要一些启发式的方法来决定何时移除和获取executors:
+### 请求策略
+### 移除策略
+## 应用内部的调度
