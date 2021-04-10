@@ -118,4 +118,20 @@ Spark提供一个机制来根据负载动态地调整应用的资源。这个特
 Spark应该在executor不再被使用时丢弃它们，再executor被需要的时候获取它们。但没有明确的方法来预测这些情况。我们需要一些启发式的方法来决定何时移除和获取executors:
 ### 请求策略
 ### 移除策略
-## 应用内部的调度
+## 2. 应用内部的调度
+Application内部有一系列并行运行的job，每一个action会形成一个job。
+
+默认Spark调度器以FIFO的方式运行job. 每一个job会划分为stages，第一个job在所有可用的资源上获得优先权，同时它的stages启动task。
+
+在Spark 0.8以后，可以设置在job之间公平共享。在公平共享下，Spark在job之间以**“round robin”**方式分配任务，这样所有的job可以有几乎相等的机会共享资源。
+
+使用公平调度，配置SparkContext时设置`spark.scheduler.mode`为`fair`
+```scala
+val conf = new SparkConf().setMaster(...).setAppName(...)
+conf.set("spark.scheduler.mode", "FAIR")
+val sc = new SparkContext(conf)
+```
+## Fair Scheduler Pools
+公平调度支持将jobs放到池里，然后为每个池设置不同的权重参数。这样可以为那些重要的jobs放入高优先度的池中。
+
+默认情况下，每个池有相等的机会获得资源，但在池的内部，job是以FIFO的方式运行。
