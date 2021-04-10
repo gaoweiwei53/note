@@ -99,3 +99,9 @@ Note: 使用 updateStateByKey 需要对检查点目录进行配置，会使用�
 8) Executor全部注册完，Driver开始执行main函数
 9) Driver执行函数时，遇到action算子就会触发一个job，根据宽依赖划分stage，每个stage生成taskset，将task分发到Executor上执行
 10) Executor会不断与Driver通信，报告任务运行的情况
+# Job调度
+1) 每一个Spark的Application(SparkContext的实例)运行一系列独立的executor进程。Spark运行所在的集群管理者来进行调度。
+2) 在每一个Spark应用里，如果job由不同的线程提交，这些job会并发运行。
+## 1. 跨应用调度
+有不同的选择，最简单的选择是*static partitioning*资源。使用这种方法，每一个应用被提供它能使用和维持的最大数量的资源。standalone、Yarn和粗粒度的Mesos模式使用的就是这种方式。
+- **Standalone** 模式: 默认情况下
