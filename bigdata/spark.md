@@ -135,3 +135,10 @@ val sc = new SparkContext(conf)
 公平调度支持将jobs放到池里，然后为每个池设置不同的权重参数。这样可以为那些重要的jobs放入高优先度的池中。
 
 默认情况下，每个池有相等的机会获得资源，但在池的内部，job是以FIFO的方式运行。
+
+## Shuffle
+shuffle就是将跨节点间的数据进行聚合和归并的操作。spark shuffle分为两个阶段，一个是**write**阶段，一个是**read**阶段
+### write阶段
+write阶段分为两种：**Hash-based** 和 **Sort-based**
+
+Hash-based：这个是最初的spark版本时，使用的shuffle write 方式
