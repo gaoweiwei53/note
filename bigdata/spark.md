@@ -171,14 +171,19 @@ SparkContext代表着与Spark集群的连接，用来创建RDD、累加器、广
 在基于排序的shuffle中到来的record根据它们的目标分区id进行排序，然后写入到一个map输出文件里。Reducers按顺序读取属于自己那一部分的数据。当map输出的数据太大以致不能都存入内存中，这些输出数据的**部分数据**会存入到磁盘文件中，然后这些磁盘文件合并成最终的输出文件。
 
 基于排序的shuffle由两种不同的写方法生成输出文件
-- Serialized sorting:
+- Serialized sorting: 满足下面三个条件时使用
     - shuffle依赖不指定map端合并
     - shuffle序列化器支持序列化值重定位
     - shuffle产生得输出分区小于等于16777216
 - Deserialized sorting
 
-## Serialized sorting mode
-具体见Spark-7081
+Serialized sorting mode具体见Spark-7081
+
+还包含三种shufflehandle：
+- `BypassMergeSortShuffleHandle`：不适用序列化
+- `SerializedShuffleHandle`： 以序列化形式缓存map输出，效率更高
+- `BaseShuffleHandle`：其他情况
+
 ## RDD.scala
 RDD.scala里包含RDD抽象类和RDD object对象。抽象类RDD的构造参数：
 ```scala
