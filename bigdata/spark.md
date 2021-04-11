@@ -180,7 +180,7 @@ SparkContext代表着与Spark集群的连接，用来创建RDD、累加器、广
 Serialized sorting mode具体见Spark-7081
 
 还包含三种shufflehandle：
-- `BypassMergeSortShuffleHandle`：不适用序列化
+- `BypassMergeSortShuffleHandle`：不使用MergeSort和序列化，直接写
 - `SerializedShuffleHandle`： 以序列化形式缓存map输出，效率更高
 - `BaseShuffleHandle`：其他情况
 
