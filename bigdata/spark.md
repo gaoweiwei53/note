@@ -173,7 +173,7 @@ SparkContext代表着与Spark集群的连接，用来创建RDD、累加器、广
 基于排序的shuffle由两种不同的写方法生成输出文件
 - Serialized sorting:
     - shuffle依赖不指定map端合并
-    - shuffle序列化器支持序列化值得重定位
+    - shuffle序列化器支持序列化值重定位
     - shuffle产生得输出分区小于等于16777216
 - Deserialized sorting
 
