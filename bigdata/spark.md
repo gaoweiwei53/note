@@ -148,10 +148,33 @@ Hash-based：这个是最初的spark版本时，使用的shuffle write 方式
 ## RDD.scala
 RDD.scala里包含RDD抽象类和RDD object对象。抽象类RDD的构造参数：
 ```scala
+abstract class RDD[T: ClassTag](
+    @transient private var _sc: SparkContext,
+    @transient private var deps: Seq[Dependency[_]]
+  )
 ```
 里面包含两个持久化函数`persist()`和`cache()`
 ```scala
+def persist(newLevel: StorageLevel): this.type = {
+    if (isLocallyCheckpointed) {
+      // This means the user previously called localCheckpoint(), which should have already
+      // marked this RDD for persisting. Here we should override the old storage level with
+      // one that is explicitly requested by the user (after adapting it to use disk).
+      persist(LocalRDDCheckpointData.transformStorageLevel(newLevel), allowOverride = true)
+    } else {
+      persist(newLevel, allowOverride = false)
+    }
+  }
 
+  /**
+   * Persist this RDD with the default storage level (`MEMORY_ONLY`).
+   */
+  def persist(): this.type = persist(StorageLevel.MEMORY_ONLY)
+
+  /**
+   * Persist this RDD with the default storage level (`MEMORY_ONLY`).
+   */
+  def cache(): this.type = persist()
 ```
 > StorageLevel包括:仅内存、仅磁盘、内存和磁盘等
 
@@ -163,9 +186,29 @@ RDD抽象类里还包括：
 其他的主要函数就是各种算子
 ## Dependency.scala
 ```scala
+@DeveloperApi
+abstract class Dependency[T] extends Serializable {
+  def rdd: RDD[T]
+}
+// two subclass
+abstract class NarrowDependency[T](_rdd: RDD[T]) extends Dependency[T]
+class ShuffleDependency[K: ClassTag, V: ClassTag, C: ClassTag]
 ```
 ## Partition.scala
+```scala
+// An identifier for a partition in an RDD.
+trait Partition extends Serializable {
+  /**
+   * Get the partition's index within its parent RDD
+   */
+  def index: Int
 
+  // A better default implementation of HashCode
+  override def hashCode(): Int = index
+
+  override def equals(other: Any): Boolean = super.equals(other)
+}
+```
 ## Stage.scala
 抽象类，一个stage里的所有task有共同唯一的shuffle依赖，故遇到shuffle就会产生一个stage
 > stage的数量 = shuffle的数量 + 1(最后一个stage), 每个stage里的task的数量等于该stage最后一个RDD的分区数。所有当前作业的所有task是所有stage里的task之和。
