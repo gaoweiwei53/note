@@ -139,12 +139,46 @@ val sc = new SparkContext(conf)
 默认情况下，每个池有相等的机会获得资源，但在池的内部，job是以FIFO的方式运行。
 
 ## Shuffle
+shuffle一定会落盘，因为它需要保证上一个RDD的所有分区的数据都处理玩才处理后面的RDD，如果这些中间数据存在内存中，数据积压可能导致内存不够，所以要写到文件里。
 shuffle就是将跨节点间的数据进行聚合和归并的操作。spark shuffle分为两个阶段，一个是**write**阶段，一个是**read**阶段
 ### write阶段
 write阶段分为两种：**Hash-based** 和 **Sort-based**
 
-Hash-based：这个是最初的spark版本时，使用的shuffle write 方式
+Hash-based：这个是最初的spark版本时，使用的shuffle write 方式。上游的结果数据分开存储，方便下游分开读取。
+Sort-based：将上游的结果数据写到一个文件里，同时该文件还有一个索引文件，记录数据的位置。
+
+### read阶段
+下游RDD读取
+
+### shuffle的类型
+
 # 源码分析
+## SparkContext.scala
+SparkContext代表着与Spark集群的连接，用来创建RDD、累加器、广播变量。
+```scala
+```
+主要包含：
+- SparkConf: 和应用相关的配置
+- SparkEnv: 保存所有的运行时环境对象，包括序列化器、RpcEnv、**shuffleManager**、block manager、map output tracker等
+- SchedulerBackend:
+- TaskScheduler: task调度器
+- DAGScheduler: 为每个job计算stages的DAG, 追踪哪些RDD和stage输出被materialized，找出运行job的最小调度。然后它以Taskset为单位提交stages.
+
+## ShuffleManager.scala
+代码上是一个trait, 在SparkEnv里创建, 定义了shuffle过程中`getReader()`和`getWriter()`方法。其只有一个实现类`SortShuffleManager`
+
+## SortShuffleManager.scala
+在基于排序的shuffle中到来的record根据它们的目标分区id进行排序，然后写入到一个map输出文件里。Reducers按顺序读取属于自己那一部分的数据。当map输出的数据太大以致不能都存入内存中，这些输出数据的**部分数据**会存入到磁盘文件中，然后这些磁盘文件合并成最终的输出文件。
+
+基于排序的shuffle由两种不同的写方法生成输出文件
+- Serialized sorting:
+    - shuffle依赖不指定map端合并
+    - shuffle序列化器支持序列化值得重定位
+    - shuffle产生得输出分区小于等于16777216
+- Deserialized sorting
+
+## Serialized sorting mode
+具体见Spark-7081
 ## RDD.scala
 RDD.scala里包含RDD抽象类和RDD object对象。抽象类RDD的构造参数：
 ```scala
