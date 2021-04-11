@@ -1,3 +1,5 @@
+# 与Hadoop的区别
+Hadoop比较适合一次性数据计算，因为它会计算结果存储到外存中。
 # 1. SparkCore
 ## 概念
 1) RDD: 提出这个概念的动机是之前的大数据框架是将计算得到的中间结果存在外存中，这样对那些需要迭代计算的任务很不适合，因为不同地计算需要用到中间结果，因此提出RDD这个抽象以能够不同地应用重用数据。
@@ -142,3 +144,28 @@ shuffle就是将跨节点间的数据进行聚合和归并的操作。spark shuf
 write阶段分为两种：**Hash-based** 和 **Sort-based**
 
 Hash-based：这个是最初的spark版本时，使用的shuffle write 方式
+# 源码分析
+## RDD.scala
+RDD.scala里包含RDD抽象类和RDD object对象。抽象类RDD的构造参数：
+```scala
+```
+里面包含两个持久化函数`persist()`和`cache()`
+```scala
+
+```
+> StorageLevel包括:仅内存、仅磁盘、内存和磁盘等
+
+RDD抽象类里还包括：
+- `dependencies()`方法：获取dependence(Dependency是一个抽象类)
+- `partitions()`方法：获取此RDD的分区(Partiton是一个接口)
+- `checkpionts()`方法：
+
+其他的主要函数就是各种算子
+## Dependency.scala
+```scala
+```
+## Partition.scala
+
+## Stage.scala
+抽象类，一个stage里的所有task有共同唯一的shuffle依赖，故遇到shuffle就会产生一个stage
+> stage的数量 = shuffle的数量 + 1(最后一个stage), 每个stage里的task的数量等于该stage最后一个RDD的分区数。所有当前作业的所有task是所有stage里的task之和。
