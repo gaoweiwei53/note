@@ -94,4 +94,77 @@ Line::Line( double len): length(len)
 {
     cout << "Object is being created, length = " << len << endl;
 }
+
+// 相当于
+Line::Line( double len)
+{
+    length = len;
+    cout << "Object is being created, length = " << len << endl;
+}
+
+// 假设有一个类 C，具有多个字段 X、Y、Z 等需要进行初始化
+C::C( double a, double b, double c): X(a), Y(b), Z(c)
+{
+  ....
+}
+```
+### 析构函数
+### 拷贝构造函数
+## 友元函数
+类的友元函数是定义在类外部，但有权访问类的所有私有（private）成员和保护（protected）成员。尽管友元函数的原型有在类的定义中出现过，但是友元函数并不是成员函数。
+
+友元可以是一个函数，该函数被称为友元函数；友元也可以是一个类，该类被称为友元类，在这种情况下，整个类及其所有成员都是友元。
+
+如果要声明函数为一个类的友元，需要在类定义中该函数原型前使用关键字 **friend**
+```c++
+class Box
+{
+   double width;
+public:
+   double length;
+   friend void printWidth( Box box );
+   void setWidth( double wid );
+};
+```
+## 内联函数
+
+## 运算符重载
+```c++
+Box operator+(const Box&);
+```
+## 多态
+C++ 多态意味着调用成员函数时，会根据调用函数的对象的类型来执行不同的函数。
+### 虚函数
+虚函数 是在基类中使用关键字 **virtual** 声明的函数。在派生类中重新定义基类中定义的虚函数时，会告诉编译器不要静态链接到该函数。
+### 纯虚函数
+您可能想要在基类中定义虚函数，以便在派生类中重新定义该函数更好地适用于对象，但是您在基类中又不能对虚函数给出有意义的实现，这个时候就会用到纯虚函数。
+```c++
+class Shape {
+   protected:
+      int width, height;
+   public:
+      Shape( int a=0, int b=0)
+      {
+         width = a;
+         height = b;
+      }
+      // pure virtual function
+      virtual int area() = 0;
+};
+```
+= 0 告诉编译器，函数没有主体，上面的虚函数是纯虚函数。
+
+## 接口(抽象类)
+如果类中至少有一个函数被声明为纯虚函数，则这个类就是抽象类。纯虚函数是通过在声明中使用 "= 0" 来指定的。
+```c++
+class Box
+{
+   public:
+      // 纯虚函数
+      virtual double getVolume() = 0;
+   private:
+      double length;      // 长度
+      double breadth;     // 宽度
+      double height;      // 高度
+};
 ```
