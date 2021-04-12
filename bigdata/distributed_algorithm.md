@@ -23,10 +23,44 @@ When a process P recovers from failure, or the failure detector indicates that t
 ## 2. [Ring算法](https://www.cs.colostate.edu/~cs551/CourseNotes/Synchronization/RingElectExample.html)
 # 一致性算法(consensus algorithm)
 ## 1. Paxos(1989)
-复杂难懂
+有很多版本：
+- Basic Paxos
+- Multi Paxos
+- Fast Paxos
+### Basic Paxos
+角色介绍：
+- Client：系统外部角色，请求发起者。想民众。
+- Proposer：接受Client请求，向集群提出提议(propose)。并在冲突发生时，起到冲突调节的作用。像议员，替民众提出议案。
+- Acceptor(Voter): 提议投票和接收者，只有在形成法定人数(Quorum)时(一般为majority)时，提议才会最终被接受。像国会。
+- Learner：提议接收者，backup，备份，对集群一致性没什么影响。像记录员。
+#### 步骤：
+1) 阶段1a: Prepare
+    - preposer提出一个议案，编号为N，此N大于这个proposer之前提出的提案编号。请求acceptors的quorum接受。
+2) 阶段1b：Promise
+    - 如果N大于此acceptor之前接受的任何提案编号则接受，否则拒绝
+3) 阶段2a：Accept
+    - 如果达到了多数派，proposer会发出accept请求，此请求包含提案编号N，以及提案内容。
+
+4) 阶段2b: Accepted
+    - 如果此acceptor在此期间没有收到任何编号大于N的提案，则接受此提案内容，否则忽略
+
+潜在问题：活锁(liveness)或dueling，角色太多，难实现、效率低(2次RPC)
+#### Multi Paxos
+新概念，Leader：唯一的propser，所有请求都需经过此Leader(唯一的proposer)
+
+开始集群会选举出一个节点作为leader
+
 ## 2. [Zab](https://marcoserafini.github.io/papers/zab.pdf)(before 2009) 
 Zab is a crash-recovery atomic broadcast algorithm we designed for the ZooKeeper coordination service
 ## 3. [Raft](https://raft.github.io/raft.pdf)(2013)
+划分为三个子问题：
+- Leader Election
+- Log Replication
+- Safety
+### 重要角色
+- Leader
+- Follower
+- Candidate
 ## 时钟同步算法(clock synchronization algorithm)
 为了协调物理时钟
 ## 1. 集中式
