@@ -830,3 +830,6 @@ There are two categories of methods provided in  [`Class`](https://docs.oracle.c
 
 只能升级不能降级
 `synchronized`可以用来同步线程，`synchronized`被编译后会生成`monitorenter`和`monitorexit`两个字节码指令，依赖这两个字节码进行线程同步。一个线程进入monitor，其他线程只能等待
+# 动态代理
+代理类代理本体类执行同样的功能，同时还扩充了原类的功能，使其更更加灵活。
+
