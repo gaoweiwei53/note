@@ -27,12 +27,12 @@ TCP报文格式中重要的字段有：
     - ACK：确认序号有效。
     - PSH：接收方应该尽快将这个报文交给应用层。
     - RST：重置连接。
-    - SYN：发起一个新连接。
+    - SYN：发起一个新连接。SYN=1的时候表示是一个连接请求。
     - FIN：释放一个连接。
 
 ```mermaid
 sequenceDiagram
-    Client->>Server: SYN=1, seq=x
+    Client(SYN-SENT)->>Server(SYN-RECEIVED): SYN=1, seq=x
     Server->>Client: SYN=1, ACK=1, seq=y, ack=x+1
     Client->>Server: ACK=1, seq=x+1, ack=y+1
 ```
