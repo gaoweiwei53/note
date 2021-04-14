@@ -1,5 +1,13 @@
 # 与Hadoop的区别
 Hadoop比较适合一次性数据计算，因为它会计算结果存储到外存中。
+# 新版本特性
+## Spark 3.x 新特性
+-  Accelerator-aware Scheduler
+-  Adaptive Query Execution
+-  Dynamic Partition Pruning
+-  支持Java 11
+-  支持Hadoop3
+-  更好地兼容ANSI SQL
 # 1. SparkCore
 ## 概念
 1) RDD: 提出这个概念的动机是之前的大数据框架是将计算得到的中间结果存在外存中，这样对那些需要迭代计算的任务很不适合，因为不同地计算需要用到中间结果，因此提出RDD这个抽象以能够不同地应用重用数据。
