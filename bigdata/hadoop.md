@@ -41,6 +41,7 @@ MapReduce job 通常将输入的数据集分割成独立的数据块，这些数
 
 MapReduce框架由一个**master**  *ResourceManager*, 每一个节点中的worker *NodeManager* 和每个aplication的*MRAppMaster*组成
 
+Mapper计算的结果首先1) 输出到环形缓冲区(默认100M)，环形缓冲区分为两部分，一部分存数据，一部分存数据的索引。同时标记数据的分区，并对分区内部的数据进行快速排序(对索引进行排序)。当写入的数据达到80%后会溢写到磁盘。2) 溢写之前会产生多个溢写文件，会对这些溢写文件按标记的分区分别进行归并排序，这样就可以保证每个分区内部有序。4) Combiner(可选): 有时会在每个分区内部的数据进行预聚合(如wordcount例子中，将相同key的数据聚合)。5) 压缩数据 6) 写入磁盘 7)Reducer按标记的分区分别读取Mapper的数据结果，读取到内存中，若内存不够则再次写入到磁盘中 8) 对每个map来的数据进行归并排序(一个分区的数据来自于多个map)。9) 按照相同的key分组 10) 执行reduce方法。
 ## 3.2 Inputs and Outputs
 MapReduce框架操作的是键值<key,value>, key 和 value类需要被框架序列化，因此他们需要实现`Writable`接口. 此外, `key`类需要实现 `WritableComparable`接口以能够完成框架对其**排序**
 
