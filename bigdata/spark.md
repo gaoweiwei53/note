@@ -147,6 +147,10 @@ val sc = new SparkContext(conf)
 默认情况下，每个池有相等的机会获得资源，但在池的内部，job是以FIFO的方式运行。
 
 ## Shuffle
+### 可以导致shuffle的算子
+- 分区操作：`repartition`, `coalesce`
+- `ByKey`操作: `groupByKey`, `reduceByKey`
+- `Join`操作: `cogroup`, `join`
 shuffle一定会落盘，因为它需要保证上一个RDD的所有分区的数据都处理玩才处理后面的RDD，如果这些中间数据存在内存中，数据积压可能导致内存不够，所以要写到文件里。
 shuffle就是将跨节点间的数据进行聚合和归并的操作。spark shuffle分为两个阶段，一个是**write**阶段，一个是**read**阶段
 ### write阶段
