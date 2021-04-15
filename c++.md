@@ -109,10 +109,11 @@ C::C( double a, double b, double c): X(a), Y(b), Z(c)
 }
 ```
 ### 析构函数
-### [拷贝构造函数](https://www.runoob.com/cplusplus/cpp-copy-constructor.html)
+### [拷贝构造函数](https://www.geeksforgeeks.org/copy-constructor-in-cpp/)
 拷贝构造函数使用引用作为参数初始化创建中的对象。
 
-什么情况使用拷贝构造函数：
+When is a user-defined copy constructor needed? 
+If we don’t define our own copy constructor, the C++ compiler creates a default copy constructor for each class which does a member-wise copy between objects. The compiler created copy constructor works fine in general. We need to define our own copy constructor only if an object has pointers or any runtime allocation of the resource like filehandle, a network connection..etc.
 
 类的对象需要拷贝时，拷贝构造函数将会被调用。以下情况都会调用拷贝构造函数：
 
