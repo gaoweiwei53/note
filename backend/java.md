@@ -833,3 +833,4 @@ There are two categories of methods provided in  [`Class`](https://docs.oracle.c
 # 动态代理
 代理类代理本体类执行同样的功能，同时还扩充了原类的功能，使其更更加灵活。
 
+java中实现动态代理有两种方式，第一种是
