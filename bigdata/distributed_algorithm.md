@@ -97,7 +97,14 @@ NTP (Network time protocol)
 1) 协调者存在单点问题。如果协调者挂了，整个2PC逻辑就彻底不能运行。
 2) 执行过程是完全同步的。各参与者在等待其他参与者响应的过程中都处于阻塞状态，大并发下有性能问题。
 3) 仍然存在不一致风险。如果由于网络异常等意外导致只有部分参与者收到了commit请求，就会造成部分参与者提交了事务而其他参与者未提交的情况。
-# 拜占庭错误(Byzantine fault, Byzantine generals problem)
+## 拜占庭错误(Byzantine fault, Byzantine generals problem)
 分布式系统中的某些节点可能出错而发送错误的信息，使得不同的节点基于一致性策略得出不同的结论，从而破坏系统的一致性。
-## 解决算法
+### 解决算法
 Byzantine fault tolerance (BFT)
+## [租约机制(lease mechanism)](https://blog.csdn.net/kevinfankai/article/details/4024937)
+租约机制是一种维护缓存一致性的方法。缓存一致性就是客户端总能读到最新的数据。使用缓存后有可能服务器端的数据已经被修改，但客户端仍然从缓存中读取陈旧的数据。
+
+服务器给予客户端在 一定期限内可以 控制修改操作的 权力。如果服务器要修改数据，首先要征求拥有这块数据的租约的客户端的同意，之后才可以修改。客户端从服务器读取数据时往往就同时获取租约，在租约期限 内，如果没有收到服务器的修改请求，就可以保证当前缓存中的内容就是最新的。如果在租约期限内收到了修改数据的请求并且同意了，就需要清空缓存。在租约过 期以后，客户端如果还要从缓存读取数据，就必须重新获取租约，我们称这个操作为“ 续约”。
+
+### [HDFS租约机制](https://blog.csdn.net/Androidlushangderen/article/details/52850349?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control&dist_request_id=&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control)
+在HDFS中，当每次客户端用户往某个文件中写入数据的时候，为了保持数据的一致性，此时其它客户端程序是不允许向此文件同时写入数据的。
