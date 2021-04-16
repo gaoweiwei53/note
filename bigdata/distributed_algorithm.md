@@ -97,4 +97,7 @@ NTP (Network time protocol)
 1) 协调者存在单点问题。如果协调者挂了，整个2PC逻辑就彻底不能运行。
 2) 执行过程是完全同步的。各参与者在等待其他参与者响应的过程中都处于阻塞状态，大并发下有性能问题。
 3) 仍然存在不一致风险。如果由于网络异常等意外导致只有部分参与者收到了commit请求，就会造成部分参与者提交了事务而其他参与者未提交的情况。
-# 拜占庭错误(Byzantine fault)
+# 拜占庭错误(Byzantine fault, Byzantine generals problem)
+分布式系统中的某些节点可能出错而发送错误的信息，使得不同的节点基于一致性策略得出不同的结论，从而破坏系统的一致性。
+## 解决算法
+Byzantine fault tolerance (BFT)
