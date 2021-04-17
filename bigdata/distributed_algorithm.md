@@ -108,3 +108,25 @@ Byzantine fault tolerance (BFT)
 
 ### [HDFS租约机制](https://blog.csdn.net/Androidlushangderen/article/details/52850349?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control&dist_request_id=&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control)
 在HDFS中，当每次客户端用户往某个文件中写入数据的时候，为了保持数据的一致性，此时其它客户端程序是不允许向此文件同时写入数据的。
+
+## Quorums
+Quorum机制是在分布式系统中用来保证一致性操作的方法。它具体指的是分布式事务被允许执行操作而必须获得的最小投票数。
+
+Quorum机制可用在副本控制和提交协议中：
+### 1. 提交协议
+在分布式数据库系统中，一个事务可以在多个节点上执行它的操作。由于原子性要求每个分布式事务都是原子的，因此事务在每个节点上必须具有相同的操作(提交或中止)。在网络分区的情况下，节点被分区，分区之间可能无法通信。这就需要基于quorum的技术。其基本思想是，如果大多数站点投票执行事务，则执行事务。
+
+每个节点被分配一个投票`Vi`, 假设系统中总的投票数为`V`, 撤销和提交的Quorums分别是`Va`和`Vc`。在提交的时候遵守以下规则：
+1) `Va` + `Vc` > V, 0 < `Va`, `Vc` <= V
+2) 在事务提交之前，必须获得quorum `Vc`. 至少有一个节点准备提交，0或多个节点等待 >= `Vc`
+3) 在事务撤销之前，必须获得撤销quorum `Va`. 至少有一个节点准备撤销，0或多个节点等待 >= `Vc`
+
+第一条规则保证事务不会同时被执行提交和撤销，后两条规则指的事务提交和撤销前必须获得相应的quorum
+### 2. 副本控制
+在具有副本的数据库中，一个数据对象在几个节点上都有副本。为了确保可串行性，不应该允许两个事务同时读写一个数据项。对此可以使用基于quorum的副本控制协议来确保两个事务不会并发地读写数据项的两个副本。
+
+每一个副本的数据项都被分配一个投票。每个操作当读或写的时候都必须获得read quorum(`Vr`)或write quorum(`Vw`)。给定一个数据项，它共有`V`个投票， 则必须遵守以下规则：
+1) `Vr` + `Vw` > `V`
+2) Vw > V / 2
+
+第一条规则确保一个数据项不会被两个事务并发地读写。此外，它确保read quorum 包含至少一个具有数据项最新版本的站点。第二条规则确保来自两个事务的两个写操作不能并发地发生在同一数据项上。这两个规则确保维护了单副本的可串行性。
