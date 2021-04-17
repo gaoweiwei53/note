@@ -6,6 +6,9 @@
 - Availability: Every request receives a (non-error) response, without the guarantee that it contains the most recent write
 - Partition tolerance: The system continues to operate despite an arbitrary number of messages being dropped (or delayed) by the network between nodes
 # Base理论
+# 一致性
+- 强一致性：在任意时刻，从任意不同副本取出的值都是一样的。
+- 弱一致性：有时泛指最终一致性，是指在任意时刻，可能由于网络延迟或者设备异常等原因，不同副本中的值可能会不一样，但经过一段时间后，最终会变成一样。
 # 选举算法
 ## 1. [Bully算法](https://www.cs.colostate.edu/~cs551/CourseNotes/Synchronization/BullyExample.html)
 The algorithm uses the following message types:
@@ -130,3 +133,5 @@ Quorum机制可用在副本控制和提交协议中：
 2) Vw > V / 2
 
 第一条规则确保一个数据项不会被两个事务并发地读写。此外，它确保read quorum 包含至少一个具有数据项最新版本的站点。第二条规则确保来自两个事务的两个写操作不能并发地发生在同一数据项上。这两个规则确保维护了单副本的可串行性。
+
+Quorum 机制无法保证强一致性，也就是无法实现任何时刻任何用户或节点都可以读到最近一次成功提交的副本数据。
