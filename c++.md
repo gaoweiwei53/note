@@ -219,8 +219,6 @@ public:
    void setWidth( double wid );
 };
 ```
-## 内联函数
-
 ## 运算符重载
 ```c++
 Box operator+(const Box&);
