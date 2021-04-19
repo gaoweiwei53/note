@@ -13,15 +13,23 @@
 - auto: 
 # 变量和类型
 C+初始化方式
-现代C++建议使用列表初始化，C++提出
+现代C++建议使用列表初始化，C++11提出
 ```c++
 int a{}, b{}, c{2};
 ```
 ## auto 关键词
 C++11引入了auto关键字，可用来推断类型
 
-## typeid
+`const`定义变量时必须初始化
 
+`sizeof`可以查看变量所占的内存
+
+## 逗号运算符
+逗号运算符的优先级低于赋值运算符，所以一起使用的时候要用括号、
+```c++
+auto a{4}, b{3};
+auto d = (a, b);
+```
 ## 函数
 当调用函数时，有三种向函数传递参数的方式：
 - 传值调用
@@ -29,13 +37,63 @@ C++11引入了auto关键字，可用来推断类型
 - 引用调用
 
 默认情况下，C++ 使用传值调用来传递参数
+
+### const与形参
+```c++
+void f(cosnt int x, const int y);
+void g(const int *p, const int n);
+void h(int * const q, const int n);
+void h(const int * const s, const int n);
+```
+### 可变形参
+```c++
+#include<iostream>
+double average(std::initializer_list<double> scores){
+    auto n{0};
+    double all{0};
+    for (auto score: scores){
+        all += score;
+        n++;
+    }
+    if(n > 0) return all /= n;
+    return 0;
+}
+```
+> std::initializer_list<>里的是const对象，不可修改，且类型一样
+
+### incline函数
+编译器在编译时将函数调用语句替换为函数体的代码并对函数体的局部变量名做一些调整。免去函数调用时传递参数和得到返回结果的开销。
+```c++
+inline int add(const int x, const int y){
+    return x + y;
+}
+int main(){
+    add(3, 4);
+}
+```
 ## 指针
 指针和引用的区别：
 - 不存在空引用。引用必须连接到一块合法的内存。
 - 一旦引用被初始化为一个对象，就不能被指向到另一个对象。指针可以在任何时候指向到另一个对象。
 - 引用必须在创建时被初始化。指针可以在任何时间被初始化。
 > 可以理解为，指针是指向某个变量内存地址的变量，而引用是该变量的别名
-> 
+
+初始化一个空指针：                                                                                                                           
+```c++
+int *p2{0};
+int *p1{nullptr}; // c++11后推荐使用
+```
+
+### `const`和指针
+```c++
+// 从右向左看
+int i{0};
+int * const p = &i; // 指针变量p本身本身不可变，其指向的内容可变
+const int *q = &i;  // 指针变量q指向的内容不可变，其本身可变
+int const *s = &i;  // 和2同样的意思
+const int * const ptr = &i; // 都不可变
+```
+
 ## 引用
 两个重要的概念：
 - 把引用作为参数
@@ -88,15 +146,23 @@ double Box::getVolume(void)
 }
 ```
 ## C++访问修饰符
-C++类中默认是private类型的，继承默认也是。
+C++类中的成员默认是private类型的，继承默认也是。struct里的成员默认时public类型。
 
 有public, protected, private三种继承方式，它们相应地改变了基类成员的访问属性。
 - public 继承：基类 public 成员，protected 成员，private 成员的访问属性在派生类中分别变成：public, protected, private
 - protected 继承：基类 public 成员，protected 成员，private 成员的访问属性在派生类中分别变成：protected, protected, private
 - private 继承：基类 public 成员，protected 成员，private 成员的访问属性在派生类中分别变成：private, private, private
+## this指针
+类的成员函数都会被编译器转换为一个普通的全局函数，这个普通的函数包含一个特殊的叫做this的指针形参，这个形参就指向调用这个函数的那个对象，即存储这个调用对象的地址。
 
+每个对象的数据成员都有自己单独的内存，但类的成员函数为类的所有对象共享。编译器将类的成员函数转换为普通的外部函数，其中包含了一个指针变量，指向调用这个函数的类对象，通过类对象调用成员函数，就是将这个对象的指针传递给这个函数。即成员函数的代码只占据一块内存，是所有对象共享的，而每个对象的数据成员要占据独立的内存。
 ## 类的构造函数和析构函数
 ### 构造函数
+一但定义了自己的构造函数，编译器就不再生成默认的构造函数，可以自己添加：
+```c++
+Date(){}
+Date() = default; // 使用default关键字
+```
 #### 使用初始化列表来初始化字段
 ```c++
 Line::Line( double len): length(len)
