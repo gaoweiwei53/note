@@ -30,22 +30,48 @@ When a process P recovers from failure, or the failure detector indicates that t
 - Basic Paxos
 - Multi Paxos
 - Fast Paxos
+
+### 假设
+#### 节点
+- 节点可以任意速度处理
+- 节点可能会失败
+- 节点失败后可能会重启
+- 节点不会说谎破坏协议(不会出现**拜占庭失败**)
+
+#### 网络
+- 节点可以给其他任意节点发消息
+- 消息发送是异步的
+- 消息可能会丢失，乱序或重复
+- 消息的发送不会出欺骗(不会出现拜占庭失败)
+
+### 角色介绍：
+- Client：系统外部角色，请求发起者。
+- Proposer：接受Client请求，向集群提出提议(proposal)。并在冲突发生时，起到冲突调节的作用。
+- Acceptor(Voter): 提议投票和接收者，只有在形成法定人数(Quorum)时(一般为majority)时，提议才会最终被接受。
+- Learner：提议接收者，backup，备份，对集群一致性没什么影响。
+
+### Safety and liveness
+- Validity (or non-triviality): 只有被提议的值可以被选择和learned
+- Agreement (or consistency, or safety): 不会有不同的learner learned不同的值
+- Termination (or liveness)：If value C has been proposed, then eventually learner L will learn some value 
+
+> Paxos只能保证前两个属性，无法保证**liveness**属性
+
+### 一般的部署方式
+常规的部署方式中，每个参与的节点会扮演三个角色Proposer, Acceptor and Learner
 ### Basic Paxos
-角色介绍：
-- Client：系统外部角色，请求发起者。想民众。
-- Proposer：接受Client请求，向集群提出提议(propose)。并在冲突发生时，起到冲突调节的作用。像议员，替民众提出议案。
-- Acceptor(Voter): 提议投票和接收者，只有在形成法定人数(Quorum)时(一般为majority)时，提议才会最终被接受。像国会。
-- Learner：提议接收者，backup，备份，对集群一致性没什么影响。像记录员。
+Basic Paxos协议的每个“实例”(或“执行”)决定一个单独的输出值
 #### 步骤：
 1) 阶段1a: Prepare
-    - preposer提出一个议案，编号为N，此N大于这个proposer之前提出的提案编号。请求acceptors的quorum接受。
+    - 一个Proposer产生一个叫`Prepare`的消息，`Prepare`消息只含编号值n，不包含要提议的值，编号`n`必须大于这个proposer之前提出的`Prepare`编号。该Proposer将`Prepare`消息发送给Acceptors的一个Quorum
 2) 阶段1b：Promise
-    - 如果N大于此acceptor之前接受的任何提案编号则接受，否则拒绝
+    - 任何一个Acceptor都会等待接收任意一个Proposer的Prepare消息。如果一个Acceptor收到一个Prepare消息，它会检查n值，这会出现两种情况：
+        - 如果n大于此acceptor之前接收到的来自任何Proposer的proposal编号则接受，Acceptor会返回一个`Promise`消息给该Proposer。如果Acceptor在过去接受过一个proposal，那么它必须将该proposal number和值包含在回复给Proposer的消息中。(所有历史的proposal的number和value吗？)
+        - 否则(n小于等于...)Acceptor会忽略接收到的proposal，虽然此时Acceptor没必要回复任何消息，但是为了优化，它会发送一个拒绝消息`Nack`给Proposer
 3) 阶段2a：Accept
-    - 如果达到了多数派，proposer会发出accept请求，此请求包含提案编号N，以及提案内容。
-
+    - 如果一个Proposer接收到了来自 Acceptors的Quorum的大部分Promise消息，它需要在proposal里设置一个值`v`. 如果任何一个Acceptor之前接受过任何proposal，它会将这些proposal的value发送给该proposer，该proposer现在必须将当前proposal的`v`设置成所有Acceptors汇报中的最大的proposal number, 记为`z`。如果到目前为止Acceptors中没有一个曾接受过propoal，那么该Proposer就可以选择它原始想设置的值，记为`x`. 然后 Proposer会发送*Accept*消息`(n,v)`给Accepters中的一个Quorum 。*Accept*消息可能为`(n, v=z)`或`(n, v=x)`，`n`就是Prepare阶段设置的n. *Accept*消息可理解为“请求接收proposal吧！”
 4) 阶段2b: Accepted
-    - 如果此acceptor在此期间没有收到任何编号大于N的提案，则接受此提案内容，否则忽略
+    - 如果一个acceptor接收到*Accept*消息`(n,v)`，它必须接受该消息，当且仅当它没有promise过proposal number大于n的proposal.如果它没有promise过proposal number大于n的proposal，它将注册v值为已接受的value, 然后会发送一个`Accepted `消息给这个Proposer和每个Learner()
 
 潜在问题：活锁(liveness)或dueling，角色太多，难实现、效率低(2次RPC)
 #### Multi Paxos
