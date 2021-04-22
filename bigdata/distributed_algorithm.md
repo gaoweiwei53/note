@@ -71,7 +71,7 @@ Basic Paxos协议的每个“实例”(或“执行”)决定一个单独的输�
 3) 阶段2a：Accept
     - 如果一个Proposer接收到了来自 Acceptors的Quorum的大部分Promise消息，它需要在proposal里设置一个值`v`. 如果任何一个Acceptor之前接受过任何proposal，它会将这些proposal的value发送给该proposer，该proposer现在必须将当前proposal的`v`设置成所有Acceptors汇报中的最大的proposal number, 记为`z`。如果到目前为止Acceptors中没有一个曾接受过propoal，那么该Proposer就可以选择它原始想设置的值，记为`x`. 然后 Proposer会发送*Accept*消息`(n,v)`给Accepters中的一个Quorum 。*Accept*消息可能为`(n, v=z)`或`(n, v=x)`，`n`就是Prepare阶段设置的n. *Accept*消息可理解为“请求接收proposal吧！”
 4) 阶段2b: Accepted
-    - 如果一个acceptor接收到*Accept*消息`(n,v)`，它必须接受该消息，当且仅当它没有promise过proposal number大于n的proposal.如果它没有promise过proposal number大于n的proposal，它将注册v值为已接受的value, 然后会发送一个`Accepted `消息给这个Proposer和每个Learner()
+    - 如果一个acceptor接收到*Accept*消息`(n,v)`，它必须接受该消息，当且仅当它没有promise过proposal number大于n的proposal.如果它没有promise过proposal number大于n的proposal，它将注册v值为已接受的value, 然后会发送一个`Accepted `消息给这个Proposer和每个Learner(常规情况下就是Proposer自己)。
 
 潜在问题：活锁(liveness)或dueling，角色太多，难实现、效率低(2次RPC)
 #### Multi Paxos
