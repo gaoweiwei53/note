@@ -300,6 +300,73 @@ public:
 ```c++
 Box operator+(const Box&);
 ```
+
+## 派生类的构造函数
+只能在派生类的初始化成员列表中调用基类的构造函数对要创建的派生类对象的基类部分进行初始化。如果基类没有默认构造函数，则派生类的构造函数必须在初始化成员列表中显式调用基类构造函数并提供必须的参数。因此，基类构造函数需要的参数通常应该在派生类的构造函数的形参列表中出现
+```c++
+#include<iostream>
+#include<string>
+using std::cout;
+using std::string;
+class B
+{
+private:
+    int b{0};
+    string name{};
+public:
+    B(int b, string n):b(b), name(n){
+        cout << "B类构造函数\n";
+    }
+    ~B(){cout << "B类析构函数\n"};
+};
+
+class D:public B{
+    double d{2.5};
+public:
+    // D() {cout << "D类默认构造函数\n";} // 错误 会调用B默认构造函数，但B类没有默认构造函数
+    D(double d, int b, string n):B(b, n), d(d) {cout <<"D类构造函数\n";} // 显示调用基类构造函数
+    ~D() { cout << "D类析构函数\n";} 
+};
+int main(){
+    D d(3.0, 2, "hello");
+}
+```
+## 派生类的析构函数
+派生类不会隐式调用基类的拷贝构造函数，需要在派生类拷贝构造函数的初始化成员列表中调用基类的拷贝构造函数：
+```c++
+# include<iostream>
+using std::cout;
+class B
+{
+private:
+    /* data */
+public:
+    B(/* args */);
+    ~B();
+};
+
+B::B(/* args */)
+{
+    cout << "B类默认构造函数\n";
+}
+
+B::B(const B& b) { cout << "B类拷贝构造函数\n";}
+B::~B()
+{
+};
+
+class D :public B{
+public:
+    D() { cout << "D类默认构造函数\n";}
+    D(const D& d) :B(d){ // 显示调用基类拷贝构造函数
+        cout << "D类拷贝构造函数\n";
+    }
+};
+
+int main(){
+    D d,  d2{d};
+}
+```
 ## 多态
 C++ 多态意味着调用成员函数时，会根据调用函数的对象的类型来执行不同的函数。
 ### 虚函数
