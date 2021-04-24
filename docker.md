@@ -72,4 +72,8 @@ docker cp 容器id：容器内路径 目的主机的路径
 ```bash
 docker pull ngnix
 docker run -d --name ngnix01 -p 3344:80 ngnix
+docker ps
+curl localhost:3344
+docker exec -it nginx01 /bin/bash
+whereis ngnix
 ```
