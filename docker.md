@@ -31,8 +31,8 @@ docker run [可选参数] image # 启动镜像
 -it           # 使用交互方式运行
 -p            # 指定容器端口
 # 测试
-docker run -it centos /bin/bash
-docker run -it centos bash # 也行
+docker run -it --name centos01 centos /bin/bash
+docker run -it --name centos01 centos bash # 也行
 exit #退出
 
 # 列出运行的容器
@@ -48,8 +48,8 @@ docker rm 容器id
 # 启动和停止容器
 docker start 容器id
 docker restart 容器id
-docker stop 容器id
-docker kill 容器id
+docker stop/kill 容器id
+
 
 # 其他常用命令
 docker logs # 查看日志
@@ -60,8 +60,10 @@ docker top
 docker inspect 镜像id 
 
 # 进入当前正在运行的容器
-docker exec -it 容器id /bin/bash
+docker attach 容器名称
 
+# 执行容器里的命令
+docker exec 容器名称 command 
 # 从容器中拷贝文件到主机上
 docker cp 容器id：容器内路径 目的主机的路径
 ```
