@@ -32,6 +32,7 @@ docker run [可选参数] image # 启动镜像
 -p            # 指定容器端口
 # 测试
 docker run -it centos /bin/bash
+docker run -it centos bash # 也行
 exit #退出
 
 # 列出运行的容器
@@ -40,7 +41,6 @@ docker ps -a # 列出正在和运行过的容器
 
 # 退出容器
 exit # 停止并退出
-Ctrl + P + Q # 容器不停止退出
 
 # 删除容器
 docker rm 容器id
@@ -60,10 +60,7 @@ docker top
 docker inspect 镜像id 
 
 # 进入当前正在运行的容器
-## 方式1 进入容器后开启一个新的终端，可以在里面操作(常用)
 docker exec -it 容器id /bin/bash
-## 方式2 进入容器正在执行的终端
-docker attach -it 容器id 
 
 # 从容器中拷贝文件到主机上
 docker cp 容器id：容器内路径 目的主机的路径
