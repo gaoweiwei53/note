@@ -41,7 +41,7 @@ docker ps -a # 列出正在和运行过的容器
 
 # 退出容器
 exit # 停止并退出
-
+Ctrl + q + p # 退出不停止
 # 删除容器
 docker rm 容器id
 
@@ -64,6 +64,7 @@ docker attach 容器名称
 
 # 执行容器里的命令
 docker exec 容器名称 command 
+
 # 从容器中拷贝文件到主机上
 docker cp 容器id：容器内路径 目的主机的路径
 ```
