@@ -11,6 +11,6 @@ git reset --hard 版本号
 |命令|作用|
 |-|-|
 |`git branch 分支名`|创建分支|
-|'git branch -v'|查看分支|
+|`git branch -v`|查看分支|
 |`git checkout`|切换分支|
 |`git merge 分支名`|把指定分支合并到当前分支|
