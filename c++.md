@@ -456,5 +456,93 @@ int main(){
 ```
 ## 模板专门化
 ```c++
+template<>
+int * Max<int *>(int * a, int * b){
+    return * a > *b ? a: b;
+}
+```
+## 函数模板和重载
+可以定义和函数模板名同名的函数或模板
+## 模板的返回类型推断
+从C++14开始，可以用函数的返回类型推断的方法从函数返回表达式的结果类型推断函数的返回类型，既可以用`deltype`关键字，在函数签名前用`auto`关键字：
+```c++
+template <typename T1, typename T2>
+auto add(T1 a, T2 b) -> decltype(a + b){
+    return a + b;
+}
 
+// 简便的写法
+template <typename T1, typename T2>
+decltype(auto) add(T1 a, T2 b) {
+    return a + b;
+}
+```
+## 非类型模板参数
+C++17中允许用`auto`关键字说明非类型模板参数，从而根据模板实例自动推断非类型模板参数的类型。
+## 模板模板参数
+有时候，实例化模板时，传递的不是一个数据类型或具体值，而是另外的一个模板，即模板参数本身也是一个模板，这种模板参数称为**模板模板参数 **，例如
+```c++
+template <template<class> class X, class A>
+void f(const X<A> &value){
+    /*...*/
+}
+```
+## 模板参数的默认值
+定义函数模板时，可以给类型模板参数、非类型模板参数、模板参数设置默认值。
+```c++
+template <typename T = int, int e = 2>
+T power(const T x){
+    T ret{x};
+    for (auto i = 1; i < e; i++)
+        ret *= x;
+    return ret;
+}
+
+int main(){
+    std::cout << power(3) << '\t';
+    std::cout << power(3.5) << '\t';
+    std::cout << power<double, 3>(3.5) << '\t';
+}
+```
+## 可变模板参数(variadic templates)
+```c++
+template <typename... Args>
+void fun(Args.. args){/*...*/}
+```
+`Args`是一个可变模板形参，也称**模板参数包**，`args`是Args类型的函数形参。我们无法直接获取参数包args中的每个参数的，只能通过展开参数包的方式来获取参数包中的每个参数。
+
+展开可变模版参数函数的方法一般有两种：一种是通过递归函数来展开参数包，另外一种是通过逗号表达式来展开参数包。
+### 1. 使用递归
+```c++
+#include <iostream>
+using namespace std;
+//递归终止函数
+void print()
+{
+   cout << "empty" << endl;
+}
+//展开函数
+template <class T, class ...Args>
+void print(T head, Args... rest)
+{
+   cout << "parameter " << head << endl;
+   print(rest...);
+}
+
+
+int main(void)
+{
+   print(1,2,3,4);
+   return 0;
+}
+```
+### 2. 折叠表达式
+C++17的折叠表达式是一种新的用运算符解包可变参数的方法。即用用一个运算符(op)对打包的可变参数包(pack)处理。
+
+C++17 的折叠表达式根据参数包的位置分为左折叠和右折叠,根据操作的对象数量分为一元折叠和二元折叠.
+```c++
+(pack op ...)
+(... op pack)
+(pack op ... op init)
+(init op ... op pack)
 ```
