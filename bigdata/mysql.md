@@ -121,7 +121,12 @@ CREATE TEMPORARY TABLE 临时表名 AS
     LIMIT 0,10000
 );
 ```
-### 一些问题
+# 6. 数据类型
+## String类型
+CHAR和VARCHAR类型相似，但在存储和检索它们的方式上有所不同。它们在最大长度和是否保留尾空格方面也有所不同。[区别](https://dev.mysql.com/doc/refman/8.0/en/char.html)
+CHAR：长度值0-255, 存储时，数据长度不足定义的长度时，从右边用空格补齐，查询的时候尾部的空格会被移除。适用于存储固定长度的数据，如手机号。
+VARCHAR：长度值0-65535，存储时，会在数据前加1字节或2字节的长度前缀，不会有空格补齐，存储数据实际的长度加上长度前缀。使用与不确定长度的数据，如人名，地名等。
+# 一些问题
 ### 1. utf8和utf8mb4的区别?
 mb4就是most bytes 4的意思，专门用来兼容四字节的unicode, utf8mb4是utf8的超集。mysql支持的 utf8 编码最大字符长度为 3 字节，如果遇到 4 字节的宽字符就会插入异常了。
 ### 2. 什么是Online DDL?
@@ -145,4 +150,5 @@ MySQL各版本，对于DDL的处理方式是不同的，主要有三种：
 #### 使用情景
 
 ## 5. mysql索引使用的是什么算法？ 
+大部分的索引(PRIMARY KEY, UNIQUE, INDEX, and FULLTEXT)使用的是B-trees。例外：spatial data类型上的索引使用的是R-trees; Memory表也支持哈希索引；InnoDB的FULLTEXT索引使用的是inverted lists.
 
