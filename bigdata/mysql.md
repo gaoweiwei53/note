@@ -2,7 +2,7 @@ windows mysql root密码：alex123
 
 alex: alex123
 ### 修改用户可以远程登录
-```sql
+```mysql
 select user, host from user;
 update user set host="%" where user="root";
 flush privileges;
@@ -77,7 +77,7 @@ mysql -h host_name -u user -p
 |`alter table table_name rename to new_name;`|修改表名|
 # 3. 事务
 一系列数据库语句构成了事务。  
-```
+```msyql
 begin; # 开启一个事务
 ***
 ***
@@ -95,7 +95,7 @@ insert, update, delete表时不要使用索引。
 ### 普通索引
 - 修改表创建：`alter table table_name  add INDEX indexName(columnName);`
 - 创建表的时候直接指定
-```
+```msyql
 CREATE TABLE mytable(  
 ID INT NOT NULL,   
 username VARCHAR(16) NOT NULL,  
@@ -105,7 +105,7 @@ INDEX [indexName] (username(length))
 ### 唯一索引（索引列的值必须唯一，但允许有空值。）
 
 有四种方式来添加数据表的索引：
-```
+```msyql
 ALTER TABLE tbl_name ADD PRIMARY KEY (column_list): 该语句添加一个主键，这意味着索引值必须是唯一的，且不能为NULL。
 ALTER TABLE tbl_name ADD UNIQUE index_name (column_list): 这条语句创建索引的值必须是唯一的（除了NULL外，NULL可能会出现多次）。
 ALTER TABLE tbl_name ADD INDEX index_name (column_list): 添加普通索引，索引值可出现多次。
@@ -114,7 +114,7 @@ ALTER TABLE tbl_name ADD FULLTEXT index_name (column_list):该语句指定了索
 #### 删除索引
 
 # 5. 临时表
-```
+```msyql
 CREATE TEMPORARY TABLE 临时表名 AS
 (
     SELECT *  FROM 旧的表名
@@ -124,8 +124,8 @@ CREATE TEMPORARY TABLE 临时表名 AS
 # 6. 数据类型
 ## String类型
 CHAR和VARCHAR类型相似，但在存储和检索它们的方式上有所不同。它们在最大长度和是否保留尾空格方面也有所不同。[区别](https://dev.mysql.com/doc/refman/8.0/en/char.html)
-CHAR：长度值0-255, 存储时，数据长度不足定义的长度时，从右边用空格补齐，查询的时候尾部的空格会被移除。适用于存储固定长度的数据，如手机号。
-VARCHAR：长度值0-65535，存储时，会在数据前加1字节或2字节的长度前缀，不会有空格补齐，存储数据实际的长度加上长度前缀。使用与不确定长度的数据，如人名，地名等。
+- CHAR：长度值0-255, 存储时，数据长度不足定义的长度时，从右边用空格补齐，查询的时候尾部的空格会被移除。适用于存储固定长度的数据，如手机号。
+- VARCHAR：长度值0-65535，存储时，会在数据前加1字节或2字节的长度前缀，不会有空格补齐，存储数据实际的长度加上长度前缀。使用与不确定长度的数据，如人名，地名等。
 # 一些问题
 ### 1. utf8和utf8mb4的区别?
 mb4就是most bytes 4的意思，专门用来兼容四字节的unicode, utf8mb4是utf8的超集。mysql支持的 utf8 编码最大字符长度为 3 字节，如果遇到 4 字节的宽字符就会插入异常了。
