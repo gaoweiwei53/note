@@ -152,3 +152,13 @@ MySQL各版本，对于DDL的处理方式是不同的，主要有三种：
 ## 5. mysql索引使用的是什么算法？ 
 大部分的索引(PRIMARY KEY, UNIQUE, INDEX, and FULLTEXT)使用的是B-trees。例外：spatial data类型上的索引使用的是R-trees; Memory表也支持哈希索引；InnoDB的FULLTEXT索引使用的是inverted lists.
 
+# 错误及解决方法
+1. `groupby`
+   ```mysql
+   select Name, max(Salary), DepartmentId
+   from Employee
+   group by DepartmentId;
+   ```
+> ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'menagerie.Employee.Name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+
+怎么通过优化sql语句解决
