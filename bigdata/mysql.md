@@ -153,8 +153,9 @@ MySQL各版本，对于DDL的处理方式是不同的，主要有三种：
 大部分的索引(PRIMARY KEY, UNIQUE, INDEX, and FULLTEXT)使用的是B-trees。例外：spatial data类型上的索引使用的是R-trees; Memory表也支持哈希索引；InnoDB的FULLTEXT索引使用的是inverted lists.
 
 # 错误及解决方法
-1. `groupby`
+1. 使用`groupby`时，select语句只能有group里包含的非聚合字段。
    ```mysql
+   #不能有Name
    select Name, max(Salary), DepartmentId
    from Employee
    group by DepartmentId;
