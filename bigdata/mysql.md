@@ -1,6 +1,56 @@
 windows mysql root密码：alex123
 
 alex: alex123
+# Mysql 8 [新特性](https://dev.mysql.com/doc/refman/8.0/en/mysql-nutshell.html)
+## 添加的功能
+- 数据字典(Data dictionary)
+- Atomic data definition statements (Atomic DDL)：原子数据定义声明
+- Upgrade procedure：升级更方便
+- Security and account management：让账户管理更加安全灵活
+- Resource management:支持资源组(resource groups)的创建和管理
+- Table encryption management：表加密
+- InnoDB enhancements
+- Character set support：默认的字符集由`latin1`变为`utf8mb4`
+- JSON enhancements
+- Data type support
+- Optimizer：索引等
+- Common table expression
+- Window functions：支持窗口函数
+- Lateral derived tables
+- Aliases in single-table DELETE statements：DELETE支持使用表的别名
+- Internal temporary tables
+- Logging
+- Backup lock
+- Replication
+- Connection management
+- Configuration
+- Plugins
+- C API：C API现在支持与服务器异步非阻塞通信
+- Additional target types for casts
+- JSON schema validation：增加了两个json验证格式
+- Multi-valued indexes
+- Hintable time_zone
+- Redo Log Archiving
+- The Clone Plugin：支持克隆innoDB数据
+- Hash Join Optimization
+- EXPLAIN ANALYZE Statement
+- Query cast injection
+- Time zone support for TIMESTAMP and DATETIME
+- Precise information for JSON schema CHECK constraint failures
+- Row and column aliases with ON DUPLICATE KEY UPDATE
+- SQL standard explicit table clause and table value constructor
+- Optimizer hints for FORCE INDEX, IGNORE INDEX
+- JSON_VALUE() function
+- User comments and user attributes
+- New optimizer_switch flags
+- XML enhancements
+- Casting to the YEAR type now supported
+- Retrieval of TIMESTAMP values as UTC
+- Dump file output synchronization
+- Single preparation of statements
+- RIGHT JOIN as LEFT JOIN handling
+- Derived condition pushdown optimization
+- Non-locking reads on MySQL grant tables
 ### 修改用户可以远程登录
 ```mysql
 select user, host from user;
