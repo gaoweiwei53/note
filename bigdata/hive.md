@@ -18,6 +18,8 @@ Hive本质：将HSQL转化为Mapreduce程序
 
 ### hive执行流程？
 1) UI向Driver调用执行接口，Driver创建一个session处理查询，将查询发送给compiler
+2) compiler获取元数据信息，生成一个执行计划，发送给Execution Engine. execution plan是一个stages的DAG, 每个stage是一个map/reduce job或HDFS上的操作。对于map/reduce的stages，计划包含 map operator trees和reduce operator tree.
+4) execution engine将这些stages发送给相应的组件(MapReduce)，执行计划。
 ### hive数据模型
 hive中的数据被组织为：
 - 表(Table): 类似关系型数据库中的表，hive也支持外部表(external table)
