@@ -6,16 +6,36 @@ Hive本质：将HSQL转化为Mapreduce程序
 3) 运行在yarn上
 4) hive不需要搭建分布式
 
-## 1.2 Hive架构
+## 1.2 [Hive架构](https://cwiki.apache.org/confluence/display/Hive/Design)
 ![hive架构](https://cwiki.apache.org/confluence/download/attachments/27362072/system_architecture.png?version=1&modificationDate=1414560669000&api=v2)
-- Client
-- Metastore  
-推荐使用MySql
-- HDFS
-- Driver
-  - SQL sparser
-  - Query Optimizer
-  - Execution
+
+
+- UI：接口用于用户提交查询。命令行或webUI
+- Driver：接收查询的组件
+- Compiler：解析查询，做语义分析，在表和分区的元数据的帮助下生成执行计划(execution plan)
+- Metastore：存储着所有数据仓库中各种表和分区的结构信息，包括列和列的类型信息，读写涉及的序列化反序列化等
+- Execution Engine：执行Compiler生成的执行计划
+
+### hive执行流程？
+1) UI向Driver调用执行接口，Driver创建一个session处理查询，将查询发送给compiler
+### hive数据模型
+hive中的数据被组织为：
+- 表(Table): 类似关系型数据库中的表，hive也支持外部表(external table)
+- 分区(Patition): 每个表可以有一个或多个Partition keys
+- 桶(Bucket): 分区中表可以进一步被划分到桶，根据的是列的hash. 每个桶作为一个文件存在分区目录下。
+
+### Metastore
+Metastore提供了数据仓库中两个重要的特性：**data abstraction**和**data discover**
+#### 元数据对象
+- Database：表的命名空间(namespace)
+- Table: 表包含的列，所属者，存储和序列化反序列信息
+- Partition：每个分区可以有它自己列、序列化和反序列、存储信息
+
+### Compiler
+- Parser: 将一个查询字符串转化为解析树(抽象语法树)
+- Semantic Analyser：将解析树转变为一个内部查询
+- Logical Plan Generator：将内部查询表达转化为一个逻辑计划， 它有operator tree组成。一些operator和关系数据库类似，如*filter*，*join*等，但是另一些是Hive特有的，用来后面转化为一系列map-reduce job。这一步也包含优化过程(optimizer)
+- Query Plan Generator: 遍历operator tree, 将逻辑计划(logical plan)转化为一系列map-reduce任务。
 ## 1.3 与数据库的对比
 - SQL语言相似
 - 不善于更新数据，不建议更新操作
