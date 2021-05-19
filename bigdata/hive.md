@@ -6,7 +6,8 @@ Hive本质：将HSQL转化为Mapreduce程序
 3) 运行在yarn上
 4) hive不需要搭建分布式
 
-## 1.2 Hive的结构
+## 1.2 Hive架构
+![hive架构](https://cwiki.apache.org/confluence/download/attachments/27362072/system_architecture.png?version=1&modificationDate=1414560669000&api=v2)
 - Client
 - Metastore  
 推荐使用MySql
