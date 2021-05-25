@@ -24,9 +24,9 @@ Spark 三大数据结构
 ## 任务划分
 RDD任务切分中间分为：Application、Job、Stage 和 Task
 1) Application：初始化一个 SparkContext 即生成一个Application
-2) Job：一个Action 算子就会生成一个 Job
+2) Job：一个Action 算子就会生成一个 Job, 一个job由多个task构成。其中一组task又可构成一个stage.
 3) Stage：根据RDD之间的依赖关系的不同将 Job 划分成不同的 Stage，遇到一个宽依赖 则划分一个 Stage。
-4) Task：Stage 是一个 TaskSet，将 Stage 划分的结果发送到不同的 Executor 执行即为一个 Task。
+4) Task：Stage 是一个 TaskSet，将 Stage 划分的结果发送到不同的 Executor 执行即为一个 Task。发送到一个excutor执行的单位就是一个task
 ##  RDD缓存
 RDD通过 persist 方法或 cache 方法可以将前面的计算结果缓存，默认情况下 persist()会把数据以序列化的形式缓存在 JVM 的堆空间中。 但是并不是这两个方法被调用时立即缓存，而是触发后面的 action 时，该RDD将会 被缓存在计算节点的内存中，并供后面重用。
 ## RDD CheckPoint
