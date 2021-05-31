@@ -61,7 +61,7 @@ Frame包含一个LIFO的栈，叫做操作数栈。
 ### 5) 方法区 (Method Area)
 用于存储已被虚拟机加载的类型信息、常量、静态变量、即时编译器编译后的代码缓存等数据。
 
-在Java7中永久代中存储的部分数据已经开始转移到Java Heap或Native Memory中了。比如字符串常量池(interned strings)转移到了Java Heap和类的静态变量(class statics)转移到了Java Heap。[参考](http://openjdk.java.net/jeps/122)
+在Java7中永久代中存储的部分数据已经开始转移到Java Heap或Native Memory中了。比如字符串常量池(interned strings)和类的静态变量(class statics)转移到了Java Heap。[参考](http://openjdk.java.net/jeps/122)
 
 永久代的内存地址与堆是连续的，而元空间不是的。用元空间取代永久代的原因是解决永久代容易发送内存溢出的原因。元空间使用的是本地内存。
 ##### 类的信息
