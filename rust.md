@@ -161,7 +161,7 @@ fn main() {
     }
 }
 ```
-if 后的*arm*必须是布尔类型
+> if 后的condition中的变量必须是布尔类型
 
 可以在let声明中使用if表达式
 ```rust
