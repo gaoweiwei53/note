@@ -106,7 +106,7 @@ fn main() {
 }
 ```
 ## 函数
-rust使用`fn`申明函数，rust中函数名称一般使用小写，多个字母组合用`_`连接：
+rust使用`fn`定义函数，rust中函数名称一般使用小写，多个字母组合用`_`连接：
 ```rust
 fn main() {
     println!("Hello, world!");
@@ -161,7 +161,7 @@ fn main() {
     }
 }
 ```
-if 后的语句必须是布尔类型
+if 后的*arm*必须是布尔类型
 
 可以在let声明中使用if表达式
 ```rust
