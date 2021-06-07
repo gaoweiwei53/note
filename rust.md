@@ -231,3 +231,61 @@ fn main() {
     println!("LIFTOFF!!!");
 }
 ```
+# Ownership
+所有的程序必须要管理所使用的内存。有的语言使用垃圾回收器，有的语言让程序员手动管理。Rust使用的是另一种方法：**ownership**
+```rust
+fn main() {
+    {
+        let s = String::from("hello"); // s is valid from this point forward
+
+        // do stuff with s
+    }                                  // this scope is now over, and s is no
+                                       // longer valid
+}
+```
+当一个变量离开作用域就会释放内存。在离开`}`时，Rust自动调用`drop`函数释放内存
+```rust
+fn main() {
+    let s1 = String::from("hello");
+    let s2 = s1; // 浅拷贝
+
+    println!("{}, world!", s1); // error 
+}
+```
+变量`s1`会不可用，避免两次释放同一块内存的问题
+```rust
+fn main() {
+    let s1 = String::from("hello");
+    let s2 = s1.clone();
+
+    println!("s1 = {}, s2 = {}", s1, s2);
+}
+```
+当想使用深拷贝时，调用`clone()`方法
+
+```rust
+fn main() {
+    let s = String::from("hello");  // s comes into scope
+
+    takes_ownership(s);             // s's value moves into the function...
+                                    // ... and so is no longer valid here
+
+    let x = 5;                      // x comes into scope
+
+    makes_copy(x);                  // x would move into the function,
+                                    // but i32 is Copy, so it's okay to still
+                                    // use x afterward
+
+} // Here, x goes out of scope, then s. But because s's value was moved, nothing
+  // special happens.
+
+fn takes_ownership(some_string: String) { // some_string comes into scope
+    println!("{}", some_string);
+} // Here, some_string goes out of scope and `drop` is called. The backing
+  // memory is freed.
+
+fn makes_copy(some_integer: i32) { // some_integer comes into scope
+    println!("{}", some_integer);
+} // Here, some_integer goes out of scope. Nothing special happens.
+```
+> main()函数中变量s在传入函数后就不在可用了，x这种基本类型的变量还可用，因为是复制了一份。
