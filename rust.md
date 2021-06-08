@@ -288,4 +288,98 @@ fn makes_copy(some_integer: i32) { // some_integer comes into scope
     println!("{}", some_integer);
 } // Here, some_integer goes out of scope. Nothing special happens.
 ```
-> main()函数中变量s在传入函数后就不在可用了，x这种基本类型的变量还可用，因为是复制了一份。
+main()函数中变量s在传入函数后就不在可用了，x这种基本类型的变量还可用，因为是复制了一份。
+## 返回值和作用域
+返回一个值同时会转换ownership:
+```rust
+fn main() {
+    let s1 = gives_ownership();         // gives_ownership moves its return
+                                        // value into s1
+
+    let s2 = String::from("hello");     // s2 comes into scope
+
+    let s3 = takes_and_gives_back(s2);  // s2 is moved into
+                                        // takes_and_gives_back, which also
+                                        // moves its return value into s3
+} // Here, s3 goes out of scope and is dropped. s2 goes out of scope but was
+  // moved, so nothing happens. s1 goes out of scope and is dropped.
+
+fn gives_ownership() -> String {             // gives_ownership will move its
+                                             // return value into the function
+                                             // that calls it
+
+    let some_string = String::from("hello"); // some_string comes into scope
+
+    some_string                              // some_string is returned and
+                                             // moves out to the calling
+                                             // function
+}
+
+// takes_and_gives_back will take a String and return one
+fn takes_and_gives_back(a_string: String) -> String { // a_string comes into
+                                                      // scope
+
+    a_string  // a_string is returned and moves out to the calling function
+}
+```
+## 引用和borrowing
+```rust
+fn main() {
+    let s1 = String::from("hello");
+
+    let len = calculate_length(&s1);
+
+    println!("The length of '{}' is {}.", s1, len);
+}
+
+fn calculate_length(s: &String) -> usize {
+    s.len()
+}
+```
+方法`calculate_length(&s1)`传入的是变量s1的引用，不会把s1的ownership传给调用它的方法，所有后面s1还可用。
+> 注: rust中禁止在函数中修改引用的值
+
+### 可变引用
+如果想可以引用的值我们可以在形参中加`mut`:
+```rust
+fn main() {
+    let mut s = String::from("hello");
+
+    change(&mut s);
+}
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
+}
+```
+但是一个值同时**只能有一个可变引用**，并且**不能同时有不可变引用和可变引用**，但是可以同时有多个不可变引用.
+> 引用的作用域是从定义引用开始，到引用不再使用结束。
+所以如果某个值后面不在使用，那么允许对它再次进行可变引用，如下：
+```rust
+fn main() {
+    let mut s = String::from("hello");
+
+    let r1 = &s; // no problem
+    let r2 = &s; // no problem
+    println!("{} and {}", r1, r2);
+    // r1 and r2 are no longer used after this point
+
+    let r3 = &mut s; // no problem
+    println!("{}", r3);
+}
+```
+### Dangling References
+*dangling pointer*指的是通过释放之前被使用内存后指向该内存的的指针。Rust可以保证不会有`Dangling References`
+```rust
+fn main() {
+    let reference_to_nothing = dangle();
+}
+
+fn dangle() -> &String {
+    let s = String::from("hello");
+
+    &s // 错，s在作用域结束后会释放该内存，不能再返回对它的引用
+    s  // 可，通过转换它的ownership
+}
+```
+
