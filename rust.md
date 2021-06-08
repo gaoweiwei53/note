@@ -382,4 +382,109 @@ fn dangle() -> &String {
     s  // 可，通过转换它的ownership
 }
 ```
+### The Slice Type
+slice没有ownership
+#### String Slices
+一个* string slice*就是对string的部分引用，如下:
+```rust
+fn main() {
+    let s = String::from("hello world");
 
+    let hello = &s[0..5];
+    let world = &s[6..11];
+}
+```
+```rust
+
+#![allow(unused)]
+fn main() {
+let s = String::from("hello");
+
+let slice = &s[0..2];
+let slice = &s[..2]; // 0 可省略
+
+let len = s.len();
+
+let slice = &s[3..len];
+let slice = &s[3..]; // len可省略
+}
+
+```
+重写返回第一个单词的函数：
+```rust
+fn first_word(s: &String) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
+}
+
+fn main() {}
+```
+使用slice可让一些错误提前可见，如下：
+```rust
+fn first_word(s: &String) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
+}
+
+fn main() {
+    let mut s = String::from("hello world");
+
+    let word = first_word(&s);
+
+    s.clear(); // error! 错误
+
+    println!("the first word is: {}", word);
+}
+```
+因为s已经有了一个不可变引用，`s.clear`需要得到一个可变引用，这在Rust是不被允许的，编译会出错(之前用索引的代码编译时不会报错)，所以能避免安全性错误。
+
+#### 用String Slices作为形参
+```rust
+// 不是 fn first_word(s: &String) -> &str {
+// 形参用 s: &str 代替 s: &String
+fn first_word(s: &str) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
+}
+
+fn main() {
+    let my_string = String::from("hello world");
+
+    // first_word works on slices of `String`s
+    let word = first_word(&my_string[..]);
+
+    let my_string_literal = "hello world";
+
+    // first_word works on slices of string literals
+    let word = first_word(&my_string_literal[..]);
+
+    // Because string literals *are* string slices already,
+    // this works too, without the slice syntax!
+    let word = first_word(my_string_literal);
+}
+```
+这样写程序更加健壮，因为既可以传入string slice也可以传入String
+
+### 总结
+ownership, borrowing, slices这些概念让Rust程序能在编译时期就能保证内存安全。
