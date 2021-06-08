@@ -654,7 +654,7 @@ fn main() {
 ```
 
 ### Associated Functions
-定义与结构体相关的函数，但是没有`self`参数，这种方法叫`associated Function`，它们是函数不是方法。使用时用**`::`** ：
+定义与结构体相关的函数，但是没有`self`参数，这种方法叫`associated Function`，它们是函数不是方法。使用时用`::`：
 ```rust
 #[derive(Debug)]
 struct Rectangle {
