@@ -677,3 +677,258 @@ fn main() {
     let sq = Rectangle::square(3);
 }
 ```
+# 枚举 Emnum
+## 定义和使用emnum
+```rust
+fn main() {
+    enum IpAddr {
+        V4(String),
+        V6(String),
+    }
+
+    let home = IpAddr::V4(String::from("127.0.0.1"));
+
+    let loopback = IpAddr::V6(String::from("::1"));
+}
+```
+另一个使用枚举的例子：
+```rust
+enum Message {
+    Quit,                       // tuple struct
+    Move { x: i32, y: i32 },    // 匿名struct
+    Write(String),              // tuple struct
+    ChangeColor(i32, i32, i32), // tuple struct
+}
+fn main() {}
+```
+上面的在一个enum里定义多个struct等同于直接定义多个struct，如下：
+```rust
+struct QuitMessage; // unit struct
+struct MoveMessage {
+    x: i32,
+    y: i32,
+}
+struct WriteMessage(String); // tuple struct
+struct ChangeColorMessage(i32, i32, i32); // tuple struct
+
+fn main() {}
+```
+但是使用enum的代码表示的一个类型，而直接定义的多个struct是不同的的类型。在作为形参的时候，enum类型的形参可以适配所有里面定义的stuct，而直接定义的struct每一种只能适配一种类型。
+
+## 在enum里定义函数
+```rust
+fn main() {
+    enum Message {
+        Quit,
+        Move { x: i32, y: i32 },
+        Write(String),
+        ChangeColor(i32, i32, i32),
+    }
+
+    impl Message {
+        fn call(&self) {
+            // method body would be defined here
+        }
+    }
+
+    let m = Message::Write(String::from("hello"));
+    m.call();
+}
+```
+## 一个标准库中的enum `Option`
+为了保证程序的健壮性，Rust中没有`null`值这个概念！
+
+Rust使用enum `Option`来表达这个*null*概念：
+```rust
+#![allow(unused)]
+fn main() {
+    enum Option<T> {
+        Some(T),
+        None,
+    }
+    
+    let some_number = Some(5);
+    let some_string = Some("a string");
+    
+    // 使用None必须指明类型
+    let absent_number: Option<i32> = None;
+}
+## `match`控制流操作符
+`match`是一个非常强大的控制流操作符。
+```rust
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter,
+}
+
+fn value_in_cents(coin: Coin) -> u8 {
+    match coin {
+        Coin::Penny => 1,
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter => 25,
+    }
+}
+
+fn main() {}
+```
+`mactch`对应的大括号里的每一行称为*arms*, 每一个*arm*由一个*pattern*和一些代码组成。例如`Coin::Penny`是一个*pattern*，`=>`后的就是对应的代码。代码表达式的值就是返回给整个`match`表达式的值。
+```rust
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter,
+}
+
+fn value_in_cents(coin: Coin) -> u8 {
+    match coin {
+        // 代码有多行就用大括号
+        Coin::Penny => {
+            println!("Lucky penny!");
+            1
+        }
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter => 25,
+    }
+}
+
+fn main() {}
+```
+### 绑定到值的pattern
+```rsut
+#[derive(Debug)]
+enum UsState {
+    Alabama,
+    Alaska,
+    // --snip--
+}
+
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter(UsState),
+}
+
+fn value_in_cents(coin: Coin) -> u8 {
+    match coin {
+        Coin::Penny => 1,
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter(state) => {
+            println!("State quarter from {:?}!", state);
+            25
+        }
+    }
+}
+
+fn main() {
+    value_in_cents(Coin::Quarter(UsState::Alaska));
+}
+
+```
+### 与`OPtion<T>`匹配
+```rust
+fn main() {
+    fn plus_one(x: Option<i32>) -> Option<i32> {
+        match x {
+            None => None,
+            Some(i) => Some(i + 1),
+        }
+    }
+
+    let five = Some(5);
+    let six = plus_one(five);
+    let none = plus_one(None);
+}
+```
+### `_`占位符
+`_`会匹配所有情况:
+```rust
+fn main() {
+    let some_u8_value = 0u8;
+    match some_u8_value {
+        1 => println!("one"),
+        3 => println!("three"),
+        5 => println!("five"),
+        7 => println!("seven"),
+        _ => (),
+    }
+}
+```
+### `if_let`
+有时候如果我们只想关注一种可能性的话，使用`match`表达式会显得冗长，如下：
+```rust
+fn main() {
+    let some_u8_value = Some(0u8);
+    match some_u8_value {
+        Some(3) => println!("three"),
+        _ => (),
+    }
+}
+```
+这时候我们可以使用`if let`：
+```rust
+fn main() {
+    let some_u8_value = Some(0u8);
+    if let Some(3) = some_u8_value {
+        println!("three");
+    }
+}
+```
+类似`if else`的结构
+```rust
+#[derive(Debug)]
+enum UsState {
+    Alabama,
+    Alaska,
+    // --snip--
+}
+
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter(UsState),
+}
+
+fn main() {
+    let coin = Coin::Penny;
+    let mut count = 0;
+    match coin {
+        Coin::Quarter(state) => println!("State quarter from {:?}!", state),
+        _ => count += 1,
+    }
+}
+
+```
+改用`if let`:
+```rust
+#[derive(Debug)]
+enum UsState {
+    Alabama,
+    Alaska,
+    // --snip--
+}
+
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter(UsState),
+}
+
+fn main() {
+    let coin = Coin::Penny;
+    let mut count = 0;
+    if let Coin::Quarter(state) = coin {
+        println!("State quarter from {:?}!", state);
+    } else {
+        count += 1;
+    }
+}
+```
