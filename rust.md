@@ -1031,7 +1031,145 @@ fn main() {
 }
 ```
 ## trait
+### 定义和实现trait
+```rust
+pub trait Summary {
+    fn summarize(&self) -> String;
+}
 
+pub struct NewsArticle {
+    pub headline: String,
+    pub location: String,
+    pub author: String,
+    pub content: String,
+}
+
+impl Summary for NewsArticle {
+    fn summarize(&self) -> String {
+        format!("{}, by {} ({})", self.headline, self.author, self.location)
+    }
+}
+
+pub struct Tweet {
+    pub username: String,
+    pub content: String,
+    pub reply: bool,
+    pub retweet: bool,
+}
+
+impl Summary for Tweet {
+    fn summarize(&self) -> String {
+        format!("{}: {}", self.username, self.content)
+    }
+}
+
+
+use chapter10::{self, Summary, Tweet};
+
+fn main() {
+    let tweet = Tweet {
+        username: String::from("horse_ebooks"),
+        content: String::from(
+            "of course, as you probably already know, people",
+        ),
+        reply: false,
+        retweet: false,
+    };
+
+    println!("1 new tweet: {}", tweet.summarize());
+}
+
+```
+trait定义为`pub`，表示其他的crate可以实现它。
+
+注：当trait和type至少一个为本地的时候，我们才能使用该type来实现此trait
+### 默认实现方法
+trait可以定义默认的实现方法，实现该trait的类型既可以重写该方法也可以直接调用。
+```rust
+pub trait Summary {
+    fn summarize(&self) -> String {
+        String::from("(Read more...)")
+    }
+}
+
+pub struct NewsArticle {
+    pub headline: String,
+    pub location: String,
+    pub author: String,
+    pub content: String,
+}
+
+impl Summary for NewsArticle {}
+
+pub struct Tweet {
+    pub username: String,
+    pub content: String,
+    pub reply: bool,
+    pub retweet: bool,
+}
+
+impl Summary for Tweet {
+    fn summarize(&self) -> String {
+        format!("{}: {}", self.username, self.content)
+    }
+}
+
+use chapter10::{self, NewsArticle, Summary};
+
+fn main() {
+    let article = NewsArticle {
+        headline: String::from("Penguins win the Stanley Cup Championship!"),
+        location: String::from("Pittsburgh, PA, USA"),
+        author: String::from("Iceburgh"),
+        content: String::from(
+            "The Pittsburgh Penguins once again are the best \
+             hockey team in the NHL.",
+        ),
+    };
+
+    println!("New article available! {}", article.summarize());  // 直接使用默认的方法
+}
+```
+默认的方法可以调用同trait下的其他方法：
+```rust
+pub trait Summary {
+    fn summarize_author(&self) -> String;
+
+    fn summarize(&self) -> String { 
+        // 调用了同trait下的其他方法
+        format!("(Read more from {}...)", self.summarize_author())
+    }
+}
+
+pub struct Tweet {
+    pub username: String,
+    pub content: String,
+    pub reply: bool,
+    pub retweet: bool,
+}
+
+impl Summary for Tweet {
+    fn summarize_author(&self) -> String {
+        format!("@{}", self.username)
+    }
+}
+
+use chapter10::{self, Summary, Tweet};
+
+fn main() {
+    let tweet = Tweet {
+        username: String::from("horse_ebooks"),
+        content: String::from(
+            "of course, as you probably already know, people",
+        ),
+        reply: false,
+        retweet: false,
+    };
+
+    println!("1 new tweet: {}", tweet.summarize());
+}
+
+```
 
 # 面向对象
 `struct`和`enum`的成员默认是*private*，使用`pub`可让成员对外可见。
@@ -1080,3 +1218,4 @@ pub struct Screen {
     pub components: Vec<Box<dyn Draw>>,
 }
 ```
+
