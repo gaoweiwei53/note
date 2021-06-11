@@ -1170,7 +1170,146 @@ fn main() {
 }
 
 ```
+## trait作为参数
+参数前加`impl`关键字
+```rust
+pub trait Summary {
+    fn summarize(&self) -> String;
+}
 
+pub struct NewsArticle {
+    pub headline: String,
+    pub location: String,
+    pub author: String,
+    pub content: String,
+}
+
+impl Summary for NewsArticle {
+    fn summarize(&self) -> String {
+        format!("{}, by {} ({})", self.headline, self.author, self.location)
+    }
+}
+
+pub struct Tweet {
+    pub username: String,
+    pub content: String,
+    pub reply: bool,
+    pub retweet: bool,
+}
+
+impl Summary for Tweet {
+    fn summarize(&self) -> String {
+        format!("{}: {}", self.username, self.content)
+    }
+}
+
+pub fn notify(item: &impl Summary) {
+    println!("Breaking news! {}", item.summarize());
+}
+```
+### trait Bound语法
+```rust
+pub fn notify<T: Summary>(item: &T) {
+    println!("Breaking news! {}", item.summarize());
+}
+```
+`<T: Summary>`里的`Summary`就是*bound*
+### 使用多个trait bound
+```rust
+pub fn notify(item: &(impl Summary + Display)) {
+
+// or like  this
+pub fn notify<T: Summary + Display>(item: &T) {
+```
+### 多个bound使用`where`字句
+多个bound使用`where`字句会使代码更加清晰
+```rust
+fn some_function<T: Display + Clone, U: Clone + Debug>(t: &T, u: &U) -> i32 {
+
+// 这样写更清晰
+fn some_function<T, U>(t: &T, u: &U) -> i32
+    where T: Display + Clone,
+          U: Clone + Debug
+{
+```
+### 实现Trait的返回值
+```rust
+pub trait Summary {
+    fn summarize(&self) -> String;
+}
+
+pub struct NewsArticle {
+    pub headline: String,
+    pub location: String,
+    pub author: String,
+    pub content: String,
+}
+
+impl Summary for NewsArticle {
+    fn summarize(&self) -> String {
+        format!("{}, by {} ({})", self.headline, self.author, self.location)
+    }
+}
+
+pub struct Tweet {
+    pub username: String,
+    pub content: String,
+    pub reply: bool,
+    pub retweet: bool,
+}
+
+impl Summary for Tweet {
+    fn summarize(&self) -> String {
+        format!("{}: {}", self.username, self.content)
+    }
+}
+
+fn returns_summarizable() -> impl Summary {
+    Tweet {
+        username: String::from("horse_ebooks"),
+        content: String::from(
+            "of course, as you probably already know, people",
+        ),
+        reply: false,
+        retweet: false,
+    }
+}
+```
+> 需要注意的是函数中只能返回一种实现trait的类型
+
+### Using Trait Bounds to Conditionally Implement Methods
+在任何满足trait bound的类型上的trait的实现称为*blanket implementations*, 这个标准库中很常见
+```rust
+use std::fmt::Display;
+
+struct Pair<T> {
+    x: T,
+    y: T,
+}
+
+impl<T> Pair<T> {
+    fn new(x: T, y: T) -> Self {
+        Self { x, y }
+    }
+}
+
+impl<T: Display + PartialOrd> Pair<T> {
+    fn cmp_display(&self) {
+        if self.x >= self.y {
+            println!("The largest member is x = {}", self.x);
+        } else {
+            println!("The largest member is y = {}", self.y);
+        }
+    }
+}
+```
+`Pair<T>`总会有`new()`方法，但是只有当`Pair`的类型为**T**的时候，才会实现`cmp_display`方法
+```rust
+impl<T: Display> ToString for T {
+    // --snip--
+}
+```
+上面的代码表示任何实现了`Display`的类型都可以使用`ToString` trait定义的`to_string()`方法
 # 面向对象
 `struct`和`enum`的成员默认是*private*，使用`pub`可让成员对外可见。
 ```rust
