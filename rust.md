@@ -1310,6 +1310,61 @@ impl<T: Display> ToString for T {
 }
 ```
 上面的代码表示任何实现了`Display`的类型都可以使用`ToString` trait定义的`to_string()`方法
+## Lifetime
+Rust中的每一个引用都有个*lifetime*, 也就是引用有效的范围。和变量的类型类似，一般情况下Rust可以推断引用的lifetime，但是当这下引用的lifetime无法相关联时，Rust需要我们通过使用generic lifetime parameters注释这个关系来确保世界的引用在运行时是有效的。
+```rust
+fn main() {
+    let string1 = String::from("abcd");
+    let string2 = "xyz";
+
+    let result = longest(string1.as_str(), string2);
+    println!("The longest string is {}", result);
+}
+
+fn longest(x: &str, y: &str) -> &str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+```
+上面的这个代码是错误的，因为无法确定传入的引用的具体lifetime，所以我们也无法确定函数返回的引用是否还有效。
+### liftime注释语法
+下面的代码中，函数的形参和返回值都加了` `a `, 表示的是形参中的所有引用和返回值必须具有相同的lifetime，这个lifetime被命名为` `a `
+```rust
+fn main() {
+    let string1 = String::from("abcd");
+    let string2 = "xyz";
+
+    let result = longest(string1.as_str(), string2);
+    println!("The longest string is {}", result);
+}
+
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+```
+### struct中的lifetime
+ ```rust
+ struct ImportantExcerpt<'a> {
+    part: &'a str,
+}
+
+fn main() {
+    let novel = String::from("Call me Ishmael. Some years ago...");
+    let first_sentence = novel.split('.').next().expect("Could not find a '.'");
+    let i = ImportantExcerpt {
+        part: first_sentence,
+    };
+}
+ ```
+ ### Lifetime Elision
+ ### 在方法中使用lifetime
 # 面向对象
 `struct`和`enum`的成员默认是*private*，使用`pub`可让成员对外可见。
 ```rust
