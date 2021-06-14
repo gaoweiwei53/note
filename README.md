@@ -13,6 +13,9 @@
 7. `top + 大M(shift m)` 按内存使用降序排列
 8. `ps -eo pid,ppid,%mem,%cpu,cmd --sort=-%mem | head`, `ps -eo pid,ppid,%mem,%cpu,comm --sort=-%mem| head -2`, `-e`选择所有进程，`-o`自定义输出格式 
 9. linux查看线程：`top -H`, `top -H -p <pid>`, `ps -T -p <pid>`
+10. 查看目录空间占用大小：`du -sh`
+11. 创建软连接：`ln -s 源文件 链接文件`
+12. 免密登录：将A主机的id_rsa.pub文件里的内容拷贝到主机B的authorized_keys中:`ssh-keygen -t rsa`, `ssh-copy-id 用户名@主机B`
 # 软件
 - [JDK8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html)
 - [JDK11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
