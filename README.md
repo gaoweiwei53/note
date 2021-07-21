@@ -7,9 +7,9 @@
 1. `find`:查找指定文件下和子文件夹下的文件
 2.  `find / -name sth`: 查找文件
 3.  `free -h`/`top`: 查看内存使用
-4. swap分区的作用是，当系统物理内存吃紧时，Linux 会将内存中不常访问的数据保存到 swap 上，这样系统就有更多的物理内存为各个进程服务，而当系统需要访问 swap 上存储的内容时，再将 swap 上的数据加载到内存中。
-5. `lsof -i:端口号` 查看某个端口是否被占用 
-6. `netstat -nl`： 只显示监听端口 
+4. swap分区的作用是，当系统物理内存吃紧时，Linux 会将内存中不常访问的数据保存到 swap 上，这样系统就有更多的物理内存为各个进程服务，而当系统需要访问 swap 上存储的内容时，再将 swap 上的数据加载到内
+5. `lsof -i:端口号` 查看某个端口是否可用，如果没有任何输出就没有开启？ 
+6. `netstat -nl`： 只显示监听端口 `netstat -aptn`查看所有端口，`netstat -nupl`查看所有udp端口号, `netstat -ntpl`查看所有tcp端口
 7. `top + 大M(shift m)` 按内存使用降序排列
 8. `ps -eo pid,ppid,%mem,%cpu,cmd --sort=-%mem | head`, `ps -eo pid,ppid,%mem,%cpu,comm --sort=-%mem| head -2`, `-e`选择所有进程，`-o`自定义输出格式 
 9. linux查看线程：`top -H`, `top -H -p <pid>`, `ps -T -p <pid>`
