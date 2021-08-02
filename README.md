@@ -36,3 +36,4 @@
 - [百度网盘](https://pan.baidu.com/download/)
 - [VLC](https://www.videolan.org/vlc/)
 - [Bandizip](https://www.bandizip.com/)
+- [Notion](https://www.notion.so/desktop)
