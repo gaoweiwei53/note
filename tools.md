@@ -35,3 +35,5 @@ Ctrl+Shift+/: for block comments (/*...*/)、
 - Ctrl + H: 查看实现类
 - Alter + Insert：自动生成Getter Setter 构造函数
 - Ctrl + Alt + O: 清除多余的包
+- Ctrl + Shift + Enter：自动加分号
+- Shift + Enter: 光标自动跳到下一行
