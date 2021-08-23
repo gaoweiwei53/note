@@ -1412,4 +1412,40 @@ pub struct Screen {
     pub components: Vec<Box<dyn Draw>>,
 }
 ```
+# Packages, Crates and Modules
+- **Packages**: 用来构建，测试和共享crates
+- **Crates**: 一个module树，产生library或者executable
+- **Modules**：控制组织，作用域和私有Path
+- **Path**: 命名一个实体的方法，如struct, 函数或者一个module
 
+## Package和Crates
+一个crate是一个binary或者library.crate root是一个源文件，它是Rust compiler开始的地方，组成了crate的root Module.
+
+一个package是一个或多个提供一组功能的crates. 一个pakage包含一个Cargo.toml文件用描述怎么构建这些crates
+
+创建package
+```shell
+cargo new my-project
+```
+Cargo遵循一个准则，``src/main.rc是一个与package同名的binary crate的crate root，`src/lib.rs`是一个与package同名的library cate的crate root
+## Module
+`path`允许你命名实体，`use`关键字将一个path带入作用域
+
+Module让我们在一个crate内将代码组织起来为了可阅读下和复用
+```rust
+mod front_of_house {
+    mod hosting {
+        fn add_to_waitlist() {}
+
+        fn seat_at_table() {}
+    }
+
+    mod serving {
+        fn take_order() {}
+
+        fn serve_order() {}
+
+        fn take_payment() {}
+    }
+}
+```
